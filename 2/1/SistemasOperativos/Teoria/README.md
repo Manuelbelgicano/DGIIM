@@ -1,0 +1,1 @@
+Los apuntes de esta asignatura usan una etiqueta html para justificar los párrafos. Github no soporta el uso de html en markdown, es por eso que las previews de los apuntes tienen un aspecto extraño. 
