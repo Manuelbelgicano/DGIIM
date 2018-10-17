@@ -1,7 +1,7 @@
 Sistemas operativos. Curso 2018/2019
 #Tema 1. Estructuras de sistemas operativos.
 ###1. Introducción
-<div style="text-align: justify">Un sistema operativo es un programa que controla la ejecución de aplicaciones y programas, que actúa como interfaz entre las aplicaciones y el hardware del computador. Un sistema operativo tinee tres objetivos:
+<div style="text-align: justify">Un sistema operativo es un programa que controla la ejecución de aplicaciones y programas, que actúa como interfaz entre las aplicaciones y el hardware del computador. Un sistema operativo tiene tres objetivos:
 
 1. Facilidad de uso: Se realiza mediante el uso de servicios.
 2. Eficiencia: Permite que los recursos se utilicen de forma eficiente.
@@ -30,7 +30,7 @@ Un sistema operativo debe presentar las siguientes características:
 
 - Eficiencia: Debe permitir y gestionar el uso de los recursos de forma eficiente.
 
-- Fiabilidad: Debe dar respuestas opredecibles a ciertas condiciones y proteger el computador y el software contra ataques o software erróneo.
+- Fiabilidad: Debe dar respuestas predecibles a ciertas condiciones y proteger el computador y el software contra ataques o software erróneo.
 
 - Extensibilidad: Es obligatorio que puedan añadirse nuevas funciones sin interferir en los servicios ya establecidos.
 
@@ -46,16 +46,16 @@ Un sistema de tiempo real es un sistema informático que no sólo requiere que l
 - **Sistemas de tiempo real no estricto (Soft Real Time):** Los requisitos en estos sistemas no son tan fuertes, limitándose a garantizar que las tareas críticas de tiempo real tengan prioridad sobre otras tareas y que retengan esa prioridad hasta complementarse. Muchos sistemas operativos comerciales, como Linux, entran dentro de este grupo de sistemas.
 
 ####Sistemas operativos en red y sistemas operativos distribuidos.
-Un **sistema informático distribuido** es un conjunto de ordenadores sin memoria ni reloj común interconectados a través de un sistema de comunicación que puede permitir que estén geográficamente dispersos. Este sistema de comunicación constituye la  única posibilidad de comunicar información. La  comunicación  se  realiza  mediante operaciones  de  enviar/recibir  mensajes,  siendo  la  duración  del envío de un mensaje grande respecto al tiempo de ejecución de una inst rucción máquina. Un sistema distribuido tiene como objetivo compartir recursos o permitir la dispersión geográfica.
+Un **sistema informático distribuido** es un conjunto de ordenadores sin memoria ni reloj común interconectados a través de un sistema de comunicación que puede permitir que estén geográficamente dispersos. Este sistema de comunicación constituye la  única posibilidad de comunicar información. La  comunicación  se  realiza  mediante operaciones  de  enviar/recibir  mensajes,  siendo  la  duración  del envío de un mensaje grande respecto al tiempo de ejecución de una instrucción máquina. Un sistema distribuido tiene como objetivo compartir recursos o permitir la dispersión geográfica.
 
 Un **sistema operativo en red** se trata de una red de máquinas, que suelen ser estaciones de trabajo, y una o dos máquinas que actúan como servidoras. Se trata de un añadido a los sistemas operativos locales, es decir, cada máquina tiene su propio sistema operativo. El usuario conoce la existencia de los múltiples computadores y debe trabajar con ellos de forma explícita, conociendo dónde se ubican los archivos y dónde se ejecutan los procesos.
 
-Un **sistema operativo distribuido** es un sistema operativo común compartido por una red de computadores, pareciendo a los usuarios una sistema operativo normal centralizado. En un sistema operativo distribuido el usuario no conoce dónde se encuentran los archivos o dónde se ejecutan los procesos.
+Un **sistema operativo distribuido** es un sistema operativo común compartido por una red de computadores, pareciendo a los usuarios un sistema operativo normal centralizado. En un sistema operativo distribuido el usuario no conoce dónde se encuentran los archivos o dónde se ejecutan los procesos.
 
 Un **sistema operativo paralelo** consiste en una máquina en la cual se disponen de varios procesadores, los cuales disponen de sus propias unidades de control, unidades aritmético-lógicas y registros pero que comparten una misma memoria principal y acceso a los dispositivos de E/S. En un sistema operativo paralelo, puede dividirse una tarea en múltiples actividades realizadas por los distintos procesadores, lo que a su vez implica que la comunicación y sincronización en este tipo de sistemas es muy eficiente.
 ###3. Estructura de un sistema operativo.
 ####Sistemas operativos monolíticos
-Los sistemas operativos monolíticos los constituyen la gran mayoría de los primeros sistemas operativos, desarrollados en los años 50. Todo el sistema operativo se ejecuta como un sólo ejecutable en modo kernel o núcleo. La falta de estructura de estos sistemas operativos tiene como consecuencia que se escriba como una colección de procedimientos enlazados entre sí en un único programa binario ejecutable extenso, además de dejar lalibertad de que un proceso llame a cualquier otro. Normalmente, un núcleo monolítico se implementa como un único proceso con todos los elementos compartiendo el mismo espacio de direcciones.
+Los sistemas operativos monolíticos los constituyen la gran mayoría de los primeros sistemas operativos, desarrollados en los años 50. Todo el sistema operativo se ejecuta como un sólo ejecutable en modo kernel o núcleo. La falta de estructura de estos sistemas operativos tiene como consecuencia que se escriba como una colección de procedimientos enlazados entre sí en un único programa binario ejecutable extenso, además de dejar la libertad de que un proceso llame a cualquier otro. Normalmente, un núcleo monolítico se implementa como un único proceso con todos los elementos compartiendo el mismo espacio de direcciones.
 
 Este tipo de sistemas operativos presenta una gran cantidad de inconvenientes, entre los que se destacan:
 
@@ -75,7 +75,7 @@ Existen una amplitud de ventajas a la hora de usar este tipo de estructuras, ent
 
 - Es adaptable a sistemas operativos distribuidos, puesto que un proceso puede enviar un mensaje sin saber dónde reside el servicio pedido.
 
-La gran desventaja, sin embargo, de esta estructura, es el rendimiento, puesto que lleva más tiempo construir y enviar un mensaje a través de el micronúcleo, aceptar y decodificar la respuesta que simplemente hacer una llamada a un servicio.
+La gran desventaja, sin embargo, de esta estructura, es el rendimiento, puesto que lleva más tiempo construir y enviar un mensaje a través del micronúcleo y aceptar y decodificar la respuesta que simplemente hacer una llamada a un servicio.
 ####Bibliografía.
 Stallings, W. *Sistemas operativos. Aspectos internos y principios de diseño.* Pearson Prentice Hall.(5ª edición.)
 Silberschatz. *Fundamentos de sistemas operativos.* Mc Graw Hill.(7ª edición)
