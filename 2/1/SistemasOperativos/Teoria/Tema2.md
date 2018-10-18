@@ -44,7 +44,38 @@ Un proceso que realiza operaciones muy largas que obligan a ráfagas largas de C
 
 Es importante que el planificador seleccione una buena mezcla de trabajos, puesto que en el caso de que la mayor parte fueran procesos limitados por E/S, la cola de preparados estaría prácticamente vacía y se infrautilizaría de CPU. Si ocurriera al contrario, serían entonces los dispositivos de E/S y, en general, los recursos aparte la CPU, los que estarían infrautilizados.
 
-El **planificador a corto plazo** es la parte del SO que decide a qué proceso darle el control de la CPU. 
+#####Planificador a corto plazo
+El **planificador a corto plazo** es la parte del SO que decide a qué proceso darle el control de la CPU. El **despachador** es la parte del SO que realiza las acciones adecuadas para efectuar el cambio de asignación de CPU entre dos procesos, tal como haya decidido el planificador a corto plazo. Esto involucra salvar el contexto del proceso actual y restaurar el del nuevo proceso, aparte de saltar a la posición de memoria de del nuevo proceso para su reanudación. Estos términos se pueden usar de forma equivalente.
 
-El **despachador** es la parte del SO que realiza las acciones adecuadas para efectuar el cambio de asignación de CPU entre dos procesos, tal como haya decidido el planificador a corto plazo.
+El planificador a corto plazo se activa en las siguientes situaciones:
+
+- Al crear un nuevo proceso, se debe elegir si ejecutar el proceso padre o el proceso hijo.
+- Cuando un proceso termina o se bloquea por esperar una operación de E/S u otra razón. Se debe elegir en este caso otro proceso para ejecutar.
+- En el caso de que algún elemento del SO determine que el proceso actual no puede seguir ejecutándose, pasándolo al estado de bloqueo.
+- Si un evento ajeno al proceso actual hace que el SO determine que el proceso actual no es el más preferente para disfrutar de la CPU, por ejemplo si un proceso agota el periodo de tiempo que tiene asignado.
+
+Se dice que una política de planificación es **apropiativa o preemptive** si incluye los dos últimos puntos. Una política de planificación es denominada **con derecho preferente o con desplazamiento** si gestiona la activación del planificador por las siguientes razones:
+
+- Se ha creado un nuevo proceso.
+
+- Cierto suceso ha provocado un cambio en el estado de un proceso de *bloqueado* a *ejecutable*.
+
+#####Medidas y objetivos de las políticas de planificación de CPU
+Se definen ciertas medidas asociadas a cada proceso. Denotamos $t$ al tiempo de CPU de un proceso y definimos:
+
+- Tiempo de respuesta o de finalización($T$): Tiempo total transcurrido desde que se crea el proceso hasta que se termina.
+
+- Tiempo de espera($E$): Tiempo que el proceso ha estado esperando en la cola de ejecutables. Se calcula de la siguiente manera: $E=T-t$
+
+- Penalización($P$): Proporción del tiempo empelado por el SO en tomar decisiones alusivas a la planificación de procesos. Debe representar entre el 10 y el 30% del tiempo total de la CPU. Se calcula de la siguiente manera: $P=\frac{T}{t}$
+
+Las políticas de planificación de CPU tienen las siguientes metas:
+
+- Realizar un buen uso de la CPU: Una alta proporción del tiempo se debe emplear para la ejecución de procesos.
+- Dar un buen servicio: Se debe minimizar la penalización de los procesos.
+- En entornos interactivos, es prioritario asegurar una ágil respuesta del sistema por encima de la eficiencia de la CPU.
+- En entornos no interactivos, se debe asegurar el buen aproechamiento de la CPU
+
+####1.6. Algoritmo de planificación FIFO (First In First Out)
+Se trata del algoritmo de planificación más simple, puesto que los procesos son servidos según el orden de llegada a la zona de ejecutables. Se trata de un algoritmo no apropiativo, puesto que cada proceso se ejecuta hasta que se finaliza o se bloquea. 
 </div>
