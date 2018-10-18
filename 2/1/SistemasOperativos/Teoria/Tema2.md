@@ -6,7 +6,7 @@ Sistemas operativos. Curso 2018/2019
 
 Cuando ocurre una llamada al sistema o una interrupción, el procesador se pone en modo núcleo y se pasa el control al sistema operativo, cambiando el modo a una rutina del sistema operativo, continuando aún así la ejecución en modo usuario. Tras haber realizado el trabajo, el sistema operativo determina si el programa debe continuar su ejecución, realizando un cambio de modo y continuando el proceso interrumpido. En caso contrario, el control se pasa a la rutina de cambio de proceso.
 
-En cuanto a estructura de proceso, este se compone de un bloque de control formado por un identificador y la información tanto del estado del procesador como de control de proceso, una pila de usuario, un espacio privado de direcciones de usuario, una pila de núcleo, utilizada para manejar llamadas/retornos cuando el proceso está en modo núcleo y un espacio compartido entre todos los procesos de direcciones, en el que se encuentra el código y los datos del sistema operativo. 
+En cuanto a estructura de proceso, éste se compone de un bloque de control formado por un identificador y la información tanto del estado del procesador como de control de proceso, una pila de usuario, un espacio privado de direcciones de usuario, una pila de núcleo, utilizada para manejar llamadas/retornos cuando el proceso está en modo núcleo y un espacio compartido entre todos los procesos de direcciones, en el que se encuentra el código y los datos del sistema operativo. 
 ####Creación de procesos.
 Cuando se va a añadir un nuevo proceso, el sistema operativo construye las estructuras de datos que se usan para manejar ese proceso así como reservar el espacio de direcciones en memoria principal. Los sucesos más comunes que provocan la creación de procesos son los siguientes:
 
@@ -36,9 +36,9 @@ El **planifcador de procesos** es la parte del sistema operativo que se encarga 
 
 - Planificador a medio: Se encarga de sacar o introducir procesos de la memoria principal.
 ####Comportamiento de un proceso
-Se denomina **ráfaga de CPU** al tiempo que está un proceso está en estado de ejecución. Normalmente un proceso alterna ráfagas de CPU con periodos de tiempo en que se encuentra en estado bloqueado.
+Se denomina **ráfaga de CPU** al tiempo que está un proceso en estado de ejecución. Normalmente un proceso alterna ráfagas de CPU con periodos de tiempo en que se encuentra en estado bloqueado.
 
-Se dice que un proceso "está limitado por la E/S" si intercala pequeñas ráfagas de CPU con muchos tiempos de espera, es decir, que frecuentemente realice operaciones que provoquen un cambio al estado de bloqueo (como las operaciones E/S).
+Se dice que un proceso está "limitado por la E/S" si intercala pequeñas ráfagas de CPU con muchos tiempos de espera, es decir, que frecuentemente realice operaciones que provoquen un cambio al estado de bloqueo (como las operaciones E/S).
 
-Un proceso que realiza operaciones muy largas que obligan a ráfagas largas de CPU con pocas interrupciones se dice que "está limitado por la CPU". 
+Un proceso que realiza operaciones muy largas que obligan a ráfagas largas de CPU con pocas interrupciones se dice que está "limitado por la CPU". 
 </div>
