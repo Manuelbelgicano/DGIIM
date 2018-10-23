@@ -1,0 +1,16 @@
+PROGRAMA=suma
+ENLAZAR=ld
+ENSAMBLAR=as -g
+all: $(PROGRAMA)
+
+$(PROGRAMA): $(PROGRAMA).o
+	$(ENLAZAR) $(PROGRAMA).o -o $(PROGRAMA)
+
+$(PROGRAMA).o: $(PROGRAMA).s
+	$(ENSAMBLAR) $(PROGRAMA).s -o $(PROGRAMA).o
+
+do: $(PROGRAMA)
+	ddd $(PROGRAMA)
+
+clean:
+	rm *.o $(PROGRAMA)
