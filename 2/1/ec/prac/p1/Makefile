@@ -36,13 +36,13 @@ $(M64).o: $(M64).s
 
 #Parametros extra
 S64US: $(S64US)
-	gdb $(S64US)
+	ddd $(S64US)
 
 S64S: $(S64S)
-	gdb $(S64S) 
+	ddd $(S64S)
 
 M64: $(M64)
-	gdb $(M64)
+	ddd $(M64)
 
 clean:
 	rm -f *.o $(ALL)
@@ -50,9 +50,9 @@ clean:
 help:
 	@echo "----------------------PRACTICA1 ESTRUCTURA DE COMPUTADORES----------------------"
 	@echo "Lista de parametros posibles:"
-	@echo "		S64US		Compila la suma sin signo y la ejecuta en gdb"
-	@echo "		S64S		Compila la suma con signo y la ejecuta en gdb"
-	@echo "		M64		Compila la media y la ejecuta en gdb"
+	@echo "		S64US		Compila la suma sin signo y la ejecuta en ddd"
+	@echo "		S64S		Compila la suma con signo y la ejecuta en ddd"
+	@echo "		M64		Compila la media y la ejecuta en ddd"
 	@echo "		clean		Limpia la carpeta de ejecutables y objetos"
 	@echo "		author		Muestra informacion sobre el autor"
 	@echo "--------------------------------------------------------------------------------"
