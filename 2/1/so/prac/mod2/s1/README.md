@@ -134,19 +134,19 @@ Esta estructura contiene la información de un archivo.
 
   ```c
   struct stat {
-    dev_t st_dev; 		//Dispositivo
-    ino_t st_ino; 		//Inodo
-    mode_t st_mode; 		//Permisos
-    nlink_t st_nlink; 	//Numero de enlaces fisicos
-    uid_t st_uid;			//ID del usuario propietario
-    gid_t st_gid;			//ID del grupo propietario
-    dev_t st_rdev;		//Tipo de dispositivo (si es dispositivo inodo)
-    off_t st_size;		//Tamaño total en bytes
-    blksize_t st_blksize;	//Tamaño de bloque para el sistema de ficheros de E/S
-    blkcnt_t st_blocks;	//Número de bloques asignados
-    time_t st_atime;		//Hora de último acceso
-    time_t st_mtime;		//Hora de última modificación
-    time_t st_ctime;		//Hora de último cambio
+    dev_t st_dev;             //Dispositivo
+    ino_t st_ino;             //Inodo
+    mode_t st_mode;           //Permisos
+    nlink_t st_nlink;         //Numero de enlaces fisicos
+    uid_t st_uid;             //ID del usuario propietario
+    gid_t st_gid;             //ID del grupo propietario
+    dev_t st_rdev;            //Tipo de dispositivo (si es dispositivo inodo)
+    off_t st_size;            //Tamaño total en bytes
+    blksize_t st_blksize;     //Tamaño de bloque para el sistema de ficheros de E/S
+    blkcnt_t st_blocks;       //Número de bloques asignados
+    time_t st_atime;          //Hora de último acceso
+    time_t st_mtime;          //Hora de última modificación
+    time_t st_ctime;          //Hora de último cambio
   };
   ```
 
@@ -236,9 +236,9 @@ Se puede realizar de dos maneras. La primera consiste en usar las directivas ya 
 ...
 sruct stat atrib;
 lstat(pathname,&atrib);
-if (S_ISREG(atrib.st_mode))							       //Con la directiva
+if (S_ISREG(atrib.st_mode))                          //Con la directiva
   printf("%s es un archivo regular.\n",pathname);
-if ((atrib.st_mode & S_IFMT)==S_IFREG)				//Con la operación lógica
+if ((atrib.st_mode & S_IFMT)==S_IFREG)               //Con la operación lógica
   printf("%s es un archivo regular.\n",pathname);
 ...
 ```
