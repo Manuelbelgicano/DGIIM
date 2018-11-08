@@ -26,6 +26,7 @@ La función ``open`` abre un fichero para su posterior uso en el programa.
     - ``O_TRUNC``: Si el archivo ya existe, es regular y se permite escribir, será truncado a longitud 0.
     - ``O_APPEND``: El archivo se añade en modo de sólo-añadir. Antes de cada escritura, el offset se posiciona al final del archivo.
   - ``mode``: Este argumento especifica los permisos a emplear en caso de que se cree un nuevo fichero. Se pueden combinar de la misma manera que el argumento ``flags``. Este argumento es modificado por la máscara umask del proceso.
+
     |           Nombre           |               Descripción                | Código |
     | :------------------------: | :--------------------------------------: | :----: |
     |        ``S_IRWXU``         | El usuario tiene permisos de lectura, escritura y ejecución | 00700  |
