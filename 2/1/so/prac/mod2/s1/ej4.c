@@ -1,5 +1,7 @@
 /*
-Define una macro en lenguaje C que tenga la misma funcionalidad que la macro S_ISREG(mode) usando para ello lod flags definidos en <sys/stat.h> para el campo st_mode de la struct stat, y comprueba que funciona en un programa simple.
+Define una macro en lenguaje C que tenga la misma funcionalidad que la macro S_ISREG(mode) usando 
+para ello lod flags definidos en <sys/stat.h> para el campo st_mode de la struct stat, y comprueba 
+que funciona en un programa simple.
 */
 #include<sys/stat.h>
 #include<sys/types.h>
