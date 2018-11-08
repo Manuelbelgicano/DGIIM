@@ -236,7 +236,7 @@ Se puede realizar de dos maneras. La primera consiste en usar las directivas ya 
 ...
 sruct stat atrib;
 lstat(pathname,&atrib);
-if (S_ISREG(atrib.st_mode))							//Con la directiva
+if (S_ISREG(atrib.st_mode))							       //Con la directiva
   printf("%s es un archivo regular.\n",pathname);
 if ((atrib.st_mode & S_IFMT)==S_IFREG)				//Con la operación lógica
   printf("%s es un archivo regular.\n",pathname);
