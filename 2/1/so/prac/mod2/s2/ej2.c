@@ -61,7 +61,7 @@ int main(int argc,char *argv[]) {
 			}
 			
 			//Mostramos permisos antiguos y los cambiamos
-			printf("Permisos antiguos: %d\n",atributos.st_mode);
+			printf("Permisos antiguos: %d\t",atributos.st_mode);
 			int aux = chmod(pathname,perm);
 			if (aux==-1)
 				printf("Error en el cambio de permisos\n");
