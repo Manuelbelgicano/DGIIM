@@ -1,3 +1,4 @@
+// NO FUNCIONA LA PARTE RECURSIVA, PERO NO PASA NADA PORQUE SIEMPRE USAREMOS LAS FUNCIONES DEL EJ4 EN VEZ DE ESTO
 /*
 Programa una nueva orden que recorra la jerarquía de subdirectorios existentes a partir de uno dado como
 argumento y devuelva la cuenta de todos aquellos archivos regulares que tengan permiso de ejecución para el
