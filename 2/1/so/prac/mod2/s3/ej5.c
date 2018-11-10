@@ -27,9 +27,18 @@ int main() {
 	}
 	
 	//Esperamos los hijos impares
-	for (int i=4;i>-1;i--) {
-		pid = wait(NULL);
-		printf("Acaba de finalizar mi hijo %d\n",pid);
+	for (int i=4;i>-1;i-=2) {
+		hijo = waitpid(pid[i],NULL,0);
+		printf("Acaba de finalizar mi hijo %d\n",hijo);
 		printf("Solo me quedan %d hijos vivos\n",i);
 	}
+	
+	//Esperamos a los hijos pares
+	for (int i=3;i>0;i-=2) {
+		hijo = waitpid(pid[i],NULL,0);
+		printf("Acaba de finalizar mi hijo %d\n",hijo);
+		printf("Solo me quedan %d hijos vivos\n",i);
+	}
+	
+	exit (EXIT_SUCCESS);
 }
