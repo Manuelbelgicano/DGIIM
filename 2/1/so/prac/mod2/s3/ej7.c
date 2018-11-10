@@ -24,10 +24,11 @@ int main(int argc,char *argv[]) {
 	
 	//Copiamos los argumentos
 	unsigned int cont = 0;
-	char *args[argc-1]; //(tamanio+1) porque el ultimo argumento debe ser NULL para exec
 	char pathname[100];
 	strcpy(pathname,argv[1]);
-	for (int i=2;i<argc-1;i++) {
+	int nargs = bg==1?argc:(argc-1);
+	char *args[nargs+1];
+	for (int i=2;i<nargs;i++) {
 		args[i] = argv[i];
 		cont++;
 	}
