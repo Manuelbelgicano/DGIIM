@@ -26,9 +26,9 @@ int main(int argc,char *argv[]) {
 	unsigned int cont = 0;
 	char pathname[100];
 	strcpy(pathname,argv[1]);
-	int nargs = bg==1?argc:(argc-1);
+	int nargs = bg==1?(argc-1):(argc-2);
 	char *args[nargs+1];
-	for (int i=2;i<nargs;i++) {
+	for (int i=2;i<nargs+1;i++) {
 		args[i] = argv[i];
 		cont++;
 	}
