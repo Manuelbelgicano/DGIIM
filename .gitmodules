@@ -4,3 +4,6 @@
 [submodule "2/1/ed/prac/prac3/ed_p3"]
 	path = 2/1/ed/prac/prac3/ed_p3
 	url = https://github.com/delightfulagony/ed_p3.git
+[submodule "extra/ED_Tablas"]
+	path = extra/ED_Tablas
+	url = https://github.com/Manuelbelgicano/ED_Tablas.git
