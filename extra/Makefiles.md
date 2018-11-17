@@ -3,19 +3,19 @@
 ## Índice
 
 0. Introducción
-     0.1.  Contenido de un makefile
+	- Contenido de un makefile
 1. Reglas
-   1.1.  Sintaxis de una regla
-   1.2.  Reglas especiales
-   1.3.  Reglas implícitas
+	- Sintaxis de una regla
+	- Reglas especiales
+	- Reglas implícitas
 2. Variables
-   2.1.  Aspectos básicos sobre variables
-   2.2.  Características de las referencias a variables
-   2.3.  Variables específicas
-   2.4.  Variables especiales
+	- Aspectos básicos sobre variables
+	- Características de las referencias a variables
+	- Variables específicas
+	- Variables especiales
 3. Directivas y funciones
-   3.1. Directivas
-   3.2. Funciones
+	- Directivas
+	- Funciones
 4. Otras utilidades de interés
 5. Makefile de ejemplo final
 6. Bibliografía y datos del autor
@@ -483,7 +483,7 @@ Las variables automáticas son variables que tienen valores específicos dentro 
 | ``$<`` | El nombre del primer pre-requisito. Si la regla es implícita, será el primer pre-requisito añadido por la relga ímplicita. |
 | ``$?`` | Los nombres de todos los pre-requisitos más nuevos que el objetivo, separados por espacios en blanco. |
 | ``$^`` | Los nombres de todos los pre-requisitos, separados por espacios en blanco. Esta lista no contiene los pre-requisitos de sólo orden. |
-| ``$|`` | Los nombres de todos los pre-requisitos de sólo orden, separados por espacios. |
+| ``$\|`` | Los nombres de todos los pre-requisitos de sólo orden, separados por espacios. |
 
 #### Variables reservadas
 
