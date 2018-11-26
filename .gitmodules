@@ -1,12 +1,12 @@
 [submodule "2/1/ed/prac/prac3/ed_p3"]
 	path = 2/1/ed/prac/prac3/ed_p3
-	url = https://github.com/delightfulagony/ed_p3.git
+	url = https://gitlab.com/delightfulagony/ed_p3.git
 [submodule "extra/ED_Tablas"]
 	path = extra/ED_Tablas
-	url = https://github.com/Manuelbelgicano/ED_Tablas.git
+	url = https://gitlab.com/Manuelbelgicano/ED_Tablas.git
 [submodule "2/1/ed/prac/prac2/ed_p2"]
 	path = 2/1/ed/prac/prac2/ed_p2
-	url = https://github.com/delightfulagony/ed_p2.git
+	url = https://gitlab.com/delightfulagony/ed_p2.git
 [submodule "2/1/ed/prac/prac4/ed_p4"]
 	path = 2/1/ed/prac/prac4/ed_p4
 	url = https://gitlab.com/Manuelbelgicano/ed_p4.git
