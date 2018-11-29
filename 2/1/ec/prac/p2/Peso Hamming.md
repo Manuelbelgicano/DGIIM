@@ -4,7 +4,7 @@
 
 #### Ejecución del programa con el parámetro de optimización `-O0`:
 
-![o0](https://gitlab.com/Manuelbelgicano/DGIIM/blob/master/2/1/ec/prac/p2/media/pcount_o0.png)
+![o0](media/pcount_o0.png)
 
  - *Media de la primera versión:* 6138 microsegundos.
  - *Media de la segunda versión:* 2296 microsegundos.
@@ -15,7 +15,7 @@
 
 #### Ejecución del programa con el parámetro de optimización `-O1`:
 
-![o0](https://gitlab.com/Manuelbelgicano/DGIIM/blob/master/2/1/ec/prac/p2/media/pcount_o1.png)
+![o0](media/pcount_o1.png)
 
  - *Media de la primera versión:* 2194 microsegundos.
  - *Media de la segunda versión:* 475 microsegundos.
@@ -26,7 +26,7 @@
 
 #### Ejecución del programa con el parámetro de optimización `-O2`:
 
-![o0](https://gitlab.com/Manuelbelgicano/DGIIM/blob/master/2/1/ec/prac/p2/media/pcount_o2.png)
+![o0](media/pcount_o2.png)
 
  - *Media de la primera versión:* 2033 microsegundos.
  - *Media de la segunda versión:* 486 microsegundos.
