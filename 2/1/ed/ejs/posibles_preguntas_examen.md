@@ -60,7 +60,7 @@ En la que el iterador debe iterar sobre elementos cuyo `string` tenga tamaño 4 
 
 Se harán preguntas de tipos de datos de la STL, pero con algunas restricciones. Por ejemplo, un ejercicio con `std::list` en la que no se puede usar la función `sort()`. Un ejemplo de ejercicio es el siguiente:
 
-*Diseñar una función que dada una lista de enteros elimine todos aquellos que no sean más grandes que todos los anteriores. Por ejemplo: `<1,3,4,2,4,7,7,1>` se convierte en`<1,3,4,7>`*
+*Diseñar una función que dada una lista de enteros elimine todos aquellos que no sean más grandes que todos los anteriores. Por ejemplo: `<1,3,4,2,4,7,7,1>` se convierte en `<1,3,4,7>`*
 
 Normalmente se trata de diseñar algoritmos (funciones) que resuelvan un problema dado (agrupar elementos, eliminar cierto tipo de elementos, ...). En este tipo de ejercicios se puede pedir que la función tenga un cierto grado de optimización. 
 
@@ -72,5 +72,10 @@ En este tipo de ejercicios es importante diferenciar las diferentes propiedades 
 
 > Siempre hay un ejercicio "tirado", que se basa en el entendimiento del tipo de dato con el que se está trabajando y suele ser fácil
 
-**Siempre pueden usarse estructuras auxiliares salvo que se diga lo contrario.**
+**Siempre pueden usarse estructuras auxiliares salvo que se diga lo contrario.** 
 
+### Otros comentarios de interés
+
+- Es importante estudiar y conocer las diferencias entre las distintas clases disponibles de la STL.
+- Conocer y tener en cuenta `reverse_iterator`.
+- Estudiar **BIEN** árboles e igual con tablas Hash.
