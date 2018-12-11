@@ -40,7 +40,7 @@ class Matriz {
 }
 ```
 
-En este caso se puede utilizar como iterador un puntero a un entero.
+En este caso se puede utilizar como iterador un puntero a un entero. También puede definirse una matriz como un vector de vectores.
 
 Normalmente se ponen restricciones para los iteradores, como por ejemplo en la siguiente clase:
 
@@ -63,3 +63,14 @@ Se harán preguntas de tipos de datos de la STL, pero con algunas restricciones.
 *Diseñar una función que dada una lista de enteros elimine todos aquellos que no sean más grandes que todos los anteriores. Por ejemplo: `<1,3,4,2,4,7,7,1>` se convierte en`<1,3,4,7>`*
 
 Normalmente se trata de diseñar algoritmos (funciones) que resuelvan un problema dado (agrupar elementos, eliminar cierto tipo de elementos, ...). En este tipo de ejercicios se puede pedir que la función tenga un cierto grado de optimización. 
+
+### Árboles
+
+Otro tipo de ejercicios se basan en realizar funciones sobre árboles, como por ejemplo una que encuentre nodos que tengan al menos 5 descendientes más por un lado que por otro. 
+
+En este tipo de ejercicios es importante diferenciar las diferentes propiedades de los distintos tipos de árboles, como los `bintree` y los `ABB`. En estos casos suele ser interesante el uso de iteradores o funciones recursivas.
+
+> Siempre hay un ejercicio "tirado", que se basa en el entendimiento del tipo de dato con el que se está trabajando y suele ser fácil
+
+**Siempre pueden usarse estructuras auxiliares salvo que se diga lo contrario.**
+
