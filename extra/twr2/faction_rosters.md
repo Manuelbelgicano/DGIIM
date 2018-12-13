@@ -983,7 +983,7 @@
 	- Scythian Noblewomen
 	- Noble Horse Archers
 	- Royal Horse Archers
-	-Scythian Royal Skirmishers
+	- Scythian Royal Skirmishers
 
 ### SABA: 25 UNITS
 
