@@ -1,0 +1,90 @@
+\documentclass[11pt,titlepage,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				PAQUETES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\evensidemargin}{-1in}
+\addtolength{\textwidth}{+1.75in}
+\addtolength{\topmargin}{-0.675in}
+\addtolength{\textheight}{1.25in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				COMANDOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\contentsname}{Índice}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,RO]{Análisis Matemático I}
+\fancyhead[LE,LO]{Curso 2018-2019}
+\fancyfoot[CE,CO]{\thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				DOCUMENTO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TÍTULO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\Huge{\textbf{Análisis Matemático I: Temas de teoría}}}
+\author{\textit{Manuel Gachs Ballegeer}}
+\date{diciembre 2018}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 ÍNDICE 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				COMPLITUD				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Complitud}
+\subsubsection*{Sucesiones de Cauchy}
+En espacios métricos, las sucesiones de Cauchy se definen de la siguiente manera: Si $E$ es un espacio 
+métrico con una distancia $d$, y $x_n\in E$ para todo $n\in \mathbb{N}$, se dice que \{$x_n$\} es una sucesión de Cauchy 
+en $E$, cuando:
+\begin{equation*}
+\forall\epsilon>0\quad\exists m\in\mathbb{N}:p,q\geq m\implies d(x_p,x_q)<\epsilon
+\end{equation*}
+Tenemos además la siguiente implicación:
+\begin{center}
+\textit{En cualquier espacio métrico, toda sucesión convergente es una sucesión de Cauchy.}
+\end{center}
+Para probarlo, sea \{$x_n$\} una sucesión de puntos del espacio métrico $E$, y supongamos que 
+\{$x_n$\}$\rightarrow x\in E$. Dado $\epsilon>0$, existe $m\in\mathbb{N}$ tal que, para $n\geq m$ se tiene 
+$d(x_n,x)<^\epsilon/_2$. Para $p,q\geq m$, concluimos entonces que $d(x_p,x_q)\leq d(x_p,x)+d(x,x_q)<\epsilon$.
+
+\subsection{Teorema del punto fijo de Banach}
+\section{Compacidad}
+\subsection{Caracterización de la compacidad en \textbf{$\mathbb{R}^N$}}
+\subsection{Teorema de la conservación de la compacidad}
+\section{Espacios normados}
+\subsection{Normas equivalentes}
+\subsection{Teorema de Hausdorff}
+\section{Conexión}
+\subsection{Caracterización y conservación mediante funciones continuas}
+\section{Diferenciabilidad}
+\subsection{Derivadas direccionales}
+\subsection{Derivadas parciales}
+\subsection{Relaciones entre derivadas direccionales y parciales}
+\section{Teorema del valor medio}
+\subsection{Consecuencias}
+\section{Teorema de Taylor para campos escalares}
+\subsection{Aplicaciones}
+\section{Teorema de la función inversa y de la función implícita}
+\end{document}
