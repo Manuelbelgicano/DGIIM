@@ -3,9 +3,11 @@
 %				PAQUETES				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{fancyhdr}
+\usepackage[spanish]{babel}
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{amsfonts}
+\usepackage{amsthm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				MÁRGENES				%
@@ -20,6 +22,9 @@
 %				COMANDOS				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand{\contentsname}{Índice}
+\theoremstyle{definition}
+\newtheorem*{teo}{Teorema}
+\newtheorem*{prop}{Proposición}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %		ENCABEZADO/PIE DE PAGINA		%
@@ -40,7 +45,7 @@
 %				 TÍTULO 				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\Huge{\textbf{Análisis Matemático I: Temas de teoría}}}
-\author{\textit{Manuel Gachs Ballegeer}}
+\author{\textit{Marta Gómez}\\ \textit{Manuel Gachs Ballegeer\thanks{Transcripción a \LaTeX}}}
 \date{diciembre 2018}
 \maketitle
 
@@ -51,40 +56,133 @@
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				COMPLITUD				%
+%				 TEMA 1º 				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Complitud}
+
+Dado un espacio métrico $(E,d)$, se dice que $d$ es una distancia completa, 
+o que $E$ es un espacio métrico completo cuando toda sucesión de Cauchy de 
+puntos de $E$ es convergente.
+
 \subsubsection*{Sucesiones de Cauchy}
-En espacios métricos, las sucesiones de Cauchy se definen de la siguiente manera: Si $E$ es un espacio 
-métrico con una distancia $d$, y $x_n\in E$ para todo $n\in \mathbb{N}$, se dice que \{$x_n$\} es una sucesión de Cauchy 
-en $E$, cuando:
+
+Sea $(E,d)$ un espacio métrico y $\{x_n\}\in E,\forall n\in\mathbb{N}$, se 
+dice que $\{x_n\}$ es una sucesión de Cauchy en $E$ cuando:
 \begin{equation*}
-\forall\epsilon>0\quad\exists m\in\mathbb{N}:p,q\geq m\implies d(x_p,x_q)<\epsilon
+\forall\varepsilon>0\quad\exists m\in\mathbb{N}:p,q\geq m\implies d(x_p,x_q)<\varepsilon
 \end{equation*}
-Tenemos además la siguiente implicación:
-\begin{center}
-\textit{En cualquier espacio métrico, toda sucesión convergente es una sucesión de Cauchy.}
-\end{center}
-Para probarlo, sea \{$x_n$\} una sucesión de puntos del espacio métrico $E$, y supongamos que 
-\{$x_n$\}$\rightarrow x\in E$. Dado $\epsilon>0$, existe $m\in\mathbb{N}$ tal que, para $n\geq m$ se tiene 
-$d(x_n,x)<^\epsilon/_2$. Para $p,q\geq m$, concluimos entonces que $d(x_p,x_q)\leq d(x_p,x)+d(x,x_q)<\epsilon$.
+En cualquier espacio métrico, toda sucesión convergente es una sucesión de Cauchy.
+\\\\
+El teorema de complitud en $\mathbb{R}$ afirma que la distancia usual de 
+$\mathbb{R}$ es completa, o que $\mathbb{R}$ con la distancia usual es un
+espacio métrico completo. La complitud de un espacio métrico no es una 
+propiedad topológica.
+\\\\
+Una norma $\|\cdot\|$ en un espacio vectorial $X$ es una norma completa cuando
+es completa la distancia $d$ asociada, definida por $d(x,y)=\|y-x\|\forall x,y\in X$.
+Un espacio normado cuya norma es completa recibe el nombre de espacio de Banach.
 
 \subsection{Teorema del punto fijo de Banach}
+
+\begin{teo}
+Sea $E$ un espacio métrico completo no vacío y $f:E\to E$ una aplicación contractiva.
+Entonces $f$ tiene un único punto fijp, esto es, existe un único punto $x\in E$
+tal que $f(x)=x$.
+\end{teo}
+\begin{proof}
+Fijamos $x_0\in E$ arbitrario y definimos por inducción una sucesión $\{x_n\}$ de
+puntos de $E$, tomando $x_1=f(x_0)$ y $x_{n+1}=f(x_n)$, $\forall n\in\mathbb{N}$.
+Probaremos que $\{x_n\}$ es convergente y su límite será el punto fijo que buscamos.
+\\
+Si $\alpha>1$ es la constante de Lipschitz de $f$ y $p=d(x_0,x_1)$, comprobamos
+por inducción la siguiente desigualdad:
+\begin{equation}\label{eq:suspuestoinduccion}
+d(f(x_0),f(x_1))\leq\alpha^np,\forall n\in\mathbb{N}
+\end{equation}
+\\
+En efecto, tenemos $d(x_1,x_2)=d(f(x_0),f(x_1))\leq\alpha d(x_n,x_{n+1})$ y, 
+suponiendo que \eqref{eq:suspuestoinduccion} se verifica para un $n\in\mathbb{N}$,
+deducimos que $d(x_{n+1},x_{n+2})=d(f(x_n),f(x_{n+1}))\leq\alpha d(x_n,x_{n+1})
+\leq\alpha\alpha^np=\alpha^{n+1}p$.
+\\
+Ahora, para cualesquiera $n,k\in\mathbb{N}$, tenemos:
+\begin{equation}\label{eq:desigualdad}
+d(x_n,x_{n+k})\leq\sum_{j=0}^{k-1}d(x_{n+j},x_{n+j+1})\leq p\sum_{j=0}^{k-1}\alpha^{n+j}
+\leq p\alpha^n\sum_{j=0}^{\infty}\alpha^j=\frac{p\alpha^n}{1-\alpha}
+\end{equation}
+\\
+De la desigualdad \eqref{eq:desigualdad} deducimos que $\{x_n\}$ es una sucesión de
+Cauchy. Dado $\varepsilon>0$, como $\{\alpha^n\}\to 0$, $\exists m\in\mathbb{N}$ tal que,
+paran $n\geq m$ se tiene $p\alpha^n<\varepsilon(1-\alpha)$. Entonces, para $p,p\geq m$,
+suponiendo que $p<q$, usamos \eqref{eq:desigualdad} con $n=p$ y $k=q-p:d(x_n,x_{n+k})
+\leq\frac{p\alpha^n}{1-\alpha}<\varepsilon$.
+\\
+Como por hipótesis $E$ es completo, tenemos $\{x_n\}\to x\in E$, luego $\{f(x_n)\}
+=\{x_{n+1}\}\to x$. Pero $f$ es continua, luego $\{f(x_n)\}\to f(x)$, con lo que concluimos
+que $f(x)=x$. Para comprobar que es único, tomamos $y$ como otro punto fijo. Se tiene
+$d(x,y)=d(f(x),f(y))\leq\alpha d(x,y)$, luego $(1-\alpha)d(x,y)\leq 0$. Como $\alpha>1$,
+deducimos que $d(x,y)\leq 0$, luego $x=y$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TEMA 2º 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Compacidad}
+
+Se dice que un espacio métrico $E$ es compacto cuando toda sucesión de puntos de 
+$E$ admite una sucesión parcial convergente. Se trata de una propiedad topológica.
+\\
+
+Si $E$ es un espacio métrico y $A\subset E$, diremos que $A$ es un subconjunto
+compacto de $E$ cuando $A$ sea un espacio métrico compacto con la distancia inducida
+por la de $E$. Esto significa que toda sucesión de puntos de $A$ admite una parcial
+convergente a un punto de $A$.
+
 \subsection{Caracterización de la compacidad en \textbf{$\mathbb{R}^N$}}
+
+\begin{teo}
+(Teorema de Bolzano-Weierstrass) Toda sucesión acotada de vectores de $\mathbb{R}^N$
+admite una sucesión parcial convergente.
+\end{teo}
+\begin{prop}
+Sea $A$ un subconjunto compacto de un espacio métrico $E$. Entonces $A$ esta acotado y es
+un subconjunto cerrado de $E$.
+\end{prop}
+\begin{proof}
+Suponiendo que $A$ no está contenido en ninguna bola llegarenos a una contradicción.
+Fijado un punto cualquiera $x\in E$, $\forall n\in\mathbb{N}$, $\exists x_n\in A$ tal que
+$d(x_n,x)<n$. Entonces $\{x_n\}$ admite una sucesión parcial $\{x_{\sigma(n)}\}$ que
+converge a un punto $a\in A$, es decir, $\{d(x_{\sigma(n)},a)\}\to 0$. Pero también
+$d(x_{\sigma(n)},x)\leq d(x_{\sigma(n)},a)+d(x,a),\forall n\in\mathbb{N}$, luego la 
+sucesión $\{d(x_{\sigma(n)},x)\}$ está mayorada, lo cual es una contradicción, ya que
+$d(x_{\sigma(n)},x)\geq\sigma(n)\geq n,\forall n\in\mathbb{N}$.
+\\\\
+Sea ahora $x\in\text{\=A}$ y $\{a_n\}$ una sucesión de puntos de $A$ con $\{a_n\}\to x$.
+Por ser $A$ compacto, tenemos una sucesión parcial $\{a_{\sigma(n)}\}$ que converge a
+un $a\in A$, pero también $\{a_{\sigma(n)}\}\to x$, luego $x=a\in A$. Esto prueba que
+$\text{\=A}\subset A$, es decir, $A$ es cerrado.
+\end{proof}
+\begin{prop}
+Un subconjunto de $\mathbb{R}^N$ es compacto si, y sólo si es cerrado y acotado.
+\end{prop}
+\begin{proof}
+Ya hemos visto que una implicación es válida, no sólo en $\mathbb{R}^N$, sino en cualquier
+espacio métrico. Para el recíproco, sea $A$ un conjunto cerrado y acotado de $\mathbb{R}^N$.
+El toerema de Bolzano-Weierstrass nos dice que $\{a_n\}$ admite una sucesión parcial
+$\{a_{\sigma(n)}\}$ que converge a un vector $x\in\mathbb{R}^N$. Como $A$ es cerrado, tenemos
+$x\in A$, lo que prueba que toda sucesión de puntos de $A$ admite una sucesión parcial
+que converge a un punto de $A$, es decir, $A$ es compacto.
+\end{proof}
+
 \subsection{Teorema de la conservación de la compacidad}
-\section{Espacios normados}
-\subsection{Normas equivalentes}
-\subsection{Teorema de Hausdorff}
-\section{Conexión}
-\subsection{Caracterización y conservación mediante funciones continuas}
-\section{Diferenciabilidad}
-\subsection{Derivadas direccionales}
-\subsection{Derivadas parciales}
-\subsection{Relaciones entre derivadas direccionales y parciales}
-\section{Teorema del valor medio}
-\subsection{Consecuencias}
-\section{Teorema de Taylor para campos escalares}
-\subsection{Aplicaciones}
-\section{Teorema de la función inversa y de la función implícita}
+
+\begin{teo}
+Sean $E$ y $F$ dos espacios métricos y $f:E\to F$ una función continua. Si $E$ es compacto, 
+entonces $f(E)$ es compacto.
+\end{teo}
+\begin{proof}
+Dada una sucesión $\{y_n\}$ de puntos de $f(E)$, deberemos probar que $\{y_n\}$ admite
+una sucesión parcial que converge a un punto de $f(E)$.
+\end{proof}
+
 \end{document}

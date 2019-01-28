@@ -1,0 +1,158 @@
+\documentclass[11pt,titlepage,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				PAQUETES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\evensidemargin}{-1in}
+\addtolength{\textwidth}{+1.75in}
+\addtolength{\topmargin}{-0.675in}
+\addtolength{\textheight}{1.25in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				COMANDOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\contentsname}{Índice}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,RO]{Análisis Matemático I}
+\fancyhead[LE,LO]{Curso 2018-2019}
+\fancyfoot[CE,CO]{\thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				DOCUMENTO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TÍTULO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\Huge{\textbf{Análisis Matemático I: Una breve exposición de los conceptos}}}
+\author{\textit{Manuel Gachs Ballegeer}}
+\date{enero 2019}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 ÍNDICE 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\clearpage
+
+\section{Espacios métricos}
+\subsection{Subconjuntos}
+Sea $(E,d)$ un espacio métrico y $A\subset(E,d)$. Se definen los siguientes subconjuntos de $A$:
+\begin{itemize}
+\item Adherencia de $A$ (\=A): 
+$\forall a\in\text{\=A},\exists r>0:B(a,r)\cap A\neq\emptyset$
+\item Interior de A (\AA):
+$\forall a\in\text{\AA},\exists r>0:B(a,r)\subset A$
+\item Frontera de A (Fr($A$)):
+$\text{Fr}(A):=\text{\AA}\setminus\text{\=A}$
+\item Puntos de acumulación ($A'$):
+$\forall a\in A',\exists r>0:B(a,r)\cap(A\setminus\{a\})\neq\emptyset$ 
+\item Puntos aislados: 
+Se dice que un punto $a\in A$ es aislado si $\exists r>0$ tal que $B(a,r)\cap A=\{a\}$
+\end{itemize}
+
+\subsubsection*{Implicaciones entre los subconjuntos}
+Sea $(E,d)$ un espacio métrico y $A\subset(E,d)$. Existen las siguientes relaciones:
+\begin{itemize}
+\item $A\subset\text{\=A}$ . Además, \=A es el cerrado más pequeño que contiene a $A$.
+\item $a\in\text{\=A}\iff$ existe una sucesión en A que converge a $a$
+\item $A\supset\text{\AA}$ . Además, \AA\ es el abierto más grande contenido en $A$.
+\item $\forall a\in\text{\=A}$ , $a\in A'$ ó $a$ es un punto aislado $\iff\forall a\in A$ , $a\in A'$ ó $a$ es un punto aislado
+\end{itemize}
+
+\subsection{Complitud, compacidad, convexidad}
+\subsubsection*{Complitud}
+Sea $(E,d)$ un espacio métrico. Una sucesión $\{x_n\}\in(E,d)$ es de Cauchy si:
+\begin{equation*}
+\forall\varepsilon>0,\exists m\in\mathbb{N}: p,q\geq m\implies d(x_p,x_q)<\varepsilon
+\end{equation*}
+Se dice que un espacio métrico es \emph{completo} si toda sucesión de Cauchy es convergente. Si además es normado, se le llama \emph{espacio de Banach}.
+\begin{itemize}
+\item Espacio completo de un espacio métrico $\implies$ espacio cerrado
+\item Espacio cerrado de un espacio métrico completo $\implies$ espacio completo
+\end{itemize}
+
+\subsubsection*{Compacidad}
+Toda sucesión de $\mathbb{R}^N$ admite una parcial convergente. Además, las normas son equivalentes.
+Se dice que un subconjunto $K\subset\mathbb{R}^N$ es \emph{compacto} si es cerrrado y acotado.
+\begin{equation*}
+K\text{ es compacto}\iff \text{toda sucesión de puntos de }K\text{ converge a un punto de }K
+\end{equation*}
+
+\subsubsection*{Convexidad y conexidad}
+Se dice que un subconjunto $K\subset\mathbb{R}^N$ es \emph{convexo} si se verifica
+\begin{equation*}
+a,b\in K\implies a+t(b-a)\in K,\forall t\in[0,1]
+\end{equation*}
+es decir, si el segmento de extremos $a$ y $b$ está en $K$.\\\\
+Se dice que un subconjunto $C$ de un espacio métrico es \emph{conexo} si 
+\begin{equation*}
+O_1,O_2 \text{ abiertos de } C: O_1\cap O_2=\emptyset\text{ y }
+O_1\cup O_2=\emptyset\implies O_1=\emptyset\text{ ó }O_2=\emptyset
+\end{equation*}
+
+\section{Funciones}
+Sean $M,N\in\mathbb{N}$ y $A\in\mathbb{R}^N$.
+\begin{itemize}
+\item Un \emph{campo escalar} en $A$ es una función $f:A\to\mathbb{R}$
+\item Un \emph{campo vectorial} en $A$ es una función 
+$f=(f_1,\dotsc,f_M):A\to\mathbb{R}^N$, donde cada $f_i$ es un campo escalar de $f$ o función componente de $f$.
+\end{itemize}
+
+\subsection{Continuidad}
+Se dice que un campo escalar es continuo en un punto $a$ si
+\begin{equation*}
+[\forall a\in A,\{a_n\}\to a]\implies\{f(a_n)\}\to f(a)
+\end{equation*}
+En caso de campos vectoriales, se dice que $f$ es continuo en $a\iff f_i$ es continuo en $a$, $\forall i=1,\dotsc, M$\\\\
+Sean $g,f$ funciones continuas en $a$. Entonces $g\circ f$ es continua en $a$.\\\\
+Sean $(E,d_1)$ y $(F,d_2)$ espacios métricos, $A\subset E$ y $f:A\to F$ una función. $f$ es \emph{uniformemente continua} si
+\begin{equation*}
+\forall\varepsilon>0,\exists\delta>0:[x,y\in A,d_1(x,y)<\delta]\implies d_2(f(x),f(y))<\varepsilon
+\end{equation*}
+
+\subsection{Conservación de la compacidad y la conexidad}
+\subsubsection*{Compacidad}
+Sean $E,F$ espacios métricos, $K\subset E$ un subconjunto compacto y $f:K\to F$ continua. Entonces
+\renewcommand{\theenumi}{\roman{enumi}}%
+\begin{enumerate}
+\item $f(K)$ es compacto.
+\item Si $F\subset\mathbb{R}$, entonces $f$ es acotada y alcanza su máximo y mínimos absolutos.
+\item $f$ es uniformemente continua.
+\end{enumerate}
+
+\subsubsection*{Conexidad}
+Sean $E,F$ espacios métricos, $K\subset E$ un subconjunto conexo no vacío y $f:C\to F$ continua. 
+Entonces $f(C)$ es conexo.\\
+Los segmentos de $\mathbb{R}^N$ son conexos. Además, todo convexo de $\mathbb{R}^N$ es conexo.\\
+Toda función continua de $C$ en $\{0,1\}$ es constante.
+
+\section{Límites}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
