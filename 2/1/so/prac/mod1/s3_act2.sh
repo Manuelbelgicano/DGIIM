@@ -3,8 +3,8 @@
 b=0
 
 for i in `seq 1 $1` do
-	a=$i-347
-	b=$b+a++
+	a=`expr $i - 347`
+	b=`expr $b + 1`
 done
 
 echo "a=$a"
