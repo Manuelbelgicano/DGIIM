@@ -1,0 +1,14 @@
+Construir dos programas, 'lanzador' y 'explorador', que se comunican por un FIFO (cauce
+con nombre) denominado 'canal'.
+
+ - 'lanzador <arg1> <arg2>' admite dos argumentos que serán los nombres de de dos archivos
+   del directorio de trabajo. El lanzador se encarga de crear el FIFO y dos procesos hijos,
+   cada uno de los cuales ejecutará el programa 'explorador'. Tras lo cual leerá del FIFO
+   lo que escriban los exploradores y escribirá en pantalla el nombre del archivo y el nuevo
+   propietario.
+
+ - 'explorador <arg1>' acepta como argumento uno de los dos archivos que se pasan a lanzador
+   y comprueba continuamente que no cambie el propietario del archivo. En caso de que
+   detecte un cambio en el propietario del archivo escribirá en la salida estándar el nombre
+   del archivo que explora y el nuevo valor del propietario.
+
