@@ -118,3 +118,20 @@ class Weapon {
             return 1.0f;
     }
 }
+/**
+ * @brief Dado del juego
+ */
+class Dice {
+	private final float NHANGARSPROB;
+	private final float NSHIELDSPROB;
+	private final float NWEAPONSPROB;
+	private final float FIRSTSHOTPROB;
+	private Random generator;
+
+	Dice() {
+		NHANGARSPROB = 0.25;
+		NSHIELDSPROB = 0.25;
+		NWEAPONSPROB = 0.33;
+		FIRSTSHOTPROB = 0.5;
+	}
+}
