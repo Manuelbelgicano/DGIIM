@@ -2,7 +2,7 @@
 
 b=0
 
-for i in `seq 1 $1` do
+for i in 100000 do
 	a=`expr $i - 347`
 	b=`expr $b + 1`
 done

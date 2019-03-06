@@ -134,4 +134,11 @@ class Dice {
 		NWEAPONSPROB = 0.33;
 		FIRSTSHOTPROB = 0.5;
 	}
+	public int initWithNHangars();
+	public int initWithNWeapons();
+	public int initWithNShields();
+	public int whoStarts(int nPlayers);
+	public GameCharacter firstShot();
+	public boolean spaceStationMoves(float speed);
+}
 }
