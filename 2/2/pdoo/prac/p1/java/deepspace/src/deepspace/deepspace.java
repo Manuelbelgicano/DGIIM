@@ -2,6 +2,8 @@
  * @author Manuel Gachs Ballegeer
  */
 package deepspace;
+import java.util.Random;
+
 enum CombatResult {ENEMYWINS, NOCOMBAT, STATIONESCAPES, STATIONWINS} ///< Posibles resultados del combate
 enum GameCharacter {ENEMYSTARSHIP, SPACESTATION} ///< Tipos de personajes
 enum ShotResult {DONOTRESIST, RESIST} ///< Resultados posibles de un disparo
@@ -122,23 +124,59 @@ class Weapon {
  * @brief Dado del juego
  */
 class Dice {
-	private final float NHANGARSPROB;
-	private final float NSHIELDSPROB;
-	private final float NWEAPONSPROB;
-	private final float FIRSTSHOTPROB;
-	private Random generator;
-
-	Dice() {
-		NHANGARSPROB = 0.25;
-		NSHIELDSPROB = 0.25;
-		NWEAPONSPROB = 0.33;
-		FIRSTSHOTPROB = 0.5;
-	}
-	public int initWithNHangars();
-	public int initWithNWeapons();
-	public int initWithNShields();
-	public int whoStarts(int nPlayers);
-	public GameCharacter firstShot();
-	public boolean spaceStationMoves(float speed);
-}
+    private final float NHANGARSPROB;
+    private final float NSHIELDSPROB;
+    private final float NWEAPONSPROB;
+    private final float FIRSTSHOTPROB;
+    private final Random generator;
+    
+    Dice() {
+        NHANGARSPROB = 0.25f;
+        NSHIELDSPROB = 0.25f;
+        NWEAPONSPROB = 0.33f;
+        FIRSTSHOTPROB = 0.5f;
+        generator = new Random();
+    }
+    public int initWithNHangars() {
+        float prob = generator.nextFloat();
+        
+        if (prob<NHANGARSPROB)
+            return 0;
+        else
+            return 1;
+    }
+    public int initWithNWeapons() {
+        float prob = generator.nextFloat();
+        
+        if (prob<NWEAPONSPROB)
+            return 1;
+        else if (NWEAPONSPROB<=prob && prob<2*NWEAPONSPROB)
+            return 3;
+        else
+            return 2;
+    }
+    public int initWithNShields() {
+        float prob = generator.nextFloat();
+        
+        if (prob<NSHIELDSPROB)
+            return 0;
+        else
+            return 1;
+    }
+    public int whoStarts(int nPlayers) {
+        return generator.nextInt(nPlayers-1);
+    }
+    public GameCharacter firstShot() {
+        float prob = generator.nextFloat();
+        
+        if (prob<FIRSTSHOTPROB)
+            return GameCharacter.SPACESTATION;
+        else
+            return GameCharacter.ENEMYSTARSHIP;
+    }
+    public boolean spaceStationMoves(float speed) {
+        float prob = generator.nextFloat();
+        
+        return prob<speed;
+    }
 }

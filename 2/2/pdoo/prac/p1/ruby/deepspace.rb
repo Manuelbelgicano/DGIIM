@@ -32,7 +32,7 @@ module Deepspace
 
     LASER = Type.new(2.0)
     MISSILE = Type.new(3.0)
-    PLSMA = Type.new(4.0)
+    PLASMA = Type.new(4.0)
   end
 
   # Botín
@@ -40,9 +40,9 @@ module Deepspace
     attr_reader :nSupplies, :nWeapons, :nShields, :nHangars, :nMedals
 
     def initialize(supplies_num,weapons_num,shields_num,hangars_num,medals_num)
-      @nSupplies = supplies_n
-      @nWeapons = weapons_n
-      @nShields = shields_n
+      @nSupplies = supplies_num
+      @nWeapons = weapons_num
+      @nShields = shields_num
       @nHangars = hangars_num
       @nMedals = medals_num
     end
@@ -59,8 +59,7 @@ module Deepspace
     end
     
     def self.newCopy(supplies_package)
-      copy = SuppliesPackage.new(supplies_package.ammoPower,supplies_package.fuelUnits,supplies_package.shieldPower)
-      return copy
+      new(supplies_package.ammoPower,supplies_package.fuelUnits,supplies_package.shieldPower)
     end
   end
   
@@ -75,8 +74,7 @@ module Deepspace
     end
    
     def self.newCopy(shield_booster)
-      copy = ShieldBooster.new(shield_booster.name,shield_booster.boost,shield_booster.uses)
-      return copy
+      new(shield_booster.name,shield_booster.boost,shield_booster.uses)
     end
 
     def useIt
@@ -100,8 +98,7 @@ module Deepspace
     end
 
     def self.newCopy(weapon)
-      copy = Weapon.new(weapon.name,weapon.type,weapon.uses)
-      return copy
+      new(weapon.name,weapon.type,weapon.uses)
     end
   
     def power
@@ -114,6 +111,68 @@ module Deepspace
         return power
       else
         return 1.0
+      end
+    end
+  end
+
+  # Clase dado
+  class Dice
+    def initialize
+      @NHANGARSPROB = 0.25
+      @NSHIELDSPROB = 0.25 
+      @NWEAPONSPROB = 0.33
+      @FIRSTSHOTPROB = 0.25
+      @GENERATOR = Random.new()
+    end
+
+    def initWithNHangars
+      prob = @GENERATOR.rand(1.0)
+      if prob<@NHANGARSPROB
+        return 0
+      else
+        return 1
+      end
+    end
+
+    def initWithNWeapons
+      prob = @GENERATOR.rand(1.0)
+      if prob<@NWEAPONSPROB
+        return 1
+      elsif @NWEAPONSPROB<=prob and prob<2*@NWEAPONSPROB
+        return 2
+      else
+        return 3
+      end
+    end
+    
+    def initWithNShields
+      prob = @GENERATOR.rand(1.0)
+      if prob<@NSHIELDSPROB
+        return 0
+      else
+        return 1
+      end
+    end
+
+    def whoStarts(n)
+      @GENERATOR.rand(n-1)
+    end
+
+    def firstShot
+      prob = @GENERATOR.rand(1.0)
+      if prob<@FIRSTSHOTPROB
+        GameCharacter::SPACESTATION
+      else
+        GameCharacter::ENEMYSTARSHIP
+      end
+    end
+
+    def spaceStationMoves(speed)
+      prob = @GENERATOR.rand(1.0)
+      if prob<speed
+        return true
+      else
+        return false
       end
     end
   end
