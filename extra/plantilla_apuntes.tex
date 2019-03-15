@@ -2,11 +2,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				PAQUETES				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{fancyhdr}
-\usepackage[a4paper]{geometry}
-\usepackage{mathtools}
+\usepackage{amsmath} % Matemáticas
+\usepackage{amsfonts} % Letras caligráficas para matemáticas
+\usepackage{fancyhdr} % Encabezados/pies de páginas
+\usepackage[a4paper]{geometry} % Márgenes
+\usepackage{mathtools} % Matemáticas extra
+\usepackage{newtxsf} % Tipografía
+\usepackage{listings} % Código
+\usepackage{titlesec} % Títulos especiales
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			  TIPOGRAFÍA				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[T1]{fontenc}
+\usepackage[sfdefault,scaled=.85]{FiraSans}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				MÁRGENES				%
@@ -15,6 +24,28 @@
 	left=2.5cm,
 	right=2.5cm,
 	bottom=2.5cm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  CAPÍTULOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{}{0pt}{\Huge}
+\titlespacing*{\chapter}
+  {0pt}{10pt}{40pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  CÓDIGO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstset{
+	basicstyle=\footnotesize\ttfamily,
+	breaklines=true,
+	language=C++,
+	frame=single,
+	numbers=left,
+	numbersep=5pt,
+	tabsize=4,
+	frame=leftline
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,8 +67,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				 TÍTULO 				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{\Huge{\textbf{This is a title}}}
-\author{\textit{I'm the author}}
+\title{\Huge{\textbf{This is the title}}}
+\author{\textit{This is the author}}
 \date{This is the date}
 \maketitle
 
@@ -50,5 +81,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				 DOCUMENTO 				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{This is a chapter}
+
+\section{This is a section}
+
+\subsection{This is a subsection}
+
+This is some text
+
+\begin{lstlisting}
+This is a code block
+\end{lstlisting}
+
+\begin{equation*}
+this+is\implies an\to equation
+\end{equation*}
+
+\begin{itemize}
+\item This is a list
+\end{itemize}
 
 \end{document}
