@@ -7,11 +7,10 @@
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage[a4paper]{geometry}
-\usepackage{listings}
 \usepackage{mathtools}
 \usepackage{scrextend}
-%\usepackage{sansmathfonts}
-%\usepackage[T1]{fontenc}
+\usepackage{sansmathfonts}
+\usepackage[T1]{fontenc}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				MÁRGENES				%
@@ -25,16 +24,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				COMANDOS				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\renewcommand{\contentsname}{\Huge{Índice}}
-%\renewcommand*\familydefault{\sfdefault}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				CÓDIGO					%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\lstset{
-	basicstyle=\footnotesize,
-	language=C,
-}
+\renewcommand{\contentsname}{\Huge{Índice}} %Cambiar el título del índice
+\renewcommand*\familydefault{\sfdefault} %Cambiar la tipografía
+\renewcommand{\arraystretch}{1.3} %Cambiar el tamaño entre líneas de una pabla
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %		ENCABEZADO/PIE DE PAGINA		%
@@ -47,11 +39,12 @@
 \fancyfoot[CE,CO]{\thepage}
 
 \begin{document}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				 TÍTULO 				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\Huge{\textbf{Arquitectura de computadores. Tema 1}}}
-\author{\textit{Manuel Gachs Ballegeer}}
+\author{\textit{Doble Grado en Ingeniería Informática y Matemáticas}}
 \date{2019}
 \maketitle
 
@@ -86,7 +79,7 @@ niveles son los siguientes:
 \end{itemize}
 
 Existe otra forma de clasificar el paralelismo, que es en función de la \textit{granularidad}
-\footnote{Maginitud de la tarea (número de operaciones)}, que se suele corresponder con los niveles de
+\footnote{Maginitud de la tarea (número de operaciones).}, que se suele corresponder con los niveles de
 paralelismo. El \textit{grano fino} corresponde con el nivel de operaciones, mientras que el nivel de
 programas se corresponde con el \textit{grano grueso}. Entre ambos encontramos el \textit{grano medio}, al
 que se le asocia el nivel de funciones.
@@ -144,15 +137,71 @@ en tres categorías:
 		b = a + c\\
 		a = c + d
 	\end{gather*}
-	La variable `a' es un operando de la primera operación y luego es utilizada para almacenar el
+	La variable $a$ es un operando de la primera operación y luego es utilizada para almacenar el
 	resultado de la segunda operación. En caso de paralelización, pudiera ocurrir que el valor de $a$ en
 	la primera operación fuera el resultado de la segunda operación.
 \end{description}
 De estas tres categorías, las dos últimas, WAW y WAR, son fácilmente resolubles renombrando variables.
 Así, el ejemplo de la dependencia de salida podría ser resuelto de la siguiente manera:
 \begin{gather*}
-	a = b + c\quad\to\quad a_1 = b + c\\
-	a = c + d\quad\to\quad a_2 = c + d
+	a = b + c \quad\to\quad a_1 = b + c\\
+	a = c + d \quad\to\quad a_2 = c + d
 \end{gather*}
-	
+De esta forma, aunque aumentemos la memoria que necesita el programa, conseguimos que pueda ejecutarse de
+forma paralela.
+
+\subsection{Unidades de ejecución: instrucciones, hebras y procesos}
+
+Mientras que el hardware se encarga de gestionar la ejecución de instrucciones, es el sistema operativo el
+encargado de gestionar la ejecución de los bloques de mayor granularidad: los \textit{procesos} y 
+\textit{hebras}.
+
+\subsubsection*{Procesos}
+
+Un proceso es la mayor unidad de ejecución que gestiona un sistema operativo, y suele estar compuesto por
+una o más hebras. Se compone de los siguientes elementos:
+\begin{enumerate}[noitemsep]
+	\item El código del programa.
+	\item Datos en pila, heap y segmentos.
+	\item Contenido en los registros.
+	\item Tabla de páginas.
+	\item Tabla de ficheros abiertos.
+\end{enumerate}
+Para realizar comunaciones entre distintos procesos es necesario el uso de llamadas al sistema operativo,
+lo cual puede llegar a resultar poco óptimo.
+
+\subsubsection*{Hebras}
+Las hebras, también llamadas \textit{threads} o \textit{procesos ligeros}, son la menor unidad de ejecución
+gestionada por un sistema operativo, además de ser la menor secuencia de instrucciones de un proceso que
+se pueden ejecutar en paralelo. Cada hebra tiene su propia pila, además del contenido de los registros, en
+particular el PC\footnote{Contador de programa.} y el puntero de pila. El resto de componentes pertenecen
+al proceso padre y se comparten entre todas las hebras. Estas características dan lugar a lo siguiente:
+\begin{itemize}[noitemsep]
+	\item Las hebras se crean y destruyen en menor tiempo que los procesos.
+	\item La sincronización, conmutación y comunicación entre hebras es más rápida que entre procesos.
+\end{itemize}
+Ello permite que las hebras puedan tener una menor granularidad.
+\\\\El paralelismo implícito en el código de una aplicación se puede hacer explícito a nivel de procesos,
+de hebras o de instrucciones.
+
+\subsection{Relación entre paralelismo implícito, explícito y arquitecturas paralelas}
+
+Cada uno de los niveles en los que se encuentra el paralelismo implícito en el código se puede relacionar
+tanto con los niveles en los que se puede hacer explícito y las arquitecturas paralelas que aprovechan ese
+paralelismo. En la siguiente tabla se encuentran las relaciones mencionadas.
+
+\begin{center}\begin{tabular}{|l| p{5cm} | p{5.5cm} |}
+	\hline
+	\textbf{Paralelización implícita} & \textbf{Paralelización explícita} & \textbf{Arquitecura paralela} 
+	\\ \hline
+	Nivel de programas & Nivel de procesos & Multicomputador y multiprocesador\\ \hline
+	Nivel de funciones & Nivel de hebras & Arquitecuras del nivel anterior y multihebra \\ \hline
+	Nivel de bucles o bloques & Nivel de instrucciones vectoriales & Arquitecturas del nivel anterior y 
+	SIMD o vectorial \\ \hline
+	Nivel de operaciones & Nivel de instrucciones & ILP \\
+	\hline
+\end{tabular}\end{center}
+
+\subsection{Detección, utilización, implementación y extracción del paralelismo}
+
 \end{document}
