@@ -11,5 +11,11 @@ module Deepspace
       @nHangars = hangars_num
       @nMedals = medals_num
     end
+    def to_s
+      "nSupplies = #{@nSupplies}\n
+      nWeapons = #{@nWeapons}\n
+      nShields = #{@nShields}\n
+      nHangars = #{@nHangars}\n
+      nMedals = #{@nMedals}"
   end
 end

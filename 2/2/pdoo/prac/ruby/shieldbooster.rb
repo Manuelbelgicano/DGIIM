@@ -15,12 +15,16 @@ module Deepspace
     end
 
     def useIt
-      if @uses > 1
+      if @uses > 0
         @uses = @uses - 1
         return @boost
       else
         return 1.0
       end
     end
+    def to_s
+      "name = #{@name}\n
+      boost = #{@boost}\n
+      uses = #{@uses}"
   end
 end

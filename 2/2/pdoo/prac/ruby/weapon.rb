@@ -19,12 +19,15 @@ module Deepspace
     end
 
     def useIt
-      if @uses > 1
+      if @uses > 0
         @uses = @uses - 1
         return power
       else
         return 1.0
       end
     end
+    def to_s
+      "name = #{}\n
+      type = #{}\n
   end
 end
