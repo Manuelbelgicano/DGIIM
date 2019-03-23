@@ -1,4 +1,7 @@
 #encoding:utf-8
+
+require_relative "./lib/WeaponToUI.rb"
+
 module Deepspace
   # Armas de la estación
   class Weapon
@@ -26,9 +29,16 @@ module Deepspace
         return 1.0
       end
     end
+
     def to_s
       "name = #{@name}\n
       type = #{@type}\n
       uses = #{@uses}"
+    end
+
+    def WeaponToUI
+      WeaponToUI.new(self)
+    end
+
   end
 end
