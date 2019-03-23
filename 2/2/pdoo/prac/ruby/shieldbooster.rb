@@ -1,4 +1,7 @@
 #encoding:utf-8
+
+require_relative "./lib/ShieldToUI.rb"
+
 module Deepspace
   # Potenciadores de escudo
   class ShieldBooster
@@ -22,9 +25,16 @@ module Deepspace
         return 1.0
       end
     end
+
     def to_s
       "name = #{@name}\n
       boost = #{@boost}\n
       uses = #{@uses}"
+    end
+
+    def ShieldToUI
+      ShieldToUI.new(self)
+    end
+
   end
 end
