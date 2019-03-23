@@ -27,7 +27,8 @@ module Deepspace
       end
     end
     def to_s
-      "name = #{}\n
-      type = #{}\n
+      "name = #{@name}\n
+      type = #{@type}\n
+      uses = #{@uses}"
   end
 end

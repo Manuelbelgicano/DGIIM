@@ -14,7 +14,7 @@ require_relative 'EnemyStarShip'
 
 module Deepspace
 
-# 2.3.17 - Translatio from Java
+# 2.3.17 - Translation from Java
 # @author Profe
     
 class CardDealer 
