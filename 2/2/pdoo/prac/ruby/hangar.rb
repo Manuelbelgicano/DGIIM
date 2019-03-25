@@ -17,7 +17,12 @@ module Deepspace
     # Constructor por copia
     def self.newCopy(h)
       n_hangar = Hangar.new(h.maxElements)
-      # Arrays???
+      for i in 0..(h.weapons.length-1)
+        n_hangar.addWeapon(h.weapons[i])
+      end
+      for i in 0..(h.shieldBoosters.length-1)
+        n_hangar.addShieldBooster(h.shieldBoosters[i])
+      end
     end
 
     def getUIVersion
@@ -27,23 +32,39 @@ module Deepspace
     def to_s
       "maxElements = #{@maxElements}\n
       weapons = #{@weapons}\n
-      shieldBoosters = #{@shieldBoosters}"# Se hace así la salida de un array???
+      shieldBoosters = #{@shieldBoosters}"
     end
 
-    def spaceAvailable
+    private def spaceAvailable
+      if (@weapons.lenght+@shieldBoosters.length)<@maxElements
+        return true
+      else
+        return false
+      end
     end
 
     def addWeapon(w)
+      if spaceAvailable
+        @weapons << w
+      end
     end
 
     def addShieldBooster(s)
+      if spaceAvailable
+        @shieldBoosters << s
+      end
     end
 
     def removeWeapon(w)
+      ret = @weapons[w]
+      @weapons.delete_at(w)
+      return ret
     end
     
     def removeShieldBooster(s)
+      ret = @shieldBoosters[s]
+      @shieldBoosters.delete_at(s)
+      return ret
     end
-
   end
 end
