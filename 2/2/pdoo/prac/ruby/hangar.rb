@@ -35,6 +35,7 @@ module Deepspace
       shieldBoosters = #{@shieldBoosters}"
     end
 
+    # Comprueba si hay espacio disponible
     private def spaceAvailable
       if (@weapons.lenght+@shieldBoosters.length)<@maxElements
         return true
@@ -43,24 +44,28 @@ module Deepspace
       end
     end
 
+    # Añade un arma
     def addWeapon(w)
       if spaceAvailable
         @weapons << w
       end
     end
 
+    # Añade un potenciador de escudo
     def addShieldBooster(s)
       if spaceAvailable
         @shieldBoosters << s
       end
     end
 
+    # Devuelve el arma de índice 'w' y la elimina del hangar
     def removeWeapon(w)
       ret = @weapons[w]
       @weapons.delete_at(w)
       return ret
     end
     
+    # Devuelve el potenciador de escudo de índice 's' y lo elimina del hangar
     def removeShieldBooster(s)
       ret = @shieldBoosters[s]
       @shieldBoosters.delete_at(s)
