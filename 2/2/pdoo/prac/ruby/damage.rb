@@ -28,6 +28,12 @@ module Deepspace
       DamageToUI.new(self)
     end
     
+    def to_s
+      "nWeapons = #{@nWeapons}\n
+      weapons = #{@weapons}\n
+      nShields = #{@nShields}"
+    end
+
     # Comprueba si el array 'w' contiene armas del tipo 't'
     private def arrayContainsType(w,t)
       w.each_index do |i|
