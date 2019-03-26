@@ -48,14 +48,18 @@ module Deepspace
     def addWeapon(w)
       if spaceAvailable
         @weapons << w
+        return true
       end
+      return false
     end
 
     # Añade un potenciador de escudo
     def addShieldBooster(s)
       if spaceAvailable
         @shieldBoosters << s
+        return true
       end
+      return false
     end
 
     # Devuelve el arma de índice 'w' y la elimina del hangar
