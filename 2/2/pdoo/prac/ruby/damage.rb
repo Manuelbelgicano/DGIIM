@@ -21,7 +21,7 @@ module Deepspace
 
     # Constructor de daño con tipo específico de armas
     def self.newSpecificWeapons(wl,s)
-      Damage.new(0,wl,s)
+      Damage.new(-1,wl,s)
     end
 
     def getUIVersion
@@ -46,12 +46,8 @@ module Deepspace
 
     # Ajusta el objeto al equipo del jugador
     def adjust(w,s)
-      if s.length<@nShields
-        newNShields = s.length
-      else
-        newNShields = @nShields
-      end
-      if @nWeapons==0
+      newNShields = [s.length,@nShields].min
+      if @nWeapons==-1
         newWeapons = Array.new(@weapons)
         newWeapons.each do |type|
           if arrayContainsType(w,type)==-1
@@ -60,11 +56,7 @@ module Deepspace
         end
         return newSpecificWeapons(newWeapons,newNShields)
       elsif @weapons==nil
-        if w.length<@nWeapons
-          newNWeapons = w.length
-        else
-          newNWeapons = @nWeapons
-        end
+        newNWeapons = [w.length.@nWeapons].min
         return newNumericWeapons(newNWeapons,newNShields)
       end
     end
