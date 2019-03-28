@@ -49,9 +49,20 @@ module Deepspace
       newNShields = [s.length,@nShields].min
       if @nWeapons==-1
         newWeapons = Array.new(@weapons)
-        newWeapons.each do |type|
-          if arrayContainsType(w,type)==-1
+        newWeapons.each_with_index do |type,i|
+          if arrayContainsType(w,type)==-1 # No está el tipo de arma
             newWeapons.delete(type)
+          else # Está el tipo de arma
+          	contador = 0
+          	w.each do |weapon|
+          		if weapon.type==type
+          			contador += 1
+          		end
+          	end
+          	total = newWeapons.select {|weapontype| weapontype==type}
+          	if contador<total.length # Hay menos armas de ese tipo
+          		newWeapons.delete_at(i)
+          	end
           end
         end
         return self.class.newSpecificWeapons(newWeapons,newNShields)
