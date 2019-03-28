@@ -26,14 +26,12 @@ module Deepspace
       end
     end
 
-    def to_s
-      "name = #{@name}\n
-      boost = #{@boost}\n
-      uses = #{@uses}"
+    def getUIversion
+      ShieldToUI.new(self)
     end
 
-    def ShieldToUI
-      ShieldToUI.new(self)
+    def to_s
+      getUIversion.to_s
     end
 
   end

@@ -1,11 +1,13 @@
 #encoding:utf-8
 
-require_relative "./lib/EnemyToUI.rb"
+require "./lib/EnemyToUI.rb"
 require_relative "./shotresult.rb"
+require_relative "./damage.rb"
+require_relative "./loot.rb"
 
 module Deepspace
   # Nave enemiga
-  class EnemyStarship
+  class EnemyStarShip
 
     attr_reader :name, :ammoPower, :shieldPower, :loot, :damage
 
@@ -46,11 +48,7 @@ module Deepspace
     end
 
     def to_s
-      "name = #{@name}\n
-      ammoPower = #{@ammoPower}\n
-      shieldPower = #{@shieldPower}\n
-      loot = #{@loot.to_s}\n
-      damage = #{@damage.to_s}"
+      getUIVersion.to_s
     end
   end
 end

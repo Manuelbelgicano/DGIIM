@@ -1,6 +1,8 @@
 #encoding:utf-8
 
-require_relative "./lib/DamageToUI.rb"
+require "./lib/DamageToUI.rb"
+require_relative "./weapontype.rb"
+require_relative "./weapon.rb" # No creo que sea necesario
 
 module Deepspace
   # Daño
@@ -16,22 +18,20 @@ module Deepspace
     
     # Constructor de daño con número genérico de armas
     def self.newNumericWeapons(w,s)
-      Damage.new(w,nil,s)
+      new(w,nil,s)
     end
 
     # Constructor de daño con tipo específico de armas
     def self.newSpecificWeapons(wl,s)
-      Damage.new(-1,wl,s)
+      new(-1,wl,s)
     end
 
-    def getUIVersion
+    def getUIversion
       DamageToUI.new(self)
     end
     
     def to_s
-      "nWeapons = #{@nWeapons}\n
-      weapons = #{@weapons}\n
-      nShields = #{@nShields}"
+      getUIversion.to_s
     end
 
     # Comprueba si el array 'w' contiene armas del tipo 't'
@@ -54,10 +54,10 @@ module Deepspace
             newWeapons.delete(type)
           end
         end
-        return newSpecificWeapons(newWeapons,newNShields)
+        return self.class.newSpecificWeapons(newWeapons,newNShields)
       elsif @weapons==nil
-        newNWeapons = [w.length.@nWeapons].min
-        return newNumericWeapons(newNWeapons,newNShields)
+        newNWeapons = [w.length,@nWeapons].min
+        return self.class.newNumericWeapons(newNWeapons,newNShields)
       end
     end
 
@@ -82,11 +82,19 @@ module Deepspace
 
     # Comprueba si el daño no tiene efecto
     def hasNoEffect
-      if @weapons.lenght==0 and @nWeapons==0 and @nShields==0
-        return true
-      else
-        return false
+      if @nShields==0
+        if @weapons!=nil and @weapons.length==0
+          return true
+        elsif @nWeapons==0
+          return true
+        else
+          return false
+        end
       end
+      return false
     end
+
+    private_class_method :new
+
   end
 end

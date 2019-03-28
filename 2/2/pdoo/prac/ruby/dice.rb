@@ -1,4 +1,7 @@
 #encoding:utf-8
+
+require_relative "./gamecharacter.rb"
+
 module Deepspace
   # Clase dado
   class Dice

@@ -1,4 +1,7 @@
 #encoding:utf-8
+
+require "./lib/LootToUI.rb"
+
 module Deepspace
   # Botín
   class Loot
@@ -11,11 +14,13 @@ module Deepspace
       @nHangars = hangars_num
       @nMedals = medals_num
     end
+
+    def getUIversion
+      LootToUI.new(self)
+    end
+
     def to_s
-      "nSupplies = #{@nSupplies}\n
-      nWeapons = #{@nWeapons}\n
-      nShields = #{@nShields}\n
-      nHangars = #{@nHangars}\n
-      nMedals = #{@nMedals}"
+      getUIVersion.to_s
+    end
   end
 end

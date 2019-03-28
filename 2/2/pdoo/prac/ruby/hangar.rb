@@ -1,6 +1,8 @@
 #encoding:utf-8
 
-require_relative "./lib/HangarToUI.rb"
+require "./lib/HangarToUI.rb"
+require_relative "./weapon.rb"
+require_relative "./shieldbooster.rb"
 
 module Deepspace
   # Hangar
@@ -17,27 +19,26 @@ module Deepspace
     # Constructor por copia
     def self.newCopy(h)
       n_hangar = Hangar.new(h.maxElements)
-      for i in 0..(h.weapons.length-1)
-        n_hangar.addWeapon(h.weapons[i])
+      h.weapons.each do |weapon|
+        n_hangar.addWeapon(weapon)
       end
-      for i in 0..(h.shieldBoosters.length-1)
-        n_hangar.addShieldBooster(h.shieldBoosters[i])
+      h.shieldBoosters.each do |shield|
+        n_hangar.addShieldBooster(shield)
       end
+      return n_hangar
     end
 
-    def getUIVersion
+    def getUIversion
       HangarToUI.new(self)
     end
 
     def to_s
-      "maxElements = #{@maxElements}\n
-      weapons = #{@weapons}\n
-      shieldBoosters = #{@shieldBoosters}"
+      getUIversion.to_s
     end
 
     # Comprueba si hay espacio disponible
     private def spaceAvailable
-      if (@weapons.lenght+@shieldBoosters.length)<@maxElements
+      if (@weapons.length+@shieldBoosters.length)<@maxElements
         return true
       else
         return false

@@ -2,7 +2,7 @@
 
 require_relative "./damage.rb"
 require_relative "./hangar.rb"
-require_relative "./lib/SpaceStationToUI.rb"
+require "./lib/SpaceStationToUI.rb"
 require_relative "./loot.rb"
 require_relative "./shieldbooster.rb"
 require_relative "./suppliespackage.rb"
@@ -16,14 +16,14 @@ module Deepspace
     # Potencia de escudo perdido por cada unidad de potencia de disparo
     @@SHIELDLOSSPERUNITSHOT = 0.1
     
-    attr_reader :name, :ammoPower, :fuelUnits, :shieldPower, :medals, :weapons, :shieldBoosters, :pendingDamage, :hangar
+    attr_reader :name, :ammoPower, :fuelUnits, :shieldPower, :nMedals, :weapons, :shieldBoosters, :pendingDamage, :hangar
 
     def initialize(n,supplies)
       @name = n
       @ammoPower = supplies.ammoPower
       @fuelUnits = [@@MAXFUEL,supplies.fuelUnits].min
       @shieldPower = supplies.shieldPower
-      @medals = 0
+      @nMedals = 0
       @weapons = Array.new
       @shieldBoosters = Array.new
       @pendingDamage = nil
@@ -48,7 +48,7 @@ module Deepspace
     def cleanUpMountedUnits()
       @weapons.each_with_index do |weapon,i|
         if weapon.uses==0
-          @weapon.delete_at(i)
+          @weapons.delete_at(i)
         end
       end
       @shieldBoosters.each_with_index do |shield,i|
@@ -161,8 +161,7 @@ module Deepspace
 
     # Ajusta el  daño a la nave y lo guarda
     def setPendingDamage(d)
-      @pendingDamage = d
-      d.adjust(@weapons,@shieldBoosters)
+      @pendingDamage = d.adjust(@weapons,@shieldBoosters)
     end
 
     # Comprueba si el estado de la nave es válido
@@ -179,15 +178,7 @@ module Deepspace
     end
 
     def to_s
-      "name = #{@name}\n
-      ammoPower = #{@ammoPower}\n
-      fuelUnits = #{@fuelUnits}\n
-      shieldPower = #{@shieldPower}\n
-      medals = #{@medals}
-      weapons = #{@weapons.each {|weapon| weapon.to_s + " "}}\n
-      shieldBoosters = #{@shieldBoosters.each {|shield| shield.to_s + " "}}\n
-      pendingDamage = #{@pendingDamage.to_s}\n
-      hangar = #{@hangar.to_s}"
+      getUIVersion.to_s
     end
   end
 end

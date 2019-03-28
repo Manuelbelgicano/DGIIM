@@ -14,8 +14,7 @@ module Deepspace
       new(supplies_package.ammoPower,supplies_package.fuelUnits,supplies_package.shieldPower)
     end
     def to_s
-      "ammoPower = #{@ammoPower}\n
-      fuelUnits = #{@fuelUnits}\n
-      shieldPower = #{@shieldPower}"
+      "ammoPower = #{@ammoPower}\nfuelUnits = #{@fuelUnits}\nshieldPower = #{@shieldPower}"
+    end
   end
 end
