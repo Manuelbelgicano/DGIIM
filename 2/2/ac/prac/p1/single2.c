@@ -18,10 +18,13 @@ int main()  {
 	#pragma omp for
 	for (i=0; i<n; i++)
 		 b[i] = a;
-	}
-	printf("Depués de la región parallel:\n");
+	#pragma omp master
+	{
+	printf("Master ejecutado por el thread %d:\n",omp_get_thread_num());
 	for (i=0; i<n; i++)   
 		printf("b[%d] = %d\t",i,b[i]);
 	printf("\n");
+	}
+	}
 	return 0;
 }
