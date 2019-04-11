@@ -5,8 +5,10 @@ require_relative "./hangar.rb"
 require "./lib/SpaceStationToUI.rb"
 require_relative "./loot.rb"
 require_relative "./shieldbooster.rb"
+require_relative "./shotresult.rb"
 require_relative "./suppliespackage.rb"
 require_relative "./weapon.rb"
+require_relative "./lib/CardDealer.rb"
 
 module Deepspace
   # Estación espacial
@@ -63,12 +65,26 @@ module Deepspace
       @hangar = nil
     end
 
-    # Implementación en la práctica 3
+    # Elimina un escudo de la nave
     def discardShieldBooster(i)
+      if i>=0 and i<@shieldBoosters.length
+        if @pendingDamage!=nil
+          @pendingDamage.discardShieldBooster
+        end
+        @shieldBoosters.delete_at(i)
+      end
     end
     
-    # Implementación en la práctica 3
+    # Elimina un arma de la nave
     def discardWeapon(i)
+      if i>=0 and i<@weapons.length
+        if @pendingDamage!=nil
+          w = @weapons[i]
+          @pendingDamage.discardWeapon(w)
+          cleanPendingDamage
+        end
+        @weapons.delete_at(i)
+      end
     end
 
     # Elimina el potenciador de escudo con índice 'i' del hangar
@@ -85,8 +101,13 @@ module Deepspace
       end
     end
 
-    # Implementación en la práctica 3
+    # Calcula la potencia del disparo
     def fire
+      factor = 1.0
+      @weapons.each do |weapon|
+        factor = factor*weapon.useIt
+      end
+      @ammoPower*factor
     end
 
     # Devuelve la velocidad de la estación como fracción de combustible
@@ -115,8 +136,13 @@ module Deepspace
       end
     end
     
-    # Implementación en la práctica 3
+    # Calcula el poder de escudo de la nave
     def protection
+      factor = 1.0
+      @shieldBoosters.each do |shield|
+        factor = factor*shield.useIt
+      end
+      factor*@shieldPower
     end
 
     # Recibe un hangar
@@ -144,8 +170,16 @@ module Deepspace
       end
     end
     
-    # Implementación en la práctica 3
+    # Determina si la nave aguanta un disparo
     def recieveShot(shot)
+      myProtection = protection
+      if myProtection>=shot
+        @shieldPower = [0.0,@shieldPower - shot*@@SHIELDLOSSPERUNITSHOT].max
+        return ShotResult::RESIST
+      else
+        @shieldPower = 0.0
+        return ShotResult::DONOTRESIST
+      end
     end
 
     # La nave recibe suministros
@@ -157,6 +191,7 @@ module Deepspace
 
     # Implementación en la práctica 3
     def setLoot(loot)
+      dealer = CardDealer.instance
     end
 
     # Ajusta el  daño a la nave y lo guarda
