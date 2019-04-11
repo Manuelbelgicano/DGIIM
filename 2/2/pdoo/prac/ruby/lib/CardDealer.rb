@@ -75,6 +75,8 @@ class CardDealer
         @suppliesPackages.add(SuppliesPackage.new(3,50,3))  
         @suppliesPackages.add(SuppliesPackage.new(40,100,40))
         @suppliesPackages.add(SuppliesPackage.new(100,100,100))
+        # Carta extra (Rellena completamente el fuel)
+        @SuppliesPackage.add(SuppliesPackage.new(0,100,0))
     end
     
     def createWeapons() 
@@ -96,14 +98,15 @@ class CardDealer
        @weapons.add(Weapon.new("Misil ACME",WeaponType::MISSILE,1))
        @weapons.add(Weapon.new("Misil normal",WeaponType::MISSILE,2))
        @weapons.add(Weapon.new("Misil normal",WeaponType::MISSILE,2))
-       @weapons.add(Weapon.new("Misil mejorado",WeaponType::MISSILE,2))     
+       @weapons.add(Weapon.new("Misil mejorado",WeaponType::MISSILE,2))  
        
        @weapons.add(Weapon.new("Cañón definitivo",WeaponType::PLASMA,100))
-       @weapons.add(Weapon.new("Cañón ACME",WeaponType::PLASMA,1)) 
-       @weapons.add(Weapon.new("Cañón ACME",WeaponType::PLASMA,1)) 
-       @weapons.add(Weapon.new("Cañón ACME",WeaponType::PLASMA,1)) 
-       @weapons.add(Weapon.new("Cañón mejorado",WeaponType::PLASMA,2))       
-       
+       @weapons.add(Weapon.new("Cañón ACME",WeaponType::PLASMA,1))
+       @weapons.add(Weapon.new("Cañón ACME",WeaponType::PLASMA,1))
+       @weapons.add(Weapon.new("Cañón ACME",WeaponType::PLASMA,1))
+       @weapons.add(Weapon.new("Cañón mejorado",WeaponType::PLASMA,2))
+       # Carta nueva (Plasma que dura 5 disparos)
+       @weapons.add(Weapon.new("Cañón de carga rápida",WeaponType::PLASMA,5))
     end
     
     def createShieldBoosters() 
@@ -118,6 +121,8 @@ class CardDealer
        @shieldBoosters.add(ShieldBooster.new("Escudo ACME",1.5,2))
        @shieldBoosters.add(ShieldBooster.new("Escudo normal",3.0,2))
        @shieldBoosters.add(ShieldBooster.new("Escudo normal",4.0,2))
+       # Carta nueva
+       @shieldBoosters.add(ShieldBooster.new("Escudo reforzado de larga duración",5.0,5))
     end
                                
     def createHangars() 
@@ -130,6 +135,8 @@ class CardDealer
         @hangars.add(Hangar.new(2))
         @hangars.add(Hangar.new(1))
         @hangars.add(Hangar.new(1))
+        # Carta nueva
+        @hangars.add(Hangar.new(6))
     end
     
     def createEnemies() 
@@ -180,7 +187,9 @@ class CardDealer
         @enemies.add(EnemyStarShip.new("Enemigo difícil 0",200,100,goodLoot,hardSpecificDamage0));          
         @enemies.add(EnemyStarShip.new("Enemigo difícil 1",100,200,goodLoot,hardSpecificDamage0));   
         
-        @enemies.add(EnemyStarShip.new("Enemigo imposible",500,500,goodLoot,hardSpecificDamage0));              
+        @enemies.add(EnemyStarShip.new("Enemigo imposible",500,500,goodLoot,hardSpecificDamage0));
+        # Carta nueva
+        @enemies.add(EnemyStarShip.new("Enemigo sospechoso",0,100,goodLoot,lowDamage0))
     end
 end # class
 
