@@ -189,9 +189,36 @@ module Deepspace
       @shieldPower += s.shieldPower
     end
 
-    # Implementación en la práctica 3
+    # Recepción de un botín
     def setLoot(loot)
       dealer = CardDealer.instance
+
+      h = loot.nHangars
+      if h>0
+        hangar = dealer.nextHangar
+        recieveHangar(hangar)
+      end
+
+      elements = loot.nSupplies
+      for i in 0...elements 
+        sup = dealer.nextSuppliesPackage
+        recieveSupplies(sup)
+      end
+
+      elements = loot.nWeapons
+      for i in 0...elements
+        weap = dealer.nextWeapon
+        recieveWeapon(weap)
+      end
+
+      elements = loot.nShields
+      for i in 0...elements
+        sh = dealer.nextShieldBooster
+        recieveShieldBooster(sh)
+      end
+
+      medals = loot.nMedals
+      @nMedals += medals
     end
 
     # Ajusta el  daño a la nave y lo guarda
