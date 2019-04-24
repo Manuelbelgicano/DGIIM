@@ -19,18 +19,65 @@ module Deepspace
     def initialize
       @gameState = GameStateController.new
       @turns = 0
+      @currentStationIndex = 0
       @dice = Dice.new
       @currentStation = nil
       @currentEnemy = nil
       @spaceStations = Array.new
     end
 
-    # Implementación en la práctica 3
+    # Se realiza un combate entre una estación espacial y un enemigo
     def combatGo(station,enemy)
+      ch = @dice.firstShot()
+      # Empieza el enemigo
+      if ch==GameCharacter::ENEMYSTARSHIP
+        fire = enemy.fire
+        result = station.recieveShot(fire)
+        
+        if result==ShotResult::RESIST
+          fire = station.fire
+          result = enemy.recieveShot(fire)
+          enemyWins = (result==ShotResult::RESIST)
+        else
+          enemyWins = true
+        end
+      # Empieza la nave
+      else
+        fire = station.fire
+        result = enemy.recieveShot(fire)
+        enemyWins = (result==ShotResult::RESIST)
+      end
+
+      # Gana el enemigo
+      if enemyWins
+        s = station.getSpeed
+        moves = @dice.spaceStationMoves(s)
+        if !moves
+          damage = enemy.damage
+          station.setPendingDamage(damage)
+          return CombatResult::ENEMYWINS
+        else
+          station.move
+          return CombatResult::SPACESTATIONESCAPES
+        end
+      # No gana el enemigo
+      else
+        aLoot = enemy.loot
+        station.setLoot(aLoot)
+        return CombatResult::SPACESTATIONWINS
+      end
     end
 
-    # Implementación en la práctica 3
+    # Realiza el combate de un turno
     def combat
+      state = @gameState.state
+      if state==GameState::BEFORECOMBAT or state==GameState::INIT
+        combatResult = combat(@currentStation,@currentEnemy)
+        @gameState.next(@turns,@spaceStations.length)
+      else
+        combatResult = CombatResult::NOCOMBAT
+      end
+      return combatResult
     end
     
     # La nave del turno descarta el hangar
@@ -80,8 +127,28 @@ module Deepspace
       return false
     end
 
-    # Implementación en la práctica 3
+    # Comienza la partida
     def init(names)
+      state = @gameState.state
+      if state==GameState::CANNOTPLAY
+        dealer = CardDealer.instance
+        names.each do |name|
+          supplies = dealer.nextSuppliesPackage
+          station = SpaceStation.new(name,supplies)
+          @spaceStations << station
+          
+          nh = @dice.initWithNHangars
+          nw = @dice.initWithNWeapons
+          ns = @dice.initWithNShields
+          lo = Loot.new(0,nw,ns,nh,0)
+          station.setLoot(lo)
+        end
+
+        @currentStationIndex = @dice.whoStarts(@spaceStations.length)
+        @currentStation = @spaceStations[@currentStationIndex]
+        @currentEnemy = dealer.nextEnemy
+        @gameState.next(@turns,@spaceStations.length)
+      end
     end
 
     # Monta un escudo con índice 'i' en la nave
@@ -98,8 +165,24 @@ module Deepspace
       end
     end
 
-    # Implementación en la práctica 3
+    # Pasa el turno si se puede
     def nextTurn
+      state = @gameState.state
+      if state==GameState::AFTERCOMBAT
+        stationState = @currentStation.validState
+        if stationState
+          @currentStationIndex = (@currentStationIndex+1) % @spaceStations.length
+          @turns += 1
+          @currentStation = @spaceStations[@currentStationIndex]
+          @currentStation.cleanUpMountedItems
+          dealer = CardDealer.instance
+          @currentEnemy = dealer.nextEnemy
+          @gameState.next(@turns,@spaceStations.length)
+          return true
+        end
+        return false
+      end
+      return false
     end
 
     def to_s
