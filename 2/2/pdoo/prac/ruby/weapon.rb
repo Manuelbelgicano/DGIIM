@@ -5,7 +5,7 @@ require "./lib/WeaponToUI.rb"
 module Deepspace
   # Armas de la estación
   class Weapon
-    attr_reader :type, :uses
+    attr_reader :name, :type, :uses
 
     def initialize(weapon_name,weapon_type,weapon_uses)
       @name = weapon_name

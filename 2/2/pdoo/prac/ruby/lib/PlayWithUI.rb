@@ -1,5 +1,5 @@
 
-require_relative 'GameUniverse'
+require_relative "../gameuniverse.rb"
 require_relative 'TextMainView'
 require_relative 'Controller'
 

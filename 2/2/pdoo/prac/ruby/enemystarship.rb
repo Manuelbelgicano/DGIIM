@@ -21,7 +21,7 @@ module Deepspace
 
     # Constructor por copia
     def self.newCopy(e)
-      EnemyStarship.new(e.name,e.ammoPower,e.shieldPower,e.loot,e.damage)
+      EnemyStarShip.new(e.name,e.ammoPower,e.shieldPower,e.loot,e.damage)
     end
 
     # Análogo al consultor del atributo 'ammoPower'

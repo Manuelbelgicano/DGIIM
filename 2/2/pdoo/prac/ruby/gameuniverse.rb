@@ -14,8 +14,6 @@ module Deepspace
     # Puntos necesarios para ganar
     @@WIN = 10
     
-    attr_reader :gameState
-
     def initialize
       @gameState = GameStateController.new
       @turns = 0
@@ -24,6 +22,11 @@ module Deepspace
       @currentStation = nil
       @currentEnemy = nil
       @spaceStations = Array.new
+    end
+
+    # Consultor del estado
+    def state
+      @gameState
     end
 
     # Se realiza un combate entre una estación espacial y un enemigo
@@ -115,8 +118,8 @@ module Deepspace
       end
     end
 
-    def getUIVersion
-      GameUniverseToUI.new(self)
+    def getUIversion
+      GameUniverseToUI.new(@currentStation,@currentEnemy)
     end
 
     # Comprueba si la nave del turno ha ganado la partida

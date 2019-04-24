@@ -2,15 +2,15 @@
 
 require 'singleton'
 
-require_relative 'CardDeck'
-require_relative 'SuppliesPackage'
-require_relative 'Weapon'
-require_relative 'WeaponType'
-require_relative 'ShieldBooster'
-require_relative 'Hangar'
-require_relative 'Loot'
-require_relative 'Damage'
-require_relative 'EnemyStarShip'
+require_relative "CardDeck.rb"
+require_relative "../suppliespackage.rb"
+require_relative "../weapon.rb"
+require_relative "../weapontype.rb"
+require_relative "../shieldbooster.rb"
+require_relative "../hangar.rb"
+require_relative "../loot.rb"
+require_relative "../damage.rb"
+require_relative "../enemystarship.rb"
 
 module Deepspace
 
@@ -76,7 +76,7 @@ class CardDealer
         @suppliesPackages.add(SuppliesPackage.new(40,100,40))
         @suppliesPackages.add(SuppliesPackage.new(100,100,100))
         # Carta extra (Rellena completamente el fuel)
-        @SuppliesPackage.add(SuppliesPackage.new(0,100,0))
+        @suppliesPackages.add(SuppliesPackage.new(0,100,0))
     end
     
     def createWeapons() 

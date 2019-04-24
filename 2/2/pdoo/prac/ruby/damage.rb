@@ -26,6 +26,11 @@ module Deepspace
       new(-1,wl,s)
     end
 
+    # Constructor por copia
+    def self.newCopy(d)
+      new(d.nWeapons,d.weapons,d.nShields)
+    end
+
     def getUIversion
       DamageToUI.new(self)
     end
@@ -75,7 +80,12 @@ module Deepspace
     # Elimina un arma del daño
     def discardWeapon(w)
       if @weapons!=nil
-        index = arrayContainsType(@weapons,w.type)
+        index = -1
+        @weapons.each_index do |i|
+          if @weapons[i]==w.type
+            index = i
+          end
+        end
         if index!=-1
           @weapons.delete_at(index)
         end
