@@ -100,4 +100,14 @@ class Damage {
     public int getNWeapons() { return nWeapons; }
     
     public ArrayList<WeaponType> getWeapons() { return weapons; }
+    
+    @Override
+    public String toString() {
+        String aux = "Número de escudos: "+nShields;
+        aux += "\nNúmero de armas "+nWeapons;
+        aux += "\nTipos de armas:";
+        for (WeaponType t: weapons)
+            aux += " "+t+",";
+        return aux;
+    }
 }

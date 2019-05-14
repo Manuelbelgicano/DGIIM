@@ -51,4 +51,14 @@ class EnemyStarShip {
         else
             return ShotResult.RESIST;
     }
+    
+    @Override
+    public String toString() {
+        String aux = "Nombre del enemigo: "+name;
+        aux += "\nPoder de disparo: "+ammoPower;
+        aux += "\nPoder de escudo: "+shieldPower;
+        aux += "\nDaño de la nave:\n"+damage.toString();
+        aux += "\nBotín de la nave:\n"+loot.toString();
+        return aux;
+    }
 }
