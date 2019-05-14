@@ -47,7 +47,7 @@ module Deepspace
     end
 
     # Elimina las armas y potenciadores de escudos con 0 usos
-    def cleanUpMountedUnits()
+    def cleanUpMountedItems
       @weapons.each_with_index do |weapon,i|
         if weapon.uses==0
           @weapons.delete_at(i)
@@ -117,14 +117,14 @@ module Deepspace
 
     # Equipa el escudo de índice 'i' del hangar a la estación
     def mountShieldBooster(i)
-      if @hangar!=nil
+      if @hangar!=nil and i>=0
         @shieldBoosters << @hangar.removeShieldBooster(i)
       end
     end
 
     # Equipa el arma de índice 'i' del hangar a la estación
     def mountWeapon(i)
-      if @hangar!=nil
+      if @hangar!=nil and i>=0
         @weapons << @hangar.removeWeapon(i)
       end
     end

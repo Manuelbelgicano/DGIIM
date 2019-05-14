@@ -56,16 +56,11 @@ module Deepspace
         newWeapons = Array.new(@weapons)
         newWeapons.each_with_index do |type,i|
           if arrayContainsType(w,type)==-1 # No está el tipo de arma
-            newWeapons.delete(type)
+            newWeapons.delete_at(i)
           else # Está el tipo de arma
-          	contador = 0
-          	w.each do |weapon|
-          		if weapon.type==type
-          			contador += 1
-          		end
-          	end
-          	total = newWeapons.select {|weapontype| weapontype==type}
-          	if contador<total.length # Hay menos armas de ese tipo
+		total_w = w.select {|weapon| weapon.type==type}
+          	total_d = newWeapons.select {|weapontype| weapontype==type}
+          	if total_w.length<total_d.length # Hay menos armas de ese tipo
           		newWeapons.delete_at(i)
           	end
           end

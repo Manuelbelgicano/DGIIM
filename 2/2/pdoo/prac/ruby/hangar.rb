@@ -65,15 +65,15 @@ module Deepspace
 
     # Devuelve el arma de índice 'w' y la elimina del hangar
     def removeWeapon(w)
-      ret = @weapons[w]
-      @weapons.delete_at(w)
+        ret = Weapon.newCopy(@weapons[w])
+        @weapons.delete_at(w)
       return ret
-    end
+     end
     
     # Devuelve el potenciador de escudo de índice 's' y lo elimina del hangar
     def removeShieldBooster(s)
-      ret = @shieldBoosters[s]
-      @shieldBoosters.delete_at(s)
+        ret = ShieldBooster.newCopy(@shieldBoosters[s])
+        @shieldBoosters.delete_at(s)
       return ret
     end
   end

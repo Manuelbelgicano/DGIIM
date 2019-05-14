@@ -26,7 +26,7 @@ module Deepspace
 
     # Consultor del estado
     def state
-      @gameState
+      @gameState.state
     end
 
     # Se realiza un combate entre una estación espacial y un enemigo
@@ -67,7 +67,7 @@ module Deepspace
       else
         aLoot = enemy.loot
         station.setLoot(aLoot)
-        return CombatResult::SPACESTATIONWINS
+        return CombatResult::STATIONWINS
       end
     end
 
@@ -75,7 +75,7 @@ module Deepspace
     def combat
       state = @gameState.state
       if state==GameState::BEFORECOMBAT or state==GameState::INIT
-        combatResult = combat(@currentStation,@currentEnemy)
+        combatResult = combatGo(@currentStation,@currentEnemy)
         @gameState.next(@turns,@spaceStations.length)
       else
         combatResult = CombatResult::NOCOMBAT
@@ -189,7 +189,7 @@ module Deepspace
     end
 
     def to_s
-      getUIVersion.to_s
+      getUIversion.to_s
     end
   end
 end

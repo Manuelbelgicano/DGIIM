@@ -1,176 +1,31 @@
 \documentclass[11pt,twoside,titlepage,a4paper]{article}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%			  MATEMÁTICAS				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath} % Matemáticas
 \usepackage{amsfonts} % Letras caligráficas para matemáticas
 \usepackage{mathtools} % Matemáticas extra
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%			   COLORINES				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{xcolor}
-\definecolor{rojooscuro}{HTML}{8A0808}
-\definecolor{burdeos}{HTML}{610B0B}
-\definecolor{rojomorado}{HTML}{B40431}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%			   TIPOGRAFÍA				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{CrimsonPro}
 \usepackage[T1]{fontenc}
 % The font package uses mweights.sty which has som issues with the
 % \normalfont command. The following two lines fixes this issue.
 \let\oldnormalfont\normalfont
 \def\normalfont{\oldnormalfont\mdseries}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				MÁRGENES				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[a4paper]{geometry}
+\usepackage{lscape}
 \geometry{
 	left=2.5cm, % Margen izquierdo
 	right=2.5cm, % Margen derecho
 	bottom=2.5cm % Margen inferior
 }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				  CÓDIGO				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{listingsutf8}
-\lstset{
-	inputencoding=utf8/latin1, % Codificación
-	xleftmargin=1em, % Margen extra a la izquierda
-	breaklines=true, % Romper líneas largas
-	language=C++, % Lenguaje del código
-	frame=single, % Enmarcado
-	numbers=left, % Números de línea
-	numbersep=8pt, % Separación de los números de línea
-	tabsize=4, % Tamaño de los tabs
-	frame=leftline, % Posición del enmarcado
-	framerule=2pt, % Grosor del enmarcado
-	showstringspaces=false, % Mostrar los espacios en las cadenas de caracteres
-	basicstyle=\footnotesize\ttfamily, % Estilo del código
-	keywordstyle=\color{burdeos}, % Estilo de las palabras reservadas
-	numberstyle=\normalfont, % Estilo de los números de línea
-	rulecolor=\color{rojooscuro}, % Estilo del enmarcado
-	commentstyle=\color{red}, % Estilo de los comentarios
-	stringstyle=\color{rojomorado} % Estilo de las cadenas de caracteres
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  			  LISTAS/TABLAS				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{enumitem} % Opciones de personalización de listas
 \renewcommand{\arraystretch}{1.3} %Cambiar el tamaño entre líneas de una tabla
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%		COMANDOS PERSONALIZADOS 		%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\autores}{ % Autores del documento
-	Susana Horia \\
-	Aquiles Brinco
-}
-\newcommand{\institucion}{ % Insitución
-	Asociación de asociados
-}
-\newcommand{\infoextra}{ % Año o cualquier otra información para el título
-	Año de nuestro señor 1066
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%		ENCABEZADO/PIE DE PAGINA		%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{fancyhdr}
-\setlength{\headheight}{14pt}
-\pagestyle{fancy}
-\fancyhf{}
-% Para que aparezca el título de la sección y no el número 
-\renewcommand{\sectionmark}[1]{%
-\markboth{#1}{}}
-% Encabezado
-\fancyhead[LE,RO]{\color{burdeos}{\leftmark}} % A la izquierda en pares, derecha en impares
-\fancyhead[RE,LO]{\color{burdeos}{\institucion}} % A la derecha en pares, izquierda en impares
-% Pie de página
-\fancyfoot[LE,RO]{\Large\textbf{\thepage}} % A la izquierda en pares, derecha en impares
-\renewcommand{\headrulewidth}{0.5pt} % Grosor de la línea
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%			   	TÍTULOS					%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{titlesec}
-\titleformat{\section} % Estilo de las secciones
-{\color{rojooscuro}\Huge\bfseries}
-{\color{rojooscuro}\thesection}{1em}{}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%		   	  MISCELÁNEO				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{blindtext} % Texto de relleno (Se puede eliminar)
-\usepackage{pagecolor} % Colorear las portadas
-\renewcommand{\contentsname}{Índice} % Cambiar el título del índice
 \setlength\parindent{0pt} % Tamaño de la sangría
 
-\begin{document}
+\begin{document}\begin{landscape}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				 PORTADA 				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{titlepage}
-	\newpagecolor{rojooscuro} % Color de la portada
-	\parbox[t]{\textwidth}{
-		\raggedright
-		\color{white}{\LARGE{\textbf{\institucion}}} \\
-		\textit{\infoextra}
-	}
-	\vfill
-	\parbox[c]{\textwidth}{
-		\color{white}{
-			\fontsize{70pt}{70pt}{\textbf{Un título bonito}} \\
-			\bigskip \\
-			\fontsize{50pt}{50pt}{\textbf{Subtítulo especial}}
-		}
-	}
-	\vfill
-	\parbox[t]{\textwidth}{
-		\raggedright
-		\color{white}{\Large{\autores}} \\
-	}
-\end{titlepage}
-\restorepagecolor
+\section*{Cláusulas}
+\begin{center}\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{TIPO} & \textbf{Cláusula} & \texttt{parallel} & \texttt{DO/for} & \texttt{sections} & \texttt{single} & \texttt{parallel DO/for} & \texttt{parallel sections} \\ \hline  
+\end{tabular}\end{center}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				 ÍNDICE 				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\tableofcontents
-\clearpage
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%				DOCUMENTO				%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Un importante apartado}
-\blindtext
-
-\subsection{Un magnífico subapartado}
-\blindtext
-\\
-
-Este programa soluciona el problema:
-\begin{lstlisting}
-bool solucion() {
-	int a, b, c;
-	string problema = "Este es mi problema";
-	if (resolver(problema,a,b,c)) // La funcion es muy importante
-		return true;
-	else
-		return false;
-}
-\end{lstlisting}
-Estos puntos son imprescindibles:
-\begin{itemize}[label=\textcolor{rojooscuro}{\textbullet}]
-	\item Soy de color {\color{burdeos}burdeos}.
-	\item Yo soy {\color{rojomorado}una mezcla entre rojo y morado}.
-\end{itemize}
-\blindtext
-
-\end{document}
+\end{landscape}\end{document}
