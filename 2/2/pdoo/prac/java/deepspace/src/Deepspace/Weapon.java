@@ -6,7 +6,7 @@ package Deepspace;
 /**
  * @brief Armas de las que dispone una estación
  */
-class Weapon implements Copyable <Weapon> {
+class Weapon implements Copyable <Weapon>, CombatElement {
     private String name;
     private WeaponType type;
     private int uses;
@@ -22,8 +22,10 @@ class Weapon implements Copyable <Weapon> {
         uses = w.uses;
     }
     public WeaponType getType() {return type;}
+    @Override
     public int getUses() {return uses;}
     public float power() {return type.getPower();}
+    @Override
     public float useIt() {
         if (uses>0) {
             uses = uses - 1;
@@ -44,6 +46,6 @@ class Weapon implements Copyable <Weapon> {
 
     @Override
     public Weapon copy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Weapon(this);
     }
 }

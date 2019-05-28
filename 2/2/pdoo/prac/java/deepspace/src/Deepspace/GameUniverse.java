@@ -18,11 +18,13 @@ public class GameUniverse {
     private Dice dice;
     private int currentStationIndex;
     private int turns;
+    private boolean hasSpaceCity;
     
     public GameUniverse() {
         gameState = new GameStateController();
         dice = new Dice();
         turns = 0;
+        hasSpaceCity = false;
     }
     
     CombatResult combat(SpaceStation station,EnemyStarShip enemy) {
@@ -47,7 +49,7 @@ public class GameUniverse {
             result = enemy.recieveShot(fire);
             enemy_wins = (result==ShotResult.RESIST);
         }
-        
+               
         if (enemy_wins) {
             float s = station.getSpeed();
             boolean moves = dice.spaceStationMoves(s);
@@ -61,7 +63,14 @@ public class GameUniverse {
             }
         } else {
             Loot aLoot = enemy.getLoot();
-            station.setLoot(aLoot);
+            Transformation transformation = station.setLoot(aLoot);
+            if (transformation==Transformation.GETEFFICIENT) {
+                makeStationEfficient();
+                return CombatResult.STATIONWINSANDCONVERTS;
+            } else if (transformation==Transformation.SPACECITY) {
+                createSpaceCity();
+                return CombatResult.STATIONWINSANDCONVERTS;
+            } else
             return CombatResult.STATIONWINS;
         }
     }
@@ -169,5 +178,23 @@ public class GameUniverse {
         String aux = "Estación espacial actual:\n"+currentStation.toString();
         aux += "\nEnemigo actual:\n"+currentEnemy.toString();
         return aux;
+    }
+    
+    public void createSpaceCity() {
+        if (!hasSpaceCity) {
+            ArrayList<SpaceStation> collaborators = new ArrayList<>();
+            for (SpaceStation s: spaceStations)
+                if (s!=currentStation)
+                    collaborators.add(s);
+            currentStation = new SpaceCity(currentStation,collaborators);
+            hasSpaceCity = true;
+        }
+    }
+    
+    public void makeStationEfficient() {
+        if (dice.extraEfficiency())
+            currentStation = new BetaPowerEfficientSpaceStation(currentStation);
+        else
+            currentStation = new PowerEfficientSpaceStation(currentStation);
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * @brief Clase estación espacial
  */
-class SpaceStation {
+public class SpaceStation implements SpaceFighter {
     private final static int MAXFUEL = 100;
     private final static float SHIELDLOSSPERUNITSHOT = 0.1f;
     
@@ -27,8 +27,17 @@ class SpaceStation {
         pendingDamage = null;
         name = n;
         ammoPower = supplies.getAmmoPower();
-        shieldPower = supplies.getFuelUnits();
+        shieldPower = supplies.getShieldPower();
         assignFuelValue(supplies.getFuelUnits());
+    }
+    
+    SpaceStation(SpaceStation station) {
+        hangar = station.hangar;
+        pendingDamage = station.pendingDamage;
+        name = station.name;
+        ammoPower = station.ammoPower;
+        shieldPower = station.shieldPower;
+        assignFuelValue(station.fuelUnits);
     }
     
     private void assignFuelValue(float f) {
@@ -84,6 +93,7 @@ class SpaceStation {
             hangar.removeWeapon(i);
     }
     
+    @Override
     public float fire() {
         float factor = 1.0f;
         for (Weapon w: weapons)
@@ -133,6 +143,7 @@ class SpaceStation {
     
     public void move() { fuelUnits = ((fuelUnits-getSpeed())<0)?0:(fuelUnits-getSpeed()); }
     
+    @Override
     public float protection() {
         float factor = 1.0f;
         for (ShieldBooster s: shieldBoosters)
@@ -152,6 +163,7 @@ class SpaceStation {
             return false;
     }
     
+    @Override
     public ShotResult recieveShot(float shot) {
         float my_protection = protection();
         if (my_protection>=shot) {
@@ -176,7 +188,7 @@ class SpaceStation {
             return false;
     }
     
-    public void setLoot(Loot loot) {
+    public Transformation setLoot(Loot loot) {
         CardDealer dealer = CardDealer.getInstance();
         
         int h = loot.getNHangars();
@@ -205,6 +217,13 @@ class SpaceStation {
         
         int medals = loot.getNMedals();
         nMedals += medals;
+        
+        if (loot.getEfficient())
+            return Transformation.GETEFFICIENT;
+        else if(loot.spaceCity())
+            return Transformation.SPACECITY;
+        else
+            return Transformation.NOTRANSFORM;
     }
     
     public void setPendingDamage(Damage d) { pendingDamage = d.adjust(weapons, shieldBoosters); }

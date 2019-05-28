@@ -55,7 +55,7 @@ module Deepspace
         result = enemy.recieveShot(fire)
         enemyWins = (result==ShotResult::RESIST)
       end
-
+      
       # Gana el enemigo
       if enemyWins
         s = station.getSpeed

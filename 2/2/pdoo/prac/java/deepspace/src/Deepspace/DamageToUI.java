@@ -5,51 +5,22 @@
  */
 package Deepspace;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Profe
  */
-public class DamageToUI {
-    private int nWeapons;
-    private ArrayList<WeaponType> weapons;
+public abstract class DamageToUI {
     private int nShields;
 
     DamageToUI(Damage d) {
-        nWeapons=d.getNWeapons();
         nShields=d.getNShields();
-        ArrayList<WeaponType> tmp=d.getWeapons();
-        if (tmp!=null) {
-            weapons=new ArrayList<WeaponType>(tmp);
-        }
-        else
-            weapons=null;
-    }
-    
-    
-
-    public int getNWeapons() {
-        return nWeapons;
-    }
-
-    public ArrayList<WeaponType> getWeapons() {
-        return weapons;
     }
 
     public int getNShields() {
         return nShields;
     }
     
-    public String getWeaponInfo() {
-      String out = "";
-      
-      if (nWeapons == -1) {
-          out += weapons.toString();
-      } else {
-          out += nWeapons;
-      }
-      return out;
-    }
+    public abstract String getWeaponInfo();
+    
     
 }

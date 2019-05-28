@@ -12,10 +12,9 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/Deepspace/TestP2.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/Deepspace/Damage.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/Deepspace/SpaceStation.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/Deepspace/Hangar.java</file>
+            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/main/PlayWithUI.java</file>
+            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/Deepspace/CombatResult.java</file>
+            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/Deepspace/GameUniverse.java</file>
         </group>
     </open-files>
 </project-private>

@@ -6,7 +6,7 @@ package Deepspace;
 /**
  * @brief Clase nave enemiga
  */
-class EnemyStarShip implements Copyable <EnemyStarShip> {
+class EnemyStarShip implements Copyable <EnemyStarShip>, SpaceFighter {
     private Damage damage;
     private Loot loot;
     private String name;
@@ -31,6 +31,7 @@ class EnemyStarShip implements Copyable <EnemyStarShip> {
     
     EnemyToUI getUIversion() { return new EnemyToUI(this); }
     
+    @Override
     public float fire() { return ammoPower; }
     
     public float getAmmoPower() { return ammoPower; }
@@ -43,8 +44,10 @@ class EnemyStarShip implements Copyable <EnemyStarShip> {
     
     public float getShieldPower() { return shieldPower; }
     
+    @Override
     public float protection() { return shieldPower; }
     
+    @Override
     public ShotResult recieveShot(float shot) {
         if (shieldPower<shot)
             return ShotResult.DONOTRESIST;
@@ -64,6 +67,6 @@ class EnemyStarShip implements Copyable <EnemyStarShip> {
 
     @Override
     public EnemyStarShip copy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return new EnemyStarShip(this);
     }
 }

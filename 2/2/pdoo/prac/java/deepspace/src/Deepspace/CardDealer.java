@@ -15,18 +15,18 @@ import java.util.Arrays;
 class CardDealer {
     private static final CardDealer instance=new CardDealer();
     
-    CardDeck<SuppliesPackage> suppliesPackages;
-    CardDeck<ShieldBooster> shieldBoosters;
-    CardDeck<Weapon> weapons;
-    CardDeck<Hangar> hangars;
-    CardDeck<EnemyStarShip> enemies;
+    SafeSuppliesCardDeck suppliesPackages;
+    SafeShieldBoosterCardDeck shieldBoosters;
+    SafeWeaponCardDeck weapons;
+    SafeHangarCardDeck hangars;
+    SafeEnemyCardDeck enemies;
     
     private CardDealer(){
-        suppliesPackages=new CardDeck<>();
-        shieldBoosters=new CardDeck<>();
-        weapons=new CardDeck<>();
-        hangars=new CardDeck<>();
-        enemies=new CardDeck<>();
+        suppliesPackages=new SafeSuppliesCardDeck();
+        shieldBoosters=new SafeShieldBoosterCardDeck();
+        weapons=new SafeWeaponCardDeck();
+        hangars=new SafeHangarCardDeck();
+        enemies=new SafeEnemyCardDeck();
 
         
         initCards();
@@ -143,21 +143,21 @@ class CardDealer {
         Loot badLoot=new Loot(1,1,1,0,1);
         Loot goodLoot=new Loot(2,2,2,1,2);
         
-        Damage regularDamage0=new Damage(2,1); 
-        Damage regularDamage1=new Damage(1,1); 
-        Damage lowDamage0=new Damage(1,1);
-        Damage lowDamage1=new Damage(0,1);
-        Damage lowDamage2=new Damage(1,0);
+        Damage regularDamage0=new NumericDamage(2,1); 
+        Damage regularDamage1=new NumericDamage(1,1); 
+        Damage lowDamage0=new NumericDamage(1,1);
+        Damage lowDamage1=new NumericDamage(0,1);
+        Damage lowDamage2=new NumericDamage(1,0);
         
 
         
         Damage regularSpecificDamage0;
-        regularSpecificDamage0=new Damage(new ArrayList<>(Arrays.asList(WeaponType.LASER,                                                                      
+        regularSpecificDamage0=new SpecificDamage(new ArrayList<>(Arrays.asList(WeaponType.LASER,                                                                      
                                                                         WeaponType.MISSILE,
                                                                         WeaponType.PLASMA)),1);        
         
         Damage hardSpecificDamage0;
-        hardSpecificDamage0=new Damage(new ArrayList<>(Arrays.asList(WeaponType.LASER,
+        hardSpecificDamage0=new SpecificDamage(new ArrayList<>(Arrays.asList(WeaponType.LASER,
                                                                         WeaponType.LASER,
                                                                         WeaponType.LASER,
                                                                         WeaponType.MISSILE,
@@ -168,13 +168,13 @@ class CardDealer {
                                                                         WeaponType.PLASMA)),2);    
         
         Damage softSpecificDamage0;
-        softSpecificDamage0=new Damage(new ArrayList<>(Arrays.asList(WeaponType.LASER)),1);  
+        softSpecificDamage0=new SpecificDamage(new ArrayList<>(Arrays.asList(WeaponType.LASER)),1);  
         Damage softSpecificDamage1;
-        softSpecificDamage1=new Damage(new ArrayList<>(Arrays.asList(WeaponType.MISSILE)),1);  
+        softSpecificDamage1=new SpecificDamage(new ArrayList<>(Arrays.asList(WeaponType.MISSILE)),1);  
         Damage softSpecificDamage2;
-        softSpecificDamage2=new Damage(new ArrayList<>(Arrays.asList(WeaponType.PLASMA)),1);  
+        softSpecificDamage2=new SpecificDamage(new ArrayList<>(Arrays.asList(WeaponType.PLASMA)),1);  
         Damage mediumSpecificDamage0;
-        mediumSpecificDamage0=new Damage(new ArrayList<>(Arrays.asList(WeaponType.LASER,
+        mediumSpecificDamage0=new SpecificDamage(new ArrayList<>(Arrays.asList(WeaponType.LASER,
                                                                         WeaponType.MISSILE)),2);  
         
         enemies.add(new EnemyStarShip("Enemigo fácil -1",0,0,regularLoot0,lowDamage0));
@@ -204,7 +204,16 @@ class CardDealer {
         enemies.add(new EnemyStarShip("Enemigo difícil 0",200,100,goodLoot,hardSpecificDamage0));          
         enemies.add(new EnemyStarShip("Enemigo difícil 1",100,200,goodLoot,hardSpecificDamage0));   
         
-        enemies.add(new EnemyStarShip("Enemigo imposible",500,500,goodLoot,hardSpecificDamage0));              
+        enemies.add(new EnemyStarShip("Enemigo imposible",500,500,goodLoot,hardSpecificDamage0));    
+        
+        
+        //Enemigos que transforman
+        
+        Loot transformLoot0=new Loot(1,1,1,0,1,true,false);
+        Loot transformLoot1=new Loot(1,1,1,0,1,false,true);
+        
+        enemies.add(new EnemyStarShip("Enemigo transforma 0",200,100,transformLoot0,regularDamage0));  
+        enemies.add(new EnemyStarShip("Enemigo transforma 1",100,200,transformLoot1,regularDamage1));           
     }
 }
 
