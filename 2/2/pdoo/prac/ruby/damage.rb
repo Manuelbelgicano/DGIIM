@@ -1,92 +1,19 @@
 #encoding:utf-8
 
 require "./lib/DamageToUI.rb"
-require_relative "./weapontype.rb"
-require_relative "./weapon.rb" # No creo que sea necesario
 
 module Deepspace
   # Daño
   class Damage
 
-    attr_reader :nWeapons, :weapons, :nShields
+    attr_reader :nShields
 
-    def initialize(w,wl,s)
-      @nWeapons = w
-      @weapons = wl
+    def initialize(s)
       @nShields = s
     end
-    
-    # Constructor de daño con número genérico de armas
-    def self.newNumericWeapons(w,s)
-      new(w,nil,s)
-    end
 
-    # Constructor de daño con tipo específico de armas
-    def self.newSpecificWeapons(wl,s)
-      new(-1,wl,s)
-    end
-
-    # Constructor por copia
-    def self.newCopy(d)
-      new(d.nWeapons,d.weapons,d.nShields)
-    end
-
-    def getUIversion
-      DamageToUI.new(self)
-    end
-    
     def to_s
       getUIversion.to_s
-    end
-
-    # Comprueba si el array 'w' contiene armas del tipo 't'
-    private def arrayContainsType(w,t)
-      w.each_index do |i|
-        if w[i].type==t
-          return i
-        end
-      end
-      return -1
-    end
-
-    # Ajusta el objeto al equipo del jugador
-    def adjust(w,s)
-      newNShields = [s.length,@nShields].min
-      if @nWeapons==-1
-        newWeapons = Array.new(@weapons)
-        newWeapons.each_with_index do |type,i|
-          if arrayContainsType(w,type)==-1 # No está el tipo de arma
-            newWeapons.delete_at(i)
-          else # Está el tipo de arma
-		total_w = w.select {|weapon| weapon.type==type}
-          	total_d = newWeapons.select {|weapontype| weapontype==type}
-          	if total_w.length<total_d.length # Hay menos armas de ese tipo
-          		newWeapons.delete_at(i)
-          	end
-          end
-        end
-        return self.class.newSpecificWeapons(newWeapons,newNShields)
-      elsif @weapons==nil
-        newNWeapons = [w.length,@nWeapons].min
-        return self.class.newNumericWeapons(newNWeapons,newNShields)
-      end
-    end
-
-    # Elimina un arma del daño
-    def discardWeapon(w)
-      if @weapons!=nil
-        index = -1
-        @weapons.each_index do |i|
-          if @weapons[i]==w.type
-            index = i
-          end
-        end
-        if index!=-1
-          @weapons.delete_at(index)
-        end
-      elsif @nWeapons>0
-        @nWeapons -= 1
-      end
     end
 
     # Elimina un potenciador de escudo
@@ -98,19 +25,7 @@ module Deepspace
 
     # Comprueba si el daño no tiene efecto
     def hasNoEffect
-      if @nShields==0
-        if @weapons!=nil and @weapons.length==0
-          return true
-        elsif @nWeapons==0
-          return true
-        else
-          return false
-        end
-      end
-      return false
+      return @nShields==0
     end
-
-    private_class_method :new
-
   end
 end

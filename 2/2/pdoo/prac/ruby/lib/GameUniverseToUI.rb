@@ -10,8 +10,8 @@ class GameUniverseToUI
   attr_reader :currentStation, :currentEnemy
     
     def initialize (station,enemy) 
-        @currentStation = station.getUIVersion()
-        @currentEnemy= enemy.getUIVersion()
+        @currentStation = station.getUIversion()
+        @currentEnemy= enemy.getUIversion()
     end
 
     public

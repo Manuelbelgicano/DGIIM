@@ -6,7 +6,7 @@ package Deepspace;
 /**
  * @brief Clase nave enemiga
  */
-class EnemyStarShip {
+class EnemyStarShip implements Copyable <EnemyStarShip> {
     private Damage damage;
     private Loot loot;
     private String name;
@@ -60,5 +60,10 @@ class EnemyStarShip {
         aux += "\nDaño de la nave:\n"+damage.toString();
         aux += "\nBotín de la nave:\n"+loot.toString();
         return aux;
+    }
+
+    @Override
+    public EnemyStarShip copy() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

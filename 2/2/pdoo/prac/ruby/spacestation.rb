@@ -9,6 +9,7 @@ require_relative "./shotresult.rb"
 require_relative "./suppliespackage.rb"
 require_relative "./weapon.rb"
 require_relative "./lib/CardDealer.rb"
+require_relative 'transformation'
 
 module Deepspace
   # Estación espacial
@@ -30,6 +31,18 @@ module Deepspace
       @shieldBoosters = Array.new
       @pendingDamage = nil
       @hangar = nil
+    end
+
+    def newCopy(station)
+      @name = station.name
+      @ammoPower = station.ammoPower
+      @fuelUnits = station.fuelUnits
+      @shieldPower = station.shieldPower
+      @nMedals = station.nMedals
+      @weapons = station.weapons
+      @shieldBoosters = station.shieldBoosters
+      @pendingDamage = station.pendingDamage
+      @hangar = station.hangar
     end
 
     # Asigna un nuevo valor de combustible
@@ -219,6 +232,14 @@ module Deepspace
 
       medals = loot.nMedals
       @nMedals += medals
+
+      if loot.getEfficient==true
+        return Transformation::GETEFFICIENT
+      elsif loot.spaceCity==true
+        return Transformation::SPACECITY
+      else
+        return Transformation::NOTRANSFORM
+      end
     end
 
     # Ajusta el  daño a la nave y lo guarda
@@ -235,12 +256,12 @@ module Deepspace
       end
     end
 
-    def getUIVersion
+    def getUIversion
       SpaceStationToUI.new(self)
     end
 
     def to_s
-      getUIVersion.to_s
+      getUIversion.to_s
     end
   end
 end

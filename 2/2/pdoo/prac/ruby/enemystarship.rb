@@ -43,12 +43,12 @@ module Deepspace
       end
     end
 
-    def getUIVersion
+    def getUIversion
       EnemyToUI.new(self)
     end
 
     def to_s
-      getUIVersion.to_s
+      getUIversion.to_s
     end
   end
 end

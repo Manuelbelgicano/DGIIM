@@ -73,6 +73,13 @@ class Controller
             @view.wonGameMessage()
             exit(0)
           end
+        when DS::CombatResult::STATIONWINSANDCONVERTS
+          @view.wonCombatMessage()
+          puts "\n¡La nave espacial se ha convertido!\n"
+          if @model.haveAWinner()
+            @view.wonGameMessage()
+            exit(0)
+          end
         when DS::CombatResult::NOCOMBAT
           @view.noCombatMessage()
         end

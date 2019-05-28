@@ -25,4 +25,16 @@ class Loot {
     public int getNShields() {return nShields;}
     public int getNHangars() {return nHangars;}
     public int getNMedals() {return nMedals;}
+    
+    LootToUI getUIversion() { return new LootToUI(this); }
+    
+    @Override
+    public String toString() {
+        String aux = "Suministros: " + nSupplies;
+        aux += ", Armas: " + nWeapons;
+        aux += ", Escudos: " + nShields;
+        aux += ", Hangares: " + nHangars;
+        aux += ", Medallas: " + nMedals + "\n";
+        return aux;
+    }
 }

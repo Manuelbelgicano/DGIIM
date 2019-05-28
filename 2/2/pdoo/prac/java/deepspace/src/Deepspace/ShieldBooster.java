@@ -6,7 +6,7 @@ package Deepspace;
 /**
  * @brief Potenciadores de escudo
  */
-class ShieldBooster {
+class ShieldBooster implements Copyable <ShieldBooster> {
     private String name;
     private float boost;
     private int uses;
@@ -29,5 +29,20 @@ class ShieldBooster {
             return boost;
         } else
             return 1.0f;
+    }
+    
+    ShieldToUI getUIversion() { return new ShieldToUI(this);  }
+    
+    @Override
+    public String toString() {
+        String aux = "Nombre: " + name;
+        aux += ", Potencia: " + boost;
+        aux += ", Usos: " + uses;
+        return aux;
+    }
+
+    @Override
+    public ShieldBooster copy() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

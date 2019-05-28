@@ -5,7 +5,7 @@ package Deepspace;
 
 import java.util.ArrayList;
         
-class Hangar {
+class Hangar implements Copyable <Hangar> {
     private int maxElements;
     private ArrayList<Weapon> weapons = new ArrayList<>();
     private ArrayList<ShieldBooster> shieldBoosters = new ArrayList<>();
@@ -14,8 +14,8 @@ class Hangar {
     
     Hangar(Hangar h) {
         maxElements = h.maxElements;
-        weapons = h.weapons;
-        shieldBoosters = h.shieldBoosters;
+        weapons = (ArrayList<Weapon>) h.weapons.clone();
+        shieldBoosters = (ArrayList<ShieldBooster>) h.shieldBoosters.clone();
     }
     
     HangarToUI getUIversion() { return new HangarToUI(this); }
@@ -64,5 +64,22 @@ class Hangar {
             weapons.remove(w);
             return aux;
         }
+    }
+    
+    @Override
+    public String toString() {
+        String aux = "Espacios totales: " + maxElements;
+        aux += "\nArmas:\n";
+        for (Weapon w: weapons)
+            aux += w.toString() + "\n";
+        aux += "Escudos:\n";
+        for (ShieldBooster s: shieldBoosters)
+            aux += s.toString() + "\n";
+        return aux;
+    }
+
+    @Override
+    public Hangar copy() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

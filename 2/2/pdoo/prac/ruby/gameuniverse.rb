@@ -7,6 +7,10 @@ require_relative "./spacestation.rb"
 require_relative "./enemystarship"
 require_relative "./gamecharacter.rb"
 require_relative "./combatresult.rb"
+require_relative "powerefficientspacestation"
+require_relative "betapowerefficientspacestation"
+require_relative "spacecity"
+require_relative "transformation"
 
 module Deepspace
   # Clase que desarrolla la partida
@@ -22,6 +26,7 @@ module Deepspace
       @currentStation = nil
       @currentEnemy = nil
       @spaceStations = Array.new
+      @haveSpaceCity = false
     end
 
     # Consultor del estado
@@ -66,8 +71,16 @@ module Deepspace
       # No gana el enemigo
       else
         aLoot = enemy.loot
-        station.setLoot(aLoot)
-        return CombatResult::STATIONWINS
+        transform = station.setLoot(aLoot)
+        if transform==Transformation::GETEFFICIENT
+          makeStationEfficient
+          return CombatResult::STATIONWINSANDCONVERTS
+        elsif transform==Transformation::SPACECITY
+          createSpaceCity
+          return CombatResult::STATIONWINSANDCONVERTS
+        else
+          return CombatResult::STATIONWINS
+        end
       end
     end
 
@@ -190,6 +203,22 @@ module Deepspace
 
     def to_s
       getUIversion.to_s
+    end
+
+    def makeStationEfficient
+      if @dice.extraEfficiency
+        @currentStation = BetaPowerEfficientSpaceStation.new(@currentStation)
+      else
+        @currentStation = PowerEfficientSpaceStation.new(@currentStation)
+      end
+    end
+
+    def createSpaceCity
+      if @haveSpaceCity==false
+        collaborators = @SpaceStation.select {|station| station!=@currentStation}
+        @currentStation = SpaceCity.new(@currentStation,collaborators)
+        @haveSpaceCity = true
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ package Deepspace;
 /**
  * @brief Test de la práctica 1
  */
-public class TestP1 {
+public class TestP1 {/*
     public static void main(String args[]) {
         // Test de la clase Loot
         System.out.print("\n-----Test de la clase Loot-----\n");
@@ -72,4 +72,4 @@ public class TestP1 {
         System.out.format("Primer disparo: %s\n", dado.firstShot());
         System.out.format("¿Se ha movido la nave con velocidad 0.55?: %b\n", dado.spaceStationMoves(0.55f));
     }
-}
+*/}
