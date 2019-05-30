@@ -6,7 +6,7 @@ package Deepspace;
 /**
  * @brief Tipos de armas
  */
-enum WeaponType {
+public enum WeaponType {
     LASER(2.0f),
     MISSILE(3.0f),
     PLASMA(4.0f);

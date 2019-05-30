@@ -50,4 +50,7 @@ public class SpaceCity extends SpaceStation {
             aux += s.toString();
         return aux;
     }
+    
+    @Override
+    SpaceCityToUI getUIversion() { return new SpaceCityToUI(this); }
 }
