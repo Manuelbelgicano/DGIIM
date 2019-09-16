@@ -12,11 +12,8 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/View/View.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/controller/Controllerv2.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/main/PlayWithUI.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/View/GUI/StationToGUI.java</file>
-            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/View/GUI/MainWindow.java</file>
+            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/View/GUI/WeaponToGUI.java</file>
+            <file>file:/home/diagmatrix/git/DGIIM/2/2/pdoo/prac/java/deepspace/src/View/GUI/ShieldBoosterToGUI.java</file>
         </group>
     </open-files>
 </project-private>

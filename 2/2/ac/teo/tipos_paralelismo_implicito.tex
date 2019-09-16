@@ -1,0 +1,151 @@
+\documentclass[11pt,twoside,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				PAQUETES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[a4paper]{geometry}
+\usepackage{mathtools}
+\usepackage{scrextend}
+\usepackage{sansmathfonts}
+\usepackage[T1]{fontenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{
+	left=2.5cm,
+	right=2.5cm,
+	bottom=2.5cm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				COMANDOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\contentsname}{\Huge{Índice}} %Cambiar el título del índice
+\renewcommand*\familydefault{\sfdefault} %Cambiar la tipografía
+\renewcommand{\arraystretch}{1.3} %Cambiar el tamaño entre líneas de una pabla
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,RO]{Curso 2018-2019}
+\fancyhead[LE,LO]{AC. Tema 1}
+\fancyfoot[CE,CO]{\thepage}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TÍTULO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\Huge{\textbf{AC. Tema 1. Tipos de paralelismo}}}
+\author{\textit{Doble Grado en Ingeniería Informática y Matemáticas}}
+\date{2019}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 ÍNDICE 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\tableofcontents
+%\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 LECCION 1 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Niveles y tipos de paralelismo implícito en aplicaciones}
+La mayoría de computadores actuales implementan paralelismo en varios niveles de arquitectura. En una
+aplicación se pueden distinguir distintos niveles de paralelismo, que aprovechan distintas partes del
+computador. Cada nivel corresponde a un nivel de abstracción distinto de un código secuencial. Los distintos
+niveles son los siguientes:
+\begin{itemize}[noitemsep]
+	\item \textit{Nivel de programas}. Los diferentes programas que intervienen en una aplicación o en 
+	diferentes aplicaciones que se ejecutan en paralelo. La dependencia entre varios programas es poco  
+	probable.
+	\item \textit{Nivel de funciones}. Las funciones que componen un programa. Se pueden ejecutar en
+	paralelo siempre que no exista dependencias inevitables entre ellas.
+	\item \textit{Nivel de bucles (bloques)}. Una función puede tener en su interior varios bucles. El
+	código dentro de un bucle se ejecuta varias veces, por lo que se pueden ejecutar las iteraciones en 
+	paralelo, siempre que no existan dependencias entre las iteraciones.
+	\item \textit{Nivel de operaciones}. En este nivel se encuentran las operaciones y las instrucciones de
+	un código. Las operaciones independientes se pueden ejecutar en paralelo. Además, en algunos 
+	procesadores, algunas instrucciones se componen de varias operaciones que pueden ejecutarse en paralelo.
+\end{itemize}
+
+Existe otra forma de clasificar el paralelismo, que es en función de la \textit{granularidad}
+\footnote{Maginitud de la tarea (número de operaciones).}, que se suele corresponder con los niveles de
+paralelismo. El \textit{grano fino} corresponde con el nivel de operaciones, mientras que el nivel de
+programas se corresponde con el \textit{grano grueso}. Entre ambos encontramos el \textit{grano medio}, al
+que se le asocia el nivel de funciones.
+
+\subsubsection*{Tipos de paralelismo}
+
+Existen tres tipos esenciales de paralelismo: El paralelismo funcional, el paralelismo de datos y el
+paralelismo de tareas.
+\begin{itemize}[noitemsep]
+	\item \textit{Paralelismo funcional}. Se trata del paralelismo por niveles descrito anteriormente.
+	\item \textit{Paralelismo de tareas}. Este paralelismo se encuentra extrayendo la estructura lógica de
+	las funciones de una aplicación. En esta estructura, las funciones son bloques y los flujos de datos
+	entre ellas son reflejados por conexiones. Es equivalente al nivel de función.
+	\item \textit{Paralelismo de datos}. Este tipo de paralelismo se encuentra implícito en las operaciones
+	con estructuras de datos (matrices, vectores, \dots). Se puede extraer mediante la representación
+	matemática de las operaciones de la aplicación. Al implementarse mediante bucles las operaciones con
+	estructuras de datos, éstas pueden realizarse en paralelo, siempre y cuando no existan dependencias
+	inevitables. Es equivalente al nivel de bucles.
+\end{itemize}
+
+\subsubsection*{Dependencias de datos}
+
+Se dice que un bloque de código B depende de un bloque de código A si ambos hacen referencia a las mismas
+posiciones de memoria (variables) y B se encuentra después de A. Las dependencias de datos se clasifican
+en tres categorías:
+\begin{description}
+	\item [RAW] Este tipo de dependencia de datos, cuyas siglas significan ``lectura tras escritura" 
+	(\textbf Read \textbf After \textbf Write en inglés), ocurre cuando una operación necesita un dato que
+	se calcula con otra operación. A esta categoría también se le llama \textit{dependencia verdadera}. Un
+	ejemplo de esta dependencia sería el siguiente:
+	\begin{gather*}
+		a = b + c\\
+		d = a + c
+	\end{gather*}
+	En este caso, $a$ se necesita en la segunda operación, pero se calcula en la primera, lo que
+	hace imposible que ese trozo de código se ejecute en paralelo, puesto que podría ocurrir que se usase
+	como operando sin tener el valor de primera operación.
+	\item [WAW] Los datos que presentan esta dependencia, llamada ``escritura tras escritura" (\textbf
+	Write \textbf After \textbf Write en inglés), son aquellos en los que dos operaciones guardan su
+	resultado en el mismo dato. Esta dependencia es también denominada \textit{dependencia de salida}. Un
+	ejemplo de esta dependencia es:
+	\begin{gather*}
+		a = b + c\\
+		a = c + d
+	\end{gather*}
+	Se puede observar que en este ejemplo, la variable $a$ se usa para guardar el resultado de dos
+	operaciones distintas. Por tanto, si se realizara paralelización, podría ocurrir que se ejecutara
+	primero la segunda operación, cambiando el valor esperado de $a$.
+	\item [WAR] Los datos con dependencias que entran dentro de esta categoría, denominada ``escritura tras
+	lectura" (\textbf Write \textbf After \textbf Read en inglés), presentan el problema de que una
+	operación usa un dato que después es utilizado para almacenar el resultado de otra operación. Esta
+	dependencia es también denominada \textit{antidependencia}. Un ejemplo de esta dependencia podría ser
+	el siguiente:
+	\begin{gather*}
+		b = a + c\\
+		a = c + d
+	\end{gather*}
+	La variable $a$ es un operando de la primera operación y luego es utilizada para almacenar el
+	resultado de la segunda operación. En caso de paralelización, pudiera ocurrir que el valor de $a$ en
+	la primera operación fuera el resultado de la segunda operación.
+\end{description}
+De estas tres categorías, las dos últimas, WAW y WAR, son fácilmente resolubles renombrando variables.
+Así, el ejemplo de la dependencia de salida podría ser resuelto de la siguiente manera:
+\begin{gather*}
+	a = b + c \quad\to\quad a_1 = b + c\\
+	a = c + d \quad\to\quad a_2 = c + d
+\end{gather*}
+De esta forma, aunque aumentemos la memoria que necesita el programa, conseguimos que pueda ejecutarse de
+forma paralela.
+
+\end{document}

@@ -25,22 +25,23 @@ public class HangarToGUI extends javax.swing.JPanel {
      */
     public HangarToGUI() {
         initComponents();
-        spaces.add(weapon);
-        spaces.add(shield);
+        spaces_w.add(weapon);
+        spaces_s.add(shield);
     }
     
     public void setHangarToGUI(HangarToUI h) {
         max_elements.setText(Integer.toString(h.getMaxElements()));
         ArrayList<WeaponToUI> weapons = h.getWeapons();
         ArrayList<ShieldToUI> shields = h.getShieldBoosters();
-        spaces.removeAll();
+        spaces_w.removeAll();
         for (WeaponToUI w: weapons) {
             weapon.setWeaponToGUI(w);
-            spaces.add(weapon);
+            spaces_w.add(weapon);
         }
+        spaces_s.removeAll();
         for (ShieldToUI s: shields) {
             shield.setShieldBoosterToGUI(s);
-            spaces.add(shield);
+            spaces_s.add(shield);
         }
         repaint();
         revalidate();
@@ -49,8 +50,8 @@ public class HangarToGUI extends javax.swing.JPanel {
     public ArrayList<Integer> getSelectedWeapons() {
         ArrayList<Integer> aux = new ArrayList<>();
         int i = 0;
-        for (Component w: spaces.getComponents()) {
-            if (((CombatItems) w).isSelected() && ((CombatItems) w).weapon())
+        for (Component w: spaces_w.getComponents()) {
+            if (((CombatItems) w).isSelected())
                 aux.add(i);
             i++;
         }
@@ -60,8 +61,8 @@ public class HangarToGUI extends javax.swing.JPanel {
     public ArrayList<Integer> getSelectedShields() {
         ArrayList<Integer> aux = new ArrayList<>();
         int i = 0;
-        for (Component s: spaces.getComponents()) {
-            if (((CombatItems) s).isSelected() && ((CombatItems) s).shield())
+        for (Component s: spaces_s.getComponents()) {
+            if (((CombatItems) s).isSelected())
                 aux.add(i);
             i++;
         }
@@ -80,7 +81,8 @@ public class HangarToGUI extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         max_elements = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        spaces = new javax.swing.JPanel();
+        spaces_w = new javax.swing.JPanel();
+        spaces_s = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "HANGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 0, 0))); // NOI18N
 
@@ -88,7 +90,7 @@ public class HangarToGUI extends javax.swing.JPanel {
 
         max_elements.setText("max_elements");
 
-        jScrollPane1.setViewportView(spaces);
+        jScrollPane1.setViewportView(spaces_w);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -97,12 +99,14 @@ public class HangarToGUI extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(max_elements)
-                        .addGap(0, 554, Short.MAX_VALUE)))
+                        .addGap(0, 182, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(spaces_s, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,7 +117,9 @@ public class HangarToGUI extends javax.swing.JPanel {
                     .addComponent(jLabel1)
                     .addComponent(max_elements))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spaces_s, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -123,6 +129,7 @@ public class HangarToGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel max_elements;
-    private javax.swing.JPanel spaces;
+    private javax.swing.JPanel spaces_s;
+    private javax.swing.JPanel spaces_w;
     // End of variables declaration//GEN-END:variables
 }

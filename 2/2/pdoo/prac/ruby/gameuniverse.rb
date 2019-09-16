@@ -208,8 +208,10 @@ module Deepspace
     def makeStationEfficient
       if @dice.extraEfficiency
         @currentStation = BetaPowerEfficientSpaceStation.new(@currentStation)
+	@spaceStations[@currentSpaceStationIndex] = @currentStation
       else
         @currentStation = PowerEfficientSpaceStation.new(@currentStation)
+	@spaceStations[@currentSpaceStationIndex] = @currentStation
       end
     end
 
@@ -218,6 +220,7 @@ module Deepspace
         collaborators = @SpaceStation.select {|station| station!=@currentStation}
         @currentStation = SpaceCity.new(@currentStation,collaborators)
         @haveSpaceCity = true
+	@spaceStations[@currentSpaceStationIndex] = @currentStation
       end
     end
   end

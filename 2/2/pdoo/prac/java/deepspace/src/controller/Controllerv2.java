@@ -55,35 +55,42 @@ public class Controllerv2 {
     public void discardWeapons(ArrayList<Integer> w) {
         for (int i=w.size()-1;i>-1;i--)
             model.discardWeapon(w.get(i));
+        view.updateView();
     }
     
     public void discardWeaponsInHangar(ArrayList<Integer> w) {
         for (int i=w.size()-1;i>-1;i--)
             model.discardWeaponInHangar(w.get(i));
+        view.updateView();
     }
     
     public void discardShields(ArrayList<Integer> s) {
         for (int i=s.size()-1;i>-1;i--)
             model.discardWeapon(s.get(i));
+        view.updateView();
     }
     
     public void discardShieldsInHangar(ArrayList<Integer> s) {
         for (int i=s.size()-1;i>-1;i--)
             model.discardWeaponInHangar(s.get(i));
+        view.updateView();
     }
     
     public void mountWeapons(ArrayList<Integer> w) {
         for (int i=w.size()-1;i>-1;i--)
             model.mountWeapon(w.get(i));
+        view.updateView();
     }
     
     public void mountShields(ArrayList<Integer> s) {
         for (int i=s.size()-1;i>-1;i--)
             model.mountShieldBooster(s.get(i));
+        view.updateView();
     }
     
     public void discardHangar() {
         model.discardHangar();
+        view.updateView();
     }
     
     public void finish(int i) { 
@@ -92,7 +99,9 @@ public class Controllerv2 {
     }
     
     public boolean nextTurn() {
-        return model.nextTurn();
+        boolean aux = model.nextTurn();
+        view.updateView();
+        return aux;
     }
     
     public boolean haveAWinner() {

@@ -33,12 +33,6 @@ public class WeaponToGUI extends javax.swing.JPanel implements CombatItems {
     @Override
     public boolean isSelected() { return selected; }
     
-    @Override
-    public boolean weapon() { return true; }
-    
-    @Override
-    public boolean shield() { return false; }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
