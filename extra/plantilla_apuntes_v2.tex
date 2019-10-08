@@ -1,31 +1,221 @@
+% PLANTILLA PARA TRABAJOS EN LATEX
+% Autor: Manuel Gachs Ballegeer
+% Github: https://github.com/Manuelbelgicano
+% Licencia: GNU General Public License v3.0
+% Versión: 0.1
+
 \documentclass[11pt,twoside,titlepage,a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   COLORINES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\definecolor{rojooscuro}{HTML}{8A0808}
+\definecolor{burdeos}{HTML}{610B0B}
+\definecolor{rojomorado}{HTML}{B40431}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			  MATEMÁTICAS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath} % Matemáticas
 \usepackage{amsfonts} % Letras caligráficas para matemáticas
 \usepackage{mathtools} % Matemáticas extra
+\usepackage{amsthm} % Teoremas
+% Eliminar '*' para añadir numeración a los lemas, teoremas...
+\theoremstyle{definition}
+\newtheorem*{defi}{Definición} % Comando para las definiciones
+\newtheoremstyle{plain_rojo}{}{}{}{}{\color{rojooscuro}\bfseries}{:}{ }{}
+\theoremstyle{plain_rojo}
+\newtheorem*{lem}{Lema} % Comando para los lemas
+\newtheorem*{teo}{Teorema} % Comando para los teoremas
+\theoremstyle{remark}
+\newtheorem*{cor}{Corolario} % Comando para los corolarios
+\renewenvironment{proof}{{\bfseries\color{rojooscuro}Demostración:}}{\qed} % Cambiar el título de las demostraciones
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   TIPOGRAFÍA				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{CrimsonPro}
 \usepackage[T1]{fontenc}
 % The font package uses mweights.sty which has som issues with the
 % \normalfont command. The following two lines fixes this issue.
 \let\oldnormalfont\normalfont
 \def\normalfont{\oldnormalfont\mdseries}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  CÓDIGO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listingsutf8}
+\lstset{
+	inputencoding=utf8/latin1, % Codificación
+	xleftmargin=1em, % Margen extra a la izquierda
+	breaklines=true, % Romper líneas largas
+	language=C++, % Lenguaje del código
+	frame=single, % Enmarcado
+	numbers=left, % Números de línea
+	numbersep=8pt, % Separación de los números de línea
+	tabsize=4, % Tamaño de los tabs
+	frame=leftline, % Posición del enmarcado
+	framerule=2pt, % Grosor del enmarcado
+	showstringspaces=false, % Mostrar los espacios en las cadenas de caracteres
+	basicstyle=\footnotesize\ttfamily, % Estilo del código
+	keywordstyle=\color{burdeos}, % Estilo de las palabras reservadas
+	numberstyle=\normalfont, % Estilo de los números de línea
+	rulecolor=\color{rojooscuro}, % Estilo del enmarcado
+	commentstyle=\color{red}, % Estilo de los comentarios
+	stringstyle=\color{rojomorado} % Estilo de las cadenas de caracteres
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[a4paper]{geometry}
-\usepackage{lscape}
 \geometry{
 	left=2.5cm, % Margen izquierdo
 	right=2.5cm, % Margen derecho
 	bottom=2.5cm % Margen inferior
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  			  LISTAS/TABLAS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{enumitem} % Opciones de personalización de listas
 \renewcommand{\arraystretch}{1.3} %Cambiar el tamaño entre líneas de una tabla
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		COMANDOS PERSONALIZADOS 		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\autores}{ % Autores del documento
+	\begin{tabular}{l}
+	Isabel de Trastámara \\
+	Federico García Lorca \\
+	Antonio Cánovas del Castillo	
+	\end{tabular}
+}
+\newcommand{\institucion}{ % Insitución
+	Loterías y Apuestas del Estado
+}
+\newcommand{\infoextra}{ % Año o cualquier otra información para el título
+	Año de nuestro señor 2019
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+% Para que aparezca el título de la sección y no el número 
+\renewcommand{\sectionmark}[1]{%
+\markboth{#1}{}}
+% Encabezado
+\fancyhead[LE,RO]{\color{burdeos}{\leftmark}} % A la izquierda en pares, derecha en impares
+\fancyhead[RE,LO]{\color{burdeos}{\institucion}} % A la derecha en pares, izquierda en impares
+% Pie de página
+\fancyfoot[LE,RO]{\Large\textbf{\thepage}} % A la izquierda en pares, derecha en impares
+\renewcommand{\headrulewidth}{0.5pt} % Grosor de la línea
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   	TÍTULOS					%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{titlesec}
+\titleformat{\section} % Estilo de las secciones
+{\color{rojooscuro}\Huge\bfseries}
+{\color{rojooscuro}\thesection}{1em}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		   	  MISCELÁNEO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{pagecolor} % Colorear las portadas
+\renewcommand{\contentsname}{Índice} % Cambiar el título del índice
 \setlength\parindent{0pt} % Tamaño de la sangría
+\usepackage{graphicx} % Imágenes
+\usepackage{blindtext} % Texto de relleno (Se puede eliminar)
 
-\begin{document}\begin{landscape}
+\begin{document}
 
-\section*{Cláusulas}
-\begin{center}\begin{tabular}{|c|c|c|c|c|c|c|c|}
-\hline
-\textbf{TIPO} & \textbf{Cláusula} & \texttt{parallel} & \texttt{DO/for} & \texttt{sections} & \texttt{single} & \texttt{parallel DO/for} & \texttt{parallel sections} \\ \hline  
-\end{tabular}\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 PORTADA 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+	\newpagecolor{rojooscuro} % Color de la portada
+	\parbox[t]{\textwidth}{
+		\raggedright
+		\color{white}{\LARGE{\textbf{\institucion}}} \\
+		\textit{\infoextra}
+	}
+	\vfill
+	\parbox[c]{\textwidth}{
+		\color{white}{
+			\fontsize{70pt}{70pt}{\textbf{Naranjas}} \\
+			\bigskip \\
+			\fontsize{40pt}{40pt}{\emph{Y otras frutas}}
+		}
+	}
+	\vfill
+	\parbox[t]{\textwidth}{
+		\raggedright
+		\color{white}{\Large{\autores}} \\
+	}
+\end{titlepage}
+\restorepagecolor
 
-\end{landscape}\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 ÍNDICE 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 DOCUMENTO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Código y teoremas}
+
+\begin{lstlisting}
+#encoding:utf-8
+
+require "./lib/DamageToUI.rb"
+
+module Deepspace
+  # Danio
+  class Damage
+
+    attr_reader :nShields
+
+    def initialize(s)
+      @nShields = s
+    end
+
+    def to_s
+      getUIversion.to_s
+    end
+
+    # Elimina un potenciador de escudo
+    def discardShieldBooster
+      if @nShields>0
+        @nShields -= 1
+      end
+    end
+
+    # Comprueba si el danio no tiene efecto
+    def hasNoEffect
+      return @nShields==0
+    end
+  end
+end
+}
+\end{lstlisting}
+
+\begin{teo}[De los metros]
+Todo metro llega antes si y sólo si tú estás esperando el de la línea contraria.
+\end{teo}
+\begin{proof}
+La demostración es trivial
+\end{proof}
+
+\newpage
+\Blinddocument
+
+\end{document}
