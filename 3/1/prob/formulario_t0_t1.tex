@@ -441,6 +441,49 @@ Teniendo $X\rightsquigarrow N(\mu,\sigma^2)$, $Z=\displaystyle\frac{X-\mu}{\sigm
 	\item $F_X(x)=F_Z\Big(\displaystyle\frac{x-\mu}{\sigma}\Big)$
 \end{enumerate}
 
+\subsubsection{Aproximaciones a la normal}
 
+\begin{itemize}[font={\color{rojooscuro}\bfseries}]
+	\item \textbf{Aproximación de la binomial: } Se hace cuando $n>10$ y $np>5$, $nq>5$
+	$$X\rightsquigarrow B(n,p)\xrightarrow[X\approx Y]{n\to\infty} Y\rightsquigarrow N(np,npq)$$
+	\item \textbf{Aproximación de la Poisson: } Se hace cuando $\lambda>10$
+	$$X\rightsquigarrow P(\lambda)\xrightarrow[X\approx Y]{\lambda\to\infty} Y\rightsquigarrow N(\lambda,\lambda)$$
+\end{itemize}
+
+\subsection{Distribución exponencial $X\rightsquigarrow exp(\lambda)$}
+
+Función de densidad:
+\begin{equation*}
+f(x)=\lambda e^{-\lambda x}
+\end{equation*}
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=\displaystyle\frac 1\lambda$
+		\item $Var[X]=\displaystyle\frac{1}{\lambda^2}$
+	\end{itemize}
+\end{multicols}
+
+\subsection{Distribución gamma $X\rightsquigarrow \Gamma(u,\lambda)$}
+
+Función de densidad:
+\begin{equation*}
+f(x)=\frac{\lambda^u}{\Gamma(u)}x^{u-1}e^{-\lambda x}
+\end{equation*}
+Valores de la función Gamma: $\Gamma(k)=(k-1)!$
+
+\subsection{Distribución beta $X\rightsquigarrow \beta(p,q)$}
+
+Función de densidad:
+\begin{equation*}
+f(x)=\frac{1}{\beta(p,q)}x^{p-1}(1-p)^{q-1}
+\end{equation*}
+Valores de la función beta: $\beta(p,q)=\displaystyle\frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}$
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=\displaystyle\frac{p}{p+q}$
+		\item $Var[X]=\displaystyle\frac{pq}{(p+q)^2(p+q+1)}$
+	\end{itemize}
+\end{multicols}
+En el caso de que $p=q=1$, entonces $\beta(p,q)=U(0,1)$.
 
 \end{document}
