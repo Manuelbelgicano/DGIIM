@@ -127,6 +127,7 @@
 \setlength\parindent{0pt} % Tamaño de la sangría
 \usepackage{graphicx} % Imágenes
 \usepackage{blindtext} % Texto de relleno (Se puede eliminar)
+\usepackage{multicol} % Para poner las listas por columnas
 
 \begin{document}
 
@@ -210,13 +211,235 @@ $$P(B)=\displaystyle\sum_{i=1}^{n}P(A_1)P(B/A_i)$$
 
 $$P(A_i/B)=\displaystyle\frac{P(A_i)P(B/A_i)}{\sum_{i=1}^{n}P(A_i)P(B/A_i)}$$
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		 DISTRIBUCIONES DISCRETAS		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
 \section{Distribuciones discretas}
 
 \subsection{Distribución degenerada $X\rightsquigarrow D(c)$}
 
 Función masa de probabilidad:
+\begin{equation*}
+P[X=x]=\left\{
+	\begin{array}{l c l}
+	1 & si & x=c \\
+	0 & si & x\neq c
+	\end{array}
+\right.
+\end{equation*}
+Función de distribución:
+\begin{equation*}
+F(x)=\left\{
+	\begin{array}{l c l}
+	0 & si & x<c \\
+	1 & si & x\geq c
+	\end{array}
+\right.
+\end{equation*}
+Función generatriz de momentos: $M_x(t)=E[e^{tx}]=e^{tc}$, $\forall t\in\mathbb{R}$
 
+\subsection{Distribución uniforme discreta $X\rightsquigarrow U\{x_1,\ldots,x_n\}$}
+
+Función masa de probabilidad:
+\begin{equation*}
+P[X=x]=\left\{
+	\begin{array}{l c l}
+	^1/_n & si & x\in\{x_1,\ldots,x_n\} \\
+	0 & si & x\notin\{x_1,\ldots,x_n\}
+	\end{array}
+\right.
+\end{equation*}
+Función de distribución:
+\begin{equation*}
+F(x)=\left\{
+	\begin{array}{l c l}
+	0 & si & x<x_1 \\
+	^1/_n & si & x_1\leq x<x_2 \\
+	\vdots && \\
+	^{n-1}/_n & si & x_{n-1}\leq x<x_n \\
+	1 & si & x\geq x_n
+	\end{array}
+\right.
+\end{equation*}
+Función generatriz de momentos: $M_x(t)=E[e^{tx}]=\frac 1n\sum e^{tx_i}$, $\forall t\in\mathbb{R}$
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=\frac 1n\sum x_i$
+		\item $m_k=\frac 1n\sum x_i^k$
+		\item $Var[X]=\frac 1n\sum x_i^2-(\frac 1n\sum x_i)^2$
+		\item $\mu_k=\frac 1n\sum(x_i-\mu)^k$
+	\end{itemize}
+\end{multicols}
+
+\subsection{Distribución de Bernouilli $X\rightsquigarrow B(p)$}
+
+Función masa de probabilidad:
+\begin{equation*}
+P[X=x]=\left\{
+	\begin{array}{l c l}
+	p & si & x=1 \\
+	q=1-p & si & x=0
+	\end{array}
+\right.
+\end{equation*}
+Función de distribución:
+\begin{equation*}
+F(x)=\left\{
+	\begin{array}{l c l}
+	0 & si & x<0 \\
+	q & si & 0\leq x<1 \\
+	1 & si & x\geq 1
+	\end{array}
+\right.
+\end{equation*}
+Función generatriz de momentos: $M_x(t)=E[e^{tx}]=pe^t+q$, $\forall t\in\mathbb{R}$
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=p$
+		\item $m_k=p^k$
+		\item $Var[X]=pq$
+		\item $\mu_k=q^kp-p^kq$
+	\end{itemize}
+\end{multicols}
+
+\subsection{Distribución binomial $X\rightsquigarrow B(n,p)$}
+
+Función masa de probabilidad:
+\begin{equation*}
+P[X=x]=\left(
+	\!\begin{array}{c}
+	n \\
+	x
+	\end{array}
+\!\right)p^xq^{n-x},\quad x\in\{0,1,\ldots,n\}
+\end{equation*}
+Función generatriz de momentos: $M_x(t)=E[e^{tx}]=(pe^t+(1-p))^n$, $\forall t\in\mathbb{R}$
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=np$
+		\item $Var[X]=npq$
+	\end{itemize}
+\end{multicols}
+
+\subsection{Distribución geométrica $X\rightsquigarrow G(p)$}
+
+\begin{equation*}
+\underbrace{\begin{array}{c c}
+	\text{\emph{Número de fracasos antes del primer éxito}} & \text{\emph{Número de intentos antes del primer éxito}} \\
+	P[X=x]=q^xp & P[X=x]=q^{x-1}p \\
+	M_{x_1}(t)=\displaystyle\frac{p}{1-qe^t},\quad\forall t<-\ln q 
+	& M_{x_2}(t)=\displaystyle\frac{p}{e^t-q},\quad\forall t>\ln q \\
+	E_1[X]=\displaystyle\frac qp & E_2[X]=\displaystyle\frac 1p \\
+	\end{array}}
+\end{equation*}
+$$Var[X]=\displaystyle\frac{q}{p^2}$$
+
+\subsection{Distribución binomial negativa $X\rightsquigarrow BN(r,p)$}
+
+\begin{equation*}
+\underbrace{\begin{array}{c c}
+	\text{\emph{Número de fracasos antes del r-ésimo éxito}} & \text{\emph{Número de pruebas antes del r-ésimo éxito}} \\
+	P[X=x]=\left(\!\begin{array}{c}
+	x+r-1 \\
+	x
+	\end{array}\!\right)q^xp^r,\;\; x=0,1,\ldots
+	 & P[X=x]=\left(\!\begin{array}{c}
+	x-1 \\
+	r-1
+	\end{array}\!\right)q^{x-r}p^r,\;\; x=1,2,\ldots \\
+	M_{x_1}(t)=\Big(\displaystyle\frac{p}{1-qe^t}\Big)^r,\quad\forall t<-\ln q 
+	& M_{x_2}(t)=\Big(\displaystyle\frac{p}{e^t-q}\Big)^r,\quad\forall t>\ln q \\
+	E_1[X]=\displaystyle\frac{rq}{p} & E_2[X]=\displaystyle\frac rp \\
+	\end{array}}
+\end{equation*}
+$$Var[X]=\displaystyle\frac{rq}{p^2}$$
+
+\subsection{Distribución de Poisson $X\rightsquigarrow P(\lambda)$}
+
+Función masa de probabilidad:
+\begin{equation*}
+P[X=x]=e^{-\lambda}\frac{\lambda^x}{x!},\quad x\in[0,+\infty[
+\end{equation*}
+Función generatriz de momentos: $M_x(t)=e^{-\lambda(e^t-1)}$, $\forall t\in\mathbb{R}$
+$$E[X]=Var[X]=\lambda$$
+
+\subsection{Distribución hipergeométrica $X\rightsquigarrow H(N,n,k)$}
+
+Función masa de probabilidad:
+\begin{equation*}
+P[X=x]=\frac{
+			\left(\!\begin{array}{c}
+			k \\
+			x
+			\end{array}
+			\!\right)
+			\left(\!\begin{array}{c}
+			N-k \\
+			n-x
+			\end{array}
+			\!\right)}{
+			\left(\!\begin{array}{c}
+			N \\
+			n
+			\end{array}
+			\!\right)}
+\end{equation*}
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=k\displaystyle\frac nN$
+		\item $Var[X]=\displaystyle\frac{kn}{N}(1-\frac kN)\frac{N-n}{N-1}$
+	\end{itemize}
+\end{multicols}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		 DISTRIBUCIONES CONTINUAS		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Distribuciones continuas}
+
+\subsection{Distribución uniforme continua $X\rightsquigarrow U(a,b)$}
+
+Función de densidad:
+\begin{equation*}
+f(x)=\left\{
+	\begin{array}{l c l}
+	\displaystyle\frac{1}{b-a} & si & x\in]a,b[\\
+	0 & si & x\notin]a,b[
+	\end{array}
+\right.
+\end{equation*}
+Función de distribución:
+\begin{equation*}
+F(x)=\left\{
+	\begin{array}{l c l}
+	0 & si & x<a \\
+	\displaystyle\frac{x-a}{b-a} & si & a\leq x<b \\
+	1 & si & x\geq b
+	\end{array}
+\right.
+\end{equation*}
+Función generatriz de momentos: $M_x(t)=E[e^{tx}]=\frac 1n\sum e^{tx_i}$, $\forall t\in\mathbb{R}$
+\begin{multicols}{2}
+	\begin{itemize}[label={}]
+		\item $E[X]=\displaystyle\frac{a+b}{2}$\quad(punto medio del intervalo)
+		\item $Var[X]=\displaystyle\frac{(b-a)^2}{12}$
+	\end{itemize}
+\end{multicols}
+
+\subsection{Distribución normal $X\rightsquigarrow N(\mu,\sigma^2)$}
+
+Función de densidad:
+$$f(x)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\displaystyle\frac{(x-\mu)^2}{2\sigma^2}}$$
+
+\subsubsection{Tipificación}
+
+Teniendo $X\rightsquigarrow N(\mu,\sigma^2)$, $Z=\displaystyle\frac{X-\mu}{\sigma}$, entonces:
+\begin{enumerate}[font={\color{rojooscuro}\bfseries}]
+	\item $Z\rightsquigarrow N(0,1)$
+	\item $F_X(x)=F_Z\Big(\displaystyle\frac{x-\mu}{\sigma}\Big)$
+\end{enumerate}
 
 
 
