@@ -4,4 +4,5 @@ Grado de Ingeniería Informática y Matemáticas (DGIIM) en la Universidad de Gr
 
 Contenidos del repositorio:
  1. **2**: Carpeta con los contenidos del segundo curso.
- 2. **extra**: Carpeta con contenidos relacionados con la materia pero que no forman parte de la misma.
+ 2. **3**: Carpeta con los contenidos del tercer curso.
+ 3. **extra**: Carpeta con contenidos relacionados con la materia pero que no forman parte de la misma.
