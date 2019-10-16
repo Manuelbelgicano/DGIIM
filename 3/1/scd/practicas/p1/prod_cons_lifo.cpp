@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cassert>
 #include <thread>
-#include <mutex>
+#include <atomic>
 #include <random>
 #include "Semaphore.h"
 
@@ -15,7 +15,7 @@ unsigned cont_prod[num_items] = {0}; // contadores de verificación: producidos
 unsigned cont_cons[num_items] = {0}; // contadores de verificación: consumidos
 
 int pila[tam_vec] = {0}; // Buffer
-unsigned primera_libre = 0; // Posición de la pila
+std::atomic<int> primera_libre; // Posición de la pila
 SEM::Semaphore libres = tam_vec; // Semáforo del productor
 SEM::Semaphore ocupadas = 0;  // Semáforo del consumidor
 
@@ -93,6 +93,7 @@ int main() {
 	std::cout<<"Problema de los productores-consumidores (solución LIFO)."<<std::endl;
 	std::cout<<"--------------------------------------------------------"<<std::endl<<std::flush;
 
+	primera_libre = 0;
 	std::thread hebra_productora(funcion_hebra_productora),hebra_consumidora(funcion_hebra_consumidora);
 	hebra_productora.join();
 	hebra_consumidora.join();
