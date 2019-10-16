@@ -9,6 +9,9 @@
 using namespace std ;
 using namespace SEM ;
 
+Semaphore fumador[3] = {0,0,0}; // Semáforos de los fumadores
+Semaphore estanquero = 1; // Semáforo del estanquero
+
 //**********************************************************************
 // plantilla de función para generar un entero aleatorio uniformemente
 // distribuido entre dos valores enteros, ambos incluidos
@@ -22,19 +25,10 @@ template< int min, int max > int aleatorio()
   return distribucion_uniforme( generador );
 }
 
-//----------------------------------------------------------------------
-// función que ejecuta la hebra del estanquero
-
-void funcion_hebra_estanquero(  )
-{
-
-}
-
 //-------------------------------------------------------------------------
 // Función que simula la acción de fumar, como un retardo aleatoria de la hebra
 
-void fumar( int num_fumador )
-{
+void fumar(int num_fumador) {
 
    // calcular milisegundos aleatorios de duración de la acción de fumar)
    chrono::milliseconds duracion_fumar( aleatorio<20,200>() );
@@ -53,20 +47,45 @@ void fumar( int num_fumador )
 
 }
 
+// Función que produce un ingrediente
+int producir() {
+	chrono::milliseconds duracion_producir(aleatorio<20,200>());
+	this_thread::sleep_for(duracion_producir);
+	return aleatorio<0,2>();
+}
+
+//----------------------------------------------------------------------
+// función que ejecuta la hebra del estanquero
+
+void funcion_hebra_estanquero() {
+	int i;
+	while(true) {
+		estanquero.sem_wait(); // Se bloquea si ya ha producido un ingrediente
+		i = aleatorio<0,2>();
+		cout<<"Estanquero pone el ingrediente "<<i<<" en el mostrador\n";
+		fumador[i].sem_signal(); // Desbloquea al fumador que necesita el ingrediente i
+	}
+}
+
 //----------------------------------------------------------------------
 // función que ejecuta la hebra del fumador
-void  funcion_hebra_fumador( int num_fumador )
-{
-   while( true )
-   {
-
-   }
+void  funcion_hebra_fumador(int num_fumador) {
+	while(true) {
+		fumador[num_fumador].sem_wait(); // Espera a tener el ingrediente que necesita
+		cout<<"Fumador "<<num_fumador<<" coge el ingrediente del mostrador\n";
+		estanquero.sem_signal(); // Desbloquea al estanquero para que vuelva a producir
+		fumar(num_fumador);
+	}
 }
 
 //----------------------------------------------------------------------
 
-int main()
-{
-   // declarar hebras y ponerlas en marcha
-   // ......
+int main() {
+	thread fumadores[3];
+	thread estanquero(funcion_hebra_estanquero);
+	for (size_t i=0;i<3;i++)
+		fumadores[i] = thread (funcion_hebra_fumador,i);
+	estanquero.join();
+	for (size_t i=0;i<3;i++)
+		fumadores[i].join();
 }
