@@ -8,10 +8,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %			   COLORINES				%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \definecolor{rojooscuro}{HTML}{8A0808}
 \definecolor{burdeos}{HTML}{610B0B}
 \definecolor{rojomorado}{HTML}{B40431}
+% Colores para ejemplificar tput
+\definecolor{negro-tput}{RGB}{0,0,0}
+\definecolor{rojo-tput}{RGB}{255,0,0}
+\definecolor{verde-tput}{RGB}{0,255,0}
+\definecolor{amarillo-tput}{RGB}{255,255,0}
+\definecolor{azul-tput}{RGB}{0,0,255}
+\definecolor{magenta-tput}{RGB}{255,0,255}
+\definecolor{cyan-tput}{RGB}{0,255,255}
+\definecolor{blanco-tput}{RGB}{255,255,255}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %			  MATEMÁTICAS				%
@@ -46,7 +55,7 @@
 	inputencoding=utf8/latin1, % Codificación
 	xleftmargin=1em, % Margen extra a la izquierda
 	breaklines=true, % Romper líneas largas
-	language=make, % Lenguaje del código
+	language=, % Lenguaje del código
 	frame=single, % Enmarcado
 	numbers=none, % Números de línea
 	numbersep=8pt, % Separación de los números de línea
@@ -124,7 +133,6 @@
 \renewcommand{\contentsname}{Índice} % Cambiar el título del índice
 \setlength\parindent{0pt} % Tamaño de la sangría
 \usepackage{graphicx} % Imágenes
-\usepackage{blindtext} % Texto de relleno (Se puede eliminar)
 
 \begin{document}
 
@@ -153,6 +161,23 @@
 	}
 \end{titlepage}
 \restorepagecolor
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 LICENCIA 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\null
+\vfill
+
+%% Información sobre la licencia
+\parbox[t]{\textwidth}{
+  \includegraphics{CC-BY-SA_icon.png}\\[4pt]
+  \raggedright % Texto alineado a la izquierda
+  \sffamily\large
+  {\Large Este libro se distribuye bajo una licencia CC BY-SA 4.0.}\\
+  \texttt{creativecommons.org/licenses/by-nc-sa/4.0/}
+}
+\clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				 ÍNDICE 				%
@@ -295,16 +320,16 @@ Una regla en un makefile tiene tres componentes diferenciables:
 Una regla suele verse así:
 \bigskip
 \begin{lstlisting}
-objetivos: pre-requisitos
-	receta
+<objetivos>: <pre-requisitos>
+	<receta>
 	...
 \end{lstlisting}
 \bigskip
 O, alternativamente, de esta manera:
 \bigskip
 \begin{lstlisting}
-objetivos: pre-requisitos; receta
-	receta
+<objetivos>: <pre-requisitos>; <receta>
+	<receta>
 	...
 \end{lstlisting}
 \bigskip
@@ -312,7 +337,7 @@ Es \textbf{muy importante} seguir al pie de la letra esta sintaxis, puesto
 que \texttt{make} no identificará una línea como una receta si no comienza 
 por un tab\footnote{No es válido una sucesión de espacios}, y tampoco sabrá 
 interpretar la regla si el objetivo no está separado de las dependencias por 
-el caracter ":". Además, esta sintaxis tiene las siguientes consecuencias:
+el carácter ":". Además, esta sintaxis tiene las siguientes consecuencias:
 
 \begin{itemize}[font={\color{rojooscuro}\bfseries}]
 	\item Una línea en blanco que comienza por una tab no es una línea en 
@@ -387,7 +412,7 @@ debuggeado.
 \\
 
 En resumen, un archivo makefile válido para el programa de ejemplo sería el
-siguientes:
+siguiente:
 
 \begin{lstlisting}
 all: adventure;
@@ -501,27 +526,1043 @@ Llegados a este punto ya podemos hacer una distinción entre los
 pre-requisitos: Los normales y los de sólo orden\footnote{Esta es la 
 traducción literal del término en inglés, es posible que en castellano tenga 
 otro nombre.}. Normalmente, las reglas no comprueban la existencia de las 
-dependencias antes de intentar ejecutar sus recetas. Sin embargo, los pre-
-requisitos de sólo-orden cambian este comportamiento, puesto que fuerzan la 
-comprobación con anterioridad. En caso de existir pre-requisitos de ambos 
+dependencias antes de intentar ejecutar sus recetas. Sin embargo, los 
+pre-requisitos de sólo-orden cambian este comportamiento, puesto que fuerzan 
+la comprobación con anterioridad. En caso de existir pre-requisitos de ambos 
 tipos, tienen preferencia los de sólo-orden, esto es, son los primeros en 
 comprobarse. No existe un orden de preferencia entre los pre-requisitos 
-sólo-orden Es por ello que se pueden utilizar también, por ejemplo, para crear un 
-directorio necesario para el objetivo antes de que se ejecuten las recetas. 
-Esta es su sintaxis:
+sólo-orden. Este tipo de dependencias tienen muchas utilidades, como por 
+ejemplo para crear un directorio en el cual se almacenará el objetivo antes 
+de que se ejecuten las recetas. Esta es su sintaxis:
+\bigskip
+\begin{lstlisting}
+<objetivos>: <pre-requisitos> | <pre-requisitos solo-orden>
+\end{lstlisting}
 
-```makefile
-objetivos: pre-requisitos | pre-requisitos solo-orden
-```
+\subsection{Reglas implícitas}
 
+Estas reglas son las que \texttt{make} puede generar automáticamente si 
+encuentra una regla sin recetas. Dependiendo del lenguaje de programación, 
+puede realizar unas u otras. En el caso de C++, una regla cuyo objetivo sea 
+un archivo objeto y su pre-requisito sea un archivo fuente con el mismo 
+nombre, si se deja vacía, \texttt{make} ejecuta una receta de la forma:
+\bigskip
+\begin{lstlisting}
+$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c
+\end{lstlisting}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 VARIABLES 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newpage
+\section{Variables}
 
+Como hemos mencionado anteriormente, la creación de makefiles sin uso de 
+variables conlleva un gran problema de flexibilidad, puesto que cambiar un 
+archivo tiene consecuencia ir buscando por todo el archivo las ocurrencias y 
+cambiarlas, además de hacer el makefile menos legible. Por tanto, es 
+recomendable el uso de variables, que nos ayudan a simplificar el makefile y 
+hacerlo más flexible. Las variables pueden ser desde listas de nombres de 
+archivos, opciones de compilación, directorios, trozos de texto, ... 
 
+\subsection{Aspectos básicos sobre variables}
 
+Un ejemplo de uso de variables en una regla sería el siguiente:
+\bigskip
+\begin{lstlisting}
+OBJECT = obj/goblin.o
+SOURCE = src/goblin.cpp
+HEADER = include/goblin.h
 
+$(OBJECT): $(SOURCE) $(HEADER)
+  g++ -Wall -g -I./include -c $(SOURCE) -o $(OBJECT)
+\end{lstlisting}
+\bigskip
 
+Como se puede observar, la declaración de una variable va precedida por el 
+símbolo '=' (aunque veremos más adelante que puede hacerse de otras formas), 
+y que para usar la variable debemos ponerla entre paréntesis predecida por 
+'\$'\footnote{para escribir un dólar en el shell es necesario escribir 
+'\$\$', y para escribir literalmente el símbolo, es necesaria la escritura de 
+4 símbolos consecutivos}. La orden \texttt{make} expande las variables por su 
+respectivo valor al ejecutar el makefile, es decir, a la hora de ejecutar la 
+receta primero intercambia las variables por su valor real. 
+\\
 
+Otro dato muy importante sobre las variables en los makefiles es que la orden
+\texttt{make} distingue mayúsculas de minúsculas; por lo que si llamamos
+``OBJECT`` a una variable y posteriormente la intentamos utilizar escribiendo
+``Object`` o ``object``, estamos definiendo una nueva variable en lugar de
+utilizar la primera.
+
+\subsubsection{Variables de expansión recursiva}
+
+Estas son las variables que se definen utilizando el símbolo '=' o por la 
+directiva \texttt{define}. Cuando son expandidas, si contienen alguna 
+referencia a otra variable, son también expandidas, de ahí que se denominen
+de \textbf{expansión recursiva}. Veamos un ejemplo:
+\bigskip
+\begin{lstlisting}
+que = $(es)
+es = $(eso)
+eso = es queso
+
+all:; echo $(que)
+\end{lstlisting}
+\bigskip
+Si ejecutáramos la orden \texttt{make} sobre este makefile, \texttt{que} se expandiría a \texttt{\$(eso)}, que subsecuentemente se expandiría a ``es 
+queso``, obteniendo esa expresión como resultado.
+\\
+
+Esta forma de definir variables es la más extendida y la que más soporte tiene
+en las distintas versiones de \texttt{make}. Sin embargo, tiene marcadas 
+desventajas:
+
+\begin{itemize}[font={\color{rojooscuro}\bfseries}]
+	\item Imposibilidad de añadir algo al final de una variable. Por ejemplo,
+	si queremos añadir a las flags de compilación una opción más en un punto
+	del makefile:
+	\begin{lstlisting}
+FLAGS = -Wall
+...
+FLAGS = $(FLAGS) -g
+	\end{lstlisting}
+	Escribir esto obtiene como resultado la creación de un bucle infinito en
+	el que \texttt{make} estaría constantemente expandiendo la variable.
+	\item Cada vez que se use una variable que haga referencia a una función, 
+	se llamará a dicha función. Esto hace que \texttt{make} sea más lento, 
+	además de no saber de forma exacta cuándo o cuántas veces va a ejecutarse 
+	esa función.
+\end{itemize}
+
+\subsubsection{Variables de expansión simple}
+
+Se definen utilizando los símbolos ':=' o '::=', aunque es preferible el uso
+del primero, puesto que '::=' no está implementado en todas las versiones de 
+\texttt{make}. La diferencia que tiene este tipo de variables con las 
+anteriores es que transforma las referencias a otras variables por el 
+contenido que tenían en el momento en el que la variable es definida. Por 
+tanto,
+\bigskip
+\begin{lstlisting}
+x := hasta
+y := $(x) luego
+x := maricarmen
+\end{lstlisting}
+\bigskip
+es equivalente a escribir
+\bigskip
+\begin{lstlisting}
+y := hasta luego
+x := maricarmen
+\end{lstlisting}
+\bigskip
+Este tipo de variables generalmente ayudan a hacer los makefiles más 
+predecibles, además de dejar redefinir una variable usando su propio valor.
+\\
+
+Existe, además, un último tipo de variables, las \textbf{variables de 
+asignación condicional}, definidas con los símbolos '?=', que sólo realizan 
+la asignación si la variable no ha sido definida anteriormente.
+
+\subsubsection{Agregar texto a una variable}
+
+Las variables que definimos en un makefile son, en esencia, cadenas de 
+caracteres. Es por ello que muchas veces puede sernos útil añadir más texto a 
+una variable que ya ha sido definida. Para ello se usa el operador '+='. Por 
+ejemplo:
+\bigskip
+\begin{lstlisting}
+OBJ = goblin.o dungeon.o
+OBJ += main.o
+\end{lstlisting}
+\bigskip
+Esto añade a la variable \texttt{OBJ} el texto "main.o". Para variables de expansión simple, usar '+=' es similar a lo siguiente:
+\bigskip
+\begin{lstlisting}
+OBJ = goblin.o dungeon.o
+OBJ := $(OBJ) main.o
+\end{lstlisting}
+\bigskip
+Sin embargo este método, aunque equivalente, tiene diferencias con el operador
+'+='; que pueden llegar a ser importantes cuando se usan valores más
+complejos. Sin embargo, si la variable \texttt{OBJ} hubiera sido previamente 
+definida como una variable de extensión simple (\texttt{OBJ := goblin.o 
+dungeon.o}), sí que sería completamente equivalente.
+
+\subsection{Referencias a variables}
+
+Aunque referenciar una variable sea tan simple como rodearla de paréntesis y 
+escribir un dólar delante, pueden hacerse muchas más cosas con las 
+referencias a variables.
+
+\subsubsection{Referencias como ayudas para el formato}
+
+Imaginemos que cambiamos de forma regular la carpeta donde se encuentran los 
+archivos de cabecera, pero no cambiamos los nombres de los archivos en sí. 
+Usar variables que contengan fracciones de la ruta de un archivo pueden 
+ayudarnos a paliar estos problemas. Un ejemplo de este uso podría ser el 
+siguiente:
+\bigskip
+\begin{lstlisting}
+INC := ./include
+HEADERS := $(INC)/goblin.h $(INC)/dungeon.h
+\end{lstlisting}
+\bigskip
+También podemos, mediante las referencias a variables, conseguir que el 
+primer carácter de una variable sea un espacio en blanco. Para ello debemos 
+de hacerle una jugada extraña a \texttt{make}, ya que éste ignora los 
+caracteres en blanco antes de la definición de variables. La jugada en 
+cuestión es la siguiente:
+\bigskip
+\begin{lstlisting}
+NULL :=
+space := $(NULL) # fin de la linea
+\end{lstlisting}
+\bigskip
+El valor de \texttt{space} es precisamente un espacio. El comentario "fin de la línea" es muy importante, puesto que \texttt{make} solo procesa los caracteres en blanco tras la definición de una variable si contiene un comentario, y solamente procesa la cantidad que se encuentre entre el fin de la declaración de una variable y el carácter '\#'. Si no se quiere añadir caracteres en blanco, es de vital necesidad acordarse de no escribir un comentario en la misma línea, puesto que podemos provocar este tipo de problemas:
+\bigskip
+\begin{lstlisting}
+INC := ./include    # directorio de los archivos de cabecera
+HEADERS := $(INC)/goblin.h $(INC)/dungeon.h
+\end{lstlisting}
+\bigskip
+En este caso, \texttt{HEADERS} se expandiría a \texttt{./include\quad/
+goblin.h ./include\quad/dungeon.h}, provocando un error en el makefile.
+Las referencias a variables pueden también ser usadas en la definición del nombre de otras variables, esto es:
+\bigskip
+\begin{lstlisting}
+PROJECT = adventure
+$(PROJECT)_sourcedir := ./src
+\end{lstlisting}
+\bigskip
+Este ejemplo define las variables \texttt{PROJECT} y
+\texttt{adventure\_sources}.
+
+\subsubsection{Referencias de sustitución}
+
+Las referencias de sustitución sustituyen el valor de una variable con las 
+alteraciones que se especifiquen. Su sintaxis es la siguiente: 
+\texttt{\$(var:a=b)} o \texttt{\$\{var:a=b\}}, y sustituyen cada 'a' al final
+de una palabra por una 'b'. Al referirnos a el "final de una palabra", nos 
+referimos a que 'a' tiene que ser el último carácter o estar seguido por un 
+caracter en blanco. Otras instancias de 'a' en la variable no son alteradas. 
+Por ejemplo:
+\bigskip
+\begin{lstlisting}
+SOURCES := goblin.cpp dungeon.cpp main.cpp
+OBJECTS := $(SOURCES:.cpp=.o)
+\end{lstlisting}
+\bigskip
+La variable \texttt{OBJECTS} contiene: \texttt{goblin.o dungeon.o main.o}.
+\\
+
+Otra forma de obtener este tipo de resultados es usando la función 
+\texttt{patsubst} que veremos más adelante. En la práctica no hay diferencia
+entre ambos métodos.
+\\
+
+Este tipo de referencias, junto con las variables automáticas, nos son muy 
+útiles para automatizar reglas, puesto que nos permiten escribir una única 
+regla para construcciones parecidas.
+
+\subsubsection{Referencias a variables anidadas}
+
+Este tipo de referencias solamente usa para programar makefiles complejos y 
+sofisticados, por lo que normalmente no es necesario considerar su uso, salvo 
+para saber que una variable con '\$' en su nombre puede provocar fallos 
+inesperados. Un ejemplo básico de una referencia a una variable anidada sería
+el siguiente:
+\bigskip
+\begin{lstlisting}
+hasta = luego
+luego = maricarmen
+texto = $($(hasta))
+\end{lstlisting}
+\bigskip
+En este ejemplo, se define \texttt{texto} como la referencia a la referencia 
+de \texttt{hasta}. Esto es, el proceso de expansión sería el siguiente:
+\begin{equation*}
+\text{\texttt{\$(\$(hasta))}}\rightarrow\text{\texttt{\$(luego)}}
+\rightarrow\text{\texttt{maricarmen}}
+\end{equation*}
+\\
+El anidamiento de referencias no está limitado a dos niveles, si no que puede 
+realizarse un anidamiento de $n$ niveles. Un ejemplo de 4 niveles sería el 
+siguiente:
+\bigskip
+\begin{lstlisting}
+esto = es
+es = coser
+coser = y
+y = cantar
+texto = $($($($(esto))))
+\end{lstlisting}
+\bigskip
+El proceso de expansión de la variable \texttt{texto}, en este caso, sería:
+\begin{equation*}
+\text{\texttt{\$(\$(\$(\$(esto))))}}\rightarrow\text{\texttt{\$(\$(\$(es)))}}
+\rightarrow\text{\texttt{\$(\$(coser))}}\rightarrow\text{\texttt{\$(y)}}
+\rightarrow\text{\texttt{cantar}}
+\end{equation*}
+\\
+Las variables anidadas pueden tener también llamadas a funciones o 
+referencias de sustitución, como por ejemplo:
+\bigskip
+\begin{lstlisting}
+traidor = var1
+var2 := Hola
+dos = $(subst 1,2,$(traidor))
+uno = dos
+saludo := $($($(uno)))
+\end{lstlisting}
+\bigskip
+La variable \texttt{saludo} del ejemplo se expandiría de la siguiente manera
+(el uso y funcionamiento de la función \texttt{subst} se explica más 
+adelante):
+\begin{equation*}
+\text{\texttt{\$(\$(\$(uno)))}}\rightarrow\text{\texttt{\$(\$(dos))}}
+\rightarrow\text{\texttt{\$(var2)}}\rightarrow\text{\texttt{Hola}}
+\end{equation*}
+\\
+Además, puede realizarse una anidación en la cual exista más de una 
+referencia en un cierto nivel. Esto puede servir para declaraciones de 
+variables condicionales, donde las referencias en el mismo nivel forman el 
+nombre de otra variable. En el manual de la GNU de la orden \texttt{make}
+aparecen más usos y aplicaciones de la anidación de referencias.
+
+\subsection{Variables específicas}
+
+Las variables en \texttt{make} suelen ser globales; esto es, tienen el mismo 
+valor independientemente del lugar en el que sean evaluadas. En ocasiones, 
+sin embargo, nos interesa que una variable tenga valores distintos 
+dependiendo de la regla en la que se evalúe.
+
+\subsubsection{Variables específicas a un objetivo}
+
+En ocasiones nos interesa que una variable tenga un valor específico para 
+construir un cierto objetivo. Esto se puede hacer de la siguiente manera:
+\bigskip
+\begin{lstlisting}
+<objetivos>: <asignacion-variable>
+\end{lstlisting}
+\bigskip
+Para la asignación de valores de la variable de esta forma puede usarse 
+cualquiera de los operadores descritos ('=', '+=', \ldots). Además, si el 
+objetivo de esa regla tiene pre-requisitos, la variable específica tiene 
+efecto también sobre las reglas que los construyen e incluso ocurre lo mismo 
+con sus pre-requisitos, salvo que los pre-requisitos tengan sus propios 
+valores de esa variable específicos. Un ejemplo de uso de este tipo de 
+variables sería el siguiente:
+\bigskip
+\begin{lstlisting}
+ejecutable: CPPFLAGS = -g
+ejecutable: main.o verdugo.o reo.o
+\end{lstlisting}
+\bigskip
+En el ejemplo, la variable \texttt{CPPFLAGS} tiene el valor \texttt{-g} para
+la regla \texttt{exec}, pero también para las reglas cuyos objetivos sean 
+\texttt{main.o}, \texttt{verdugo.o} o \texttt{reo.o}.
+\newpage
+\subsubsection{Variables específicas a un patrón}
+
+En otras ocasiones nos interesa que una variable tenga un valor distinto para 
+cierto tipo de objetivos. La sintaxis de esta utilidad es la siguiente:
+\bigskip
+\begin{lstlisting}
+patron: asignacion-variable
+\end{lstlisting}
+\bigskip
+El patrón se escribe como una parte común precedida o sucedida de un carácter 
+'\%' (Es equivalente al uso de '*' en bash). En caso de que un cierto 
+objetivo tenga más de una variable específica por un patrón, usará la que 
+tenga el patrón más específico. En caso de igualdad, usará el que haya sido 
+definido primero. Un ejemplo del uso de estas variables puede ser:
+\bigskip
+\begin{lstlisting}
+%.o: CPPFLAGS := -g
+cartera/%.o: CPPFLAGS := -Wall -g
+
+all: bolsillo/llaves.o bolsillo/cartera/dinero.o
+\end{lstlisting}
+\bigskip
+El objeto \texttt{llaves.o} se constuye con el primer valor de 
+\texttt{CPPFLAGS}, mientras que \texttt{dinero.o} se construye con el segundo.
+\\
+
+Las variables específicas a un patrón se buscan después de cualquier variable 
+específica a un objetivo definida explícitamente para ese objetivo, y antes 
+de las variables específicas a un objetivo definidas para el objetivo padre.
+
+\subsection{Variables especiales}
+
+\subsubsection{Variables automáticas}
+
+Las variables automáticas son variables que tienen valores específicos dentro 
+de cada regla. Fuera de las reglas, estas variables no contienen ningún 
+valor. Estas son las más básicas:
+
+\begin{center}
+\begin{tabular}{|c|p{13.6cm}|}
+\hline
+		\textbf{\textcolor{burdeos}{Variable}} & 
+	\textbf{\textcolor{burdeos}{Descripción}} \\
+\hline
+	\texttt{\$@} & 
+	El nombre del objetivo de la regla. En caso de que existan más de un 
+	objetivo, se refiere al objetivo específico que ha invocado la receta.\\
+\hline
+	\texttt{\$<} &
+	El nombre del primer pre-requisito. Si la regla es implícita, será el 
+	primer pre-requisito añadido por la relga ímplicita.\\
+\hline
+	\texttt{\$?} & 
+	Los nombres de todos los pre-requisitos más nuevos que el objetivo, 
+	separados por espacios en blanco.\\
+\hline
+	\texttt{\$\^} & 
+	Los nombres de todos los pre-requisitos, separados por espacios en 
+	blanco. Esta lista no contiene los pre-requisitos de sólo orden.\\
+\hline
+	\texttt{\$|} & 
+	Los nombres de todos los pre-requisitos de sólo orden, separados por 
+	espacios en blanco.\\
+\hline
+\end{tabular}
+\end{center}
+\bigskip
+Las variables automáticas son muy útiles, ya que nos ahorran tener que volver
+a escribir el nombre de objetivos y pre-requisitos en las recetas. Veamos un 
+ejemplo de uso de variables automáticas:
+\bigskip
+\begin{lstlisting}
+main.o: main.cpp
+	g++ -g -Wall -I./include -c -o $@ $<
+\end{lstlisting}
+\bigskip
+Sería equivalente a escribir en la regla: \texttt{g++ -g -Wall -I./include -c
+-o main.o main.cpp}.
+\subsubsection{Variables reservadas}
+
+Existen nombres de variables que tienen propiedades especiales. Al ser 
+definidas en un makefile, realizan algún tipo de acción/efecto. Algunas de 
+ellas son:
+
+\begin{center}
+\begin{tabular}{|c|p{12.7cm}|}
+\hline
+	\textbf{\textcolor{burdeos}{Variable}} & 
+	\textbf{\textcolor{burdeos}{Descripción}} \\
+\hline
+	\texttt{.RECIPEPREFIX} & 
+	Intercambia el carácter para un receta de tab al carácter asignado a la 
+	variable.\\
+\hline
+	\texttt{.VARIABLES} &
+	Devuelve una lista con el nombre de todas las variables definidas hasta 
+	el momento, excluyendo las específicas definidas únicamente en ese 
+	contexto.\\
+\hline
+	\texttt{VPATH} & 
+	La orden \texttt{make} busca los ficheros en los directorios
+	especificados a la 	variable además del directorio de trabajo en el que
+	se ejecuta. Busca además en el orden en el que son especificados los
+	directorios.\\
+\hline
+	\texttt{MAKEFILE} & 
+	La orden \texttt{make} ejecuta los makefiles especificados en la variable 
+	antes que el actual.\\
+\hline
+	\texttt{MAKEFILE\_LIST} & 
+	Contiene el nombre del último archivo makefile ejecutado por la orden 
+	\texttt{make}.\\
+\hline
+	\texttt{.PHONY} & 
+	Se usa como objetivo de una regla sin recetas. Los pre-requisitos 
+	especificados en esa regla se ejecutan siempre que se realice una orden 
+	que pueda construirlos o que ejecute estas reglas, sin importar que no
+	haya habido ninguna actualización en los mismos desde la última vez que
+	\texttt{make} fue ejecutado.\\
+\hline
+	\texttt{FORCE} & 
+	Es equivalente a \texttt{.PHONY}, salvo que se pone como pre-requisito y 
+	es el objetivo de una regla vacía.\\
+\hline
+\end{tabular}
+\end{center}
+\bigskip
+Veamos unos ejemplos de uso de variables reservadas:
+\bigskip
+\begin{lstlisting}
+VPATH = src/:obj/:include/
+.PHONY: $(PROJECT)
+\end{lstlisting}
+\bigskip
+Definimos la variable \texttt{VPATH} para que busque los archivos que 
+especificamos en el makefile en el siguiente orden:
+\begin{equation*}
+\text{directorio actual}\to\text{src}\to\text{obj}\to\text{include}
+\end{equation*}
+De esta manera, un archivo que se encuentre dentro del directorio "include",
+no tendrá que ser especificado de la forma \texttt{include/nombre}, puesto
+que automáticamente \texttt{make} lo encontrará. Es decir, podremos escribir
+\texttt{nombre} sin ningún miedo. En el caso de \texttt{.PHONY}, al escribir
+como pre-requisito \texttt{\$(PROJECT)} (que suponemos que contendrá el
+nombre del ejecutable), estamos forzando a construirlo aunque no hayamos 
+realizado ninguna actualización cada vez que ejecutemos \texttt{make} sobre
+el makefile.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		 DIRECTIVAS Y FUNCIONES			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Directivas y funciones}
+
+Para makefiles extensos, complicados o sofisticados, el uso de las 
+directivas y funciones es esencial. Las directivas son llamadas a funciones 
+de \texttt{make} que realizan diferentes tareas: desde incluir otros 
+makefiles hasta manejar el orden de las asignaciones de las variables. Las 
+funciones tienen labores parecidas, pero en el contexto de las variables.
+
+\subsection{Directivas}
+
+Algunas de las directivas más básicas son las siguientes:
+
+\subsubsection{Directiva \texttt{define}}
+
+\textbf{\textcolor{burdeos}{Uso}}
+\\La directiva \texttt{define} sirve para encapsular un cierto número de 
+recetas y/o comandos en una variable. Suele ser útil cuando esa secuencia es 
+utilizada en diversas reglas.
+\\
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+define <variable> = 
+<comando>
+<comando>
+...
+endef
+\end{lstlisting}
+Es importante saber que esta directiva no realiza expansiones de la 
+secuencia encapsulada, es decir, no expanden los valores de las 
+variables en la definición. Estas referencias se convierten en parte del 
+valor de la variable, pero sí que son expandidas cuando la variable
+creada es referenciada en una regla.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+define compile =
+@echo "Compilando el archivo $@"
+$(CXX) $(CXXFLAGS) -o $@ $<
+endef
+\end{lstlisting}
+
+\subsubsection{Directiva \texttt{override}}
+
+\textbf{\textcolor{burdeos}{Uso}}
+\\La directiva \texttt{override} se usa sobre la asignación de una variable. 
+El uso de esta directiva provoca que el resto de asignaciones de valores a 
+esa variable en el makefile sean ignorados. Esto es equivalente a realizar 
+una llamada a la orden \texttt{make} escribiendo la declaración de la 
+variable en la línea de comandos.
+\\
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+override <variable> = <valor>
+override <variable> := <valor>
+override define <variable> =
+<valor>
+endef
+\end{lstlisting}
+Podemos observar que podemos utilizar la directiva \texttt{override} para la
+definición de cualquier tipo de variable. Para poder modificar el valor de 
+una variable definida con la directiva, debemos volver a usarla en la 
+asignación del nuevo valor.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+Hasta = la vista baby 
+override Hasta = luego
+override Hasta += maricarmen
+\end{lstlisting}
+La variable \texttt{Hasta} contiene el valor "luego maricarmen", ignorando 
+la primera declaración de la variable.
+
+\subsubsection{Directiva \texttt{undefine}}
+
+\textbf{\textcolor{burdeos}{Uso}}
+\\La directiva \texttt{undefine} se utiliza para borrar no sólo el valor de
+una variable, si no que la variable al completo.
+\\
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+undefine <variable>
+\end{lstlisting}
+Con \texttt{undefine} podemos también borrar variables especificadas por la 
+línea de comandos usando la directiva \texttt{override}.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+amigos = muchos
+undefine amigos
+\end{lstlisting}
+Si intentamos utilizar la variable \texttt{amigos} con posterioridad, saltará
+un error puesto que la variable ya no existe.
+
+\subsubsection{Directiva \texttt{vpath}}
+
+\textbf{\textcolor{burdeos}{Uso}}
+\\La directiva \texttt{vpath} es una alternativa a la variable reservada 
+\texttt{VPATH} que nos proporciona más flexibilidad.
+\\
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+vpath <patron> <directorio>:<directorio>:...
+vpath <patron>
+vpath
+\end{lstlisting}
+La primera declaración especifica dónde buscar los archivos del tipo \texttt{patron} de forma secuencial, que es equivalente a la variable 
+\texttt{VPATH} pero específico a un patrón de archivos. La segunda 
+declaración borra todas las directivas \texttt{vpath} anteriores relativas a 
+ese patrón, mientras que la última borra todas las anteriores directivas 
+\texttt{vpath}.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+vpath %.cpp src/
+vpath %.h include/
+\end{lstlisting}
+Aquí se especifica a \texttt{make} que, de no encontrar los archivos que 
+cumplan el patrón \texttt{\%.cpp} en el directorio de trabajo, los busque en 
+el directorio "src". Análogamente, buscará los archivos de cabecera en 
+"include".
+
+\subsection{Funciones}
+
+Algunas de las funciones más básicas y otras que hayan aparecido en los 
+apuntes en apartados anteriores son las siguientes:
+
+\subsubsection{Función \texttt{subst}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(subst <fragmento>,<reemplazo>,<texto>)
+\end{lstlisting}
+La función \texttt{subst} sustituye \texttt{fragmento} por \texttt{reemplazo}
+en \texttt{texto}.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+eme = la eme me mola
+eMe = $(subst m,M,$(eme))
+\end{lstlisting}
+La variable \texttt{eMe} contendrá el siguiente texto: "la eMe Me Mola".
+
+\subsubsection{Función \texttt{patsubst}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(subst <patron>,<reemplazo>,<texto>)
+\end{lstlisting}
+Esta función es equivalente a \texttt{subst}, salvo que ésta realiza el 
+reemplazo sobre los fragmentos que cumplan \texttt{patron}. El patrón se 
+escibe usando '\%', y el reemplazo también puede ser especificado de esta 
+forma. Esta función es equivalente a la referencia de sustitución.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+src = macarrones.cpp tomate.cpp salchichas.cpp
+obj = $(patsubst %.cpp,%.o,$(src))
+\end{lstlisting}
+La variable \texttt{obj} estará formada por los archivos
+\texttt{macarrones.o}, \texttt{tomate.o} y \texttt{salchichas.o}.
+
+\subsubsection{Función \texttt{wildcard}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(wildcard <patron>)
+\end{lstlisting}
+Esta función es equivalente al uso del carácter '*' en bash. Esto es, expande
+la variable al conjunto de ocurrencias del patrón. Esto nos puede ser útil
+cuando definimos variables que son conjuntos de archivos.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\\Supongamos que tenemos como archivos \texttt{kase.o} y \texttt{chiste.o}.
+\begin{lstlisting}
+obj1 = *.o
+obj2 := $(wildcard *.o)
+\end{lstlisting}
+La variable \texttt{obj1} contendrá literalmente la cadena de caracteres 
+"*.o", mientras que \texttt{obj2} si que contendrá los dos archivos.
+
+\subsubsection{Función \texttt{word}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(word n, <texto>)
+\end{lstlisting}
+Esta función devuelve la n-ésima palabra de \texttt{texto}, donde $n$ 
+comienza por 1.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+hasta = la vista baby
+edad-mental := $(word 3,$(hasta))
+\end{lstlisting}
+La variable \texttt{edad-mental} contendrá la cadena de caracteres "baby",
+que es la tercera palabra de la variable \texttt{hasta}.
+
+\subsubsection{Funciones \texttt{filter} y \texttt{filter-out}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(filter <patron> ...,<texto>)
+$(filter-out <patron> ...,<texto>)
+\end{lstlisting}
+La función \texttt{filter} (resp. \texttt{filter-out}) devuelve todas las 
+instancias de \texttt{texto} que cumplan \texttt{patron} (resp. que no 
+cumplan \texttt{patron}). Se puede especificar más de un patrón separando 
+cada uno por un espacio en blanco. 
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+bosque = arbol.h bellota.s ardilla.out jabali.cpp
+animales := $(filter %.out %.cpp,$(bosque))
+relacion := $(filter-out %.h %.cpp,%(bosque))
+\end{lstlisting}
+La variable \texttt{animales} contendrá los archivos \texttt{ardilla.out} y
+\texttt{jabali.cpp}, mientras que \texttt{relacion} está formada por 
+\texttt{bellota.s} y \texttt{ardilla.out}.
+
+\subsubsection{Función \texttt{if[-else]}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(if <condicion>,<se cumple>[,<no se cumple>])
+\end{lstlisting}
+Esta función devuelve \texttt{se cumple} si se cumple la condición 
+\texttt{condicion}. En caso de que no se cumpla y no se haya definido 
+\texttt{no se cumple}, la variable quedará vacía.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+vida =
+existe := $(if ifdef vida,si,no)
+\end{lstlisting}
+La variable \texttt{existe} contendrá la cadena de caracteres "si", puesto
+que se cumple la condición \texttt{ifdef vida}\footnote{Los condicionales en
+\texttt{make} siguen una sintaxis específica que usa directivas como 
+\texttt{ifdef}, \texttt{ifeq}, \dots}.
+
+\subsubsection{Función \texttt{foreach}}
+
+\textbf{\textcolor{burdeos}{Sintaxis}}
+\begin{lstlisting}
+$(foreach <variable>,<lista>,<accion>)
+\end{lstlisting}
+Esta función devuelve una lista con el resultado de aplicar \texttt{accion}
+a cada uno de los elementos de \texttt{lista}.
+\\
+
+\textbf{\textcolor{burdeos}{Ejemplo}}
+\begin{lstlisting}
+dirs := src include
+archivos := $(foreach dir,$(dirs),$(wildcard $(dir)/*))
+\end{lstlisting}
+La variable \texttt{archivos} contendrá todos los archivos del directorio 
+"src" y todos los archivos del directorio "include".
+\\
+
+Existen muchísimas más funciones y directivas en \texttt{make}. Para saber
+más sobre ellas, es recomendable la lectura del manual de la GNU de la orden.
+Un ejemplo de uso de directivas y funciones es el siguiente:
+\bigskip
+\begin{lstlisting}
+vpath %.h include/
+vpath %.cpp src/
+SOURCES := goblin.cpp dungeon.cpp
+OBJECTS := $(patsubst %.cpp,%.o,$(SOURCES))
+HEADERS := $(patsubst %.cpp,%.h,$(SOURCES))
+define compile =
+@echo "Compilando $@ ..."
+$(CXX) $(CXXFLAGS) -o $@ $<
+endef
+...
+$(OBJECTS): %.o: %.cpp %.h
+	$(compile)
+\end{lstlisting}
+\bigskip
+Este puede ser perfectamente el fragmento de un makefile real, en el que
+se utiliza tanto la función \texttt{patsubst} como la directiva 
+\texttt{define} para ahorrarnos la escritura repetitiva de nombres y de 
+recetas.
+\\
+
+Podemos ya observar que mediante el uso de variables, funciones y directivas,
+el primer makefile que hicimos de ejemplo, en caso de que cambiara la
+estructura de archivos del programa, sería mucho más fácil reflejar esos
+cambios en nuestro makefile. En el anexo se encuentra un makefile, basado
+en el ejemplo inicial de programa, que utiliza todos estos conocimientos.
+Ese makefile además usa algunas utilidades de \texttt{make} que vamos a ver
+a continuación.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	    	 OTRAS UTILIDADES			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\section{Otras utilidades}
+
+\subsection{Utilidades en recetas}
+
+\subsubsection{Definición en varias líneas}
+
+En ocasiones, por razones estéticas o de claridad, puede resultarnos útil el definir una variable o una receta en más de una línea. Para ello usamos el caracter '\textbackslash'. Sin embargo, dependiendo de como lo escribamos, 
+el resultado final puede cambiar.
+\bigskip
+\begin{lstlisting}
+hola1:
+	@echo hola\
+caracola
+hola2:
+	@echo hola\
+	caracola
+hola3:
+	@echo hola \
+	caracola
+hola4:
+	@echo hola\
+	 caracola
+\end{lstlisting}
+\bigskip 
+El resultado tanto de \texttt{hola1} y \texttt{hola2} es "holacaracola",
+mientras que para las otras dos es "hola caracola".
+
+\subsubsection{Silenciar recetas}
+
+Para silenciar recetas, simplemente debemos usar el carácter '@' al inicio 
+de la línea. De esta forma, sólo aparecerá en pantalla el mensaje que 
+devuelva la orden que realiza la receta. Suele utilizarse sobretodo 
+en las recetas con la orden de bash \texttt{echo}.
+
+\subsubsection{Ignorar errores de recetas}
+
+Para que \texttt{make} ignore un error y prosiga la ejecución simplemente es 
+necesario añadir a la línea que queremos que ignore si produce un error con  
+el símbolo '-'. Se debe tener mucho cuidado con el uso de esta utilidad, 
+puesto que pueden producirse errores derivados de otros que han sido 
+ignorados, causando un caos y errores que son difíciles de predecir.
+
+\subsection{Uso de colores en la terminal}
+
+Para poder cambiar el color de salida en la terminal de los mensajes, podemos usar la función \texttt{tput}. Esta función no es exclusiva de \texttt{make}, y su sintaxis es la siguiente:
+\bigskip
+\begin{lstlisting}
+tput <argumento> [1-7]
+\end{lstlisting}
+\bigskip 
+Los posibles valores de \texttt{argumento} son los siguientes:
+\begin{itemize}[font={\color{rojooscuro}\bfseries}]
+	\item \texttt{\textcolor{rojooscuro}{setab}}: Cambia el color de fondo 
+	del texto con el color especificado.
+	\item \texttt{\textcolor{rojooscuro}{setaf}}: Cambia el color de las 
+	letras con el color especificado.
+	\item \texttt{\textcolor{rojooscuro}{sgr0}}: Elimina todas las 
+	modificaciones del texto
+	\item \texttt{\textcolor{rojooscuro}{bel}}: Hace sonar una campana.
+	\item Formatos de texto:
+	\begin{description}[font={\color{burdeos}}]
+		\item [\texttt{bold}] Modo negrita.
+		\item [\texttt{ dim}] Disminuye el grosor de las letras.
+		\item [\texttt{smul}] Entra en modo subrayado.
+		\item [\texttt{rmul}] Sale del modo subrayado.
+		\item [\texttt{ rev}] Entra en el modo de vídeo inverso.
+		\item [\texttt{smso}] Entra en el modo negrita.
+		\item [\texttt{rmso}] Sale del modo negrita.
+	\end{description}
+\end{itemize}
+
+Algunos códigos para colores son los siguientes (también pueden cambiar 
+dependiendo de la configuración de colores del ordenador en el que se 
+ejecuten):
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+	\textbf{\textcolor{burdeos}{Número}} & 
+	\textbf{\textcolor{burdeos}{Nombre}} &
+	\textbf{\textcolor{burdeos}{Color}} \\
+\hline
+	0 & negro & \cellcolor{negro-tput} \\
+\hline
+	1 & rojo & \cellcolor{rojo-tput} \\
+\hline
+	2 & verde & \cellcolor{verde-tput} \\
+\hline
+	3 & amarillo & \cellcolor{amarillo-tput} \\
+\hline
+	4 & azul & \cellcolor{azul-tput} \\
+\hline
+	5 & magenta & \cellcolor{magenta-tput} \\
+\hline
+	6 & cyan & \cellcolor{cyan-tput} \\
+\hline
+	7 & blanco & \cellcolor{blanco-tput} \\
+\hline
+\end{tabular}
+\end{center}
+\bigskip
+Estos apuntes son un pequeño resumen del manual de la GNU sobre la orden
+\texttt{make}. Aunque extenso, ese manual contiene todo lo que se puede hacer
+con makefiles. Para saber más sobre ellos, esta es la dirección web del
+manual: 
+\begin{center}
+\texttt{https://www.gnu.org/software/make/manual/make.html}
+\end{center}
+Además, todos los archivos de código usados como ejemplos, así como varios
+makefiles, se encuentran en el siguiente repositorio:
+\begin{center}
+\texttt{https://github.com/Manuelbelgicano/adventure}
+\end{center}
+
+\newpage
+\section{Anexo I. Makefile de ejemplo}
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+# Directives
+vpath %.h include/
+vpath %.cpp src/
+vpath %.o $(OBJ)
+# Compiler
+CXX = g++
+CXXFLAGS = -g
+# File variables
+PROJECT := adventure
+EXEC = $(BIN)$(PROJECT)
+MAINSRC := main.cpp
+SOURCES := goblin.cpp dungeon.cpp
+OBJECTS := $(SOURCES:.cpp=.o)
+HEADERS := $(SOURCES:.cpp=.h)
+MAINOBJ := $(MAINSRC:.cpp=.o)
+# Directory variables
+OBJ := obj/
+ZIP := zip/
+BIN := bin/
+# Other variables
+DOCUMENTATION = doxygen
+BROWSER = firefox
+COMPRESS = zip
+BOLD = `tput bold`
+GREEN = `tput setaf 2`
+RESET = `tput sgr0`
+# Define variables
+define compile =
+@echo "Compilando $@ ..."
+@$(CXX) $(CXXFLAGS) -o $@ $<
+@echo "${GREEN}HECHO${RESET}"
+endef
+define makedir =
+@echo "Creando carpeta $@ ..."
+@mkdir -p $@
+@echo "${GREEN}HECHO${RESET}"
+endef
+define makeexec =
+@echo "Generando el ejecutable $(PROJECT) ..."
+@$(CXX) $(CXXFLAGS) -o $@ $^
+@-mv $? $(OBJ)
+@echo "${GREEN}HECHO${RESET}"
+endef
+# Pattern-specific variables
+%.o: CXXFLAGS += -Wall -I./include -c
+
+# Recipeless rules
+all: $(EXEC) help author;
+.PHONY: $(EXEC) clean-hard $(DOCUMENTATION)
+clean-hard: clean-exec clean-obj clean-doxygen;
+$(PROJECT): | $(BIN)
+$(COMPRESS): | $(ZIP)
+$(MAINOBJ): dungeon.h | $(OBJ)
+$(OBJECTS): | $(OBJ)
+
+# File rules
+$(EXEC): $(OBJECTS) $(MAINOBJ)
+	$(makeexec)
+
+$(OBJECTS): %.o: %.cpp %.h
+	$(compile)
+
+$(MAINOBJ): $(MAINSRC)
+	$(compile)
+
+# Directory rules
+$(OBJ):
+	$(makedir)
+
+$(BIN):
+	$(makedir)
+
+$(ZIP):
+	$(makedir)
+
+# Other rules
+clean-exec:
+	@rm -f $(PROJECT)
+	@echo "El archivo $(PROJECT) ha sido borrado"
+
+clean-obj:
+	@rm -rf $(OBJ)
+	@echo "La carpeta $(OBJ) ha sido borrada con todos sus archivos"
+
+clean-doxygen:
+	@rm -rf doc/html doc/latex
+	@echo "La documentacion ha sido borrada"
+	
+$(DOCUMENTATION):
+	@echo "Creando documentacion..."
+	@$(DOCUMENTATION) doc/$(PROJECT).doxy
+	@echo "${GREEN}HECHO${RESET}"
+	@$(BROWSER) doc/html/index.html
+	
+$(COMPRESS): clean-hard
+	@echo "Creando el archivo comprimido $(PROJECT).zip ..."
+	@rm -rf $(ZIP)*
+	@$(COMPRESS) -r $(ZIP)/$(PROJECT).zip *
+	@echo "${GREEN}HECHO${RESET}"
+	
+help:
+	@echo "Posibles opciones:"
+	@echo "		${BOLD}clean-hard${RESET}	\
+	Borra todos los archivos creados por el makefile"
+	@echo "		${BOLD}clean-exec${RESET}	\
+	Borra el ejecutable"
+	@echo "		${BOLD}clean-obj${RESET}	\
+	Borra los archivos objeto"
+	@echo "		${BOLD}clean-doxyen${RESET}	\
+	Borra los archivos de documentacion"
+	@echo "		${BOLD}doxygen${RESET}		\
+	Genera la documentacion del proyecto"
+	@echo "		${BOLD}zip${RESET}		\
+	Genera un zip con el proyecto"
+
+author:
+	@echo "Este proyecto ha sido creado por Manuel Gachs Ballegeer"
+	@echo "https://github.com/Manuelbelgicano"
+\end{lstlisting}
 
 
 \end{document}
