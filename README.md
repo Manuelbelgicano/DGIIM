@@ -6,3 +6,5 @@ Contenidos del repositorio:
  1. **2**: Carpeta con los contenidos del segundo curso.
  2. **3**: Carpeta con los contenidos del tercer curso.
  3. **extra**: Carpeta con contenidos relacionados con la materia pero que no forman parte de la misma.
+
+El señor agonías estuvo aquí porque es un perro tkm
