@@ -1,0 +1,86 @@
+\documentclass[12pt,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				PAQUETES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath} % Matemáticas
+\usepackage{amsfonts} % Letras caligráficas para matemáticas
+\usepackage{fancyhdr} % Encabezados/pies de páginas
+\usepackage[a4paper]{geometry} % Márgenes
+\usepackage{mathtools} % Matemáticas extra
+\usepackage{titlesec} % Títulos especiales
+\usepackage{amsthm} % Teoremas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MATEMÁTICAS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewenvironment{proof}{\textbf{Demostración:}}{\qed} % Cambiar el título de las demostraciones
+\everymath{\displaystyle} % Para que las fracciones y esas cosas se vean siempre grandes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{
+	left=2.5cm,
+	right=2.5cm,
+	bottom=2.5cm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RE,RO]{This is another head}
+\fancyhead[LE,LO]{This is a head}
+\fancyfoot[CE,CO]{\thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				COMANDOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength\parindent{0pt} % Tamaño de la sangría
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TÍTULO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\Huge{\textbf{Desigualdad de Cauchy-Schwarz}}}
+\author{\textit{Probabilidad}}
+\date{}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 DOCUMENTO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sean $X$ e $Y$ variables aleatorias sobre $(\Omega,\mathcal{A},P)$, centradas,
+con momento de orden dos finito. Se tiene la desigualdad de Cauchy-Schwarz:
+\begin{equation*}
+(E[XY])^2\leq E[X^2]E[Y^2]
+\end{equation*}
+
+\begin{proof}
+Definimos primero la variable aleatoria $W$ como $W=(X-\alpha Y)^2$. Puede
+verse que $W$ es no negativa para todo $\alpha\in\mathbb{R}$. Por tanto, 
+tenemos: 
+\begin{align*}
+0\leq E[W] &= E[(X-\alpha Y)^2] = E[X^2+\alpha^2Y^2-2\alpha XY] =\\
+&= E[X^2]+E[\alpha^2Y^2]-E[2\alpha XY] = E[X^2]+\alpha^2E[Y^2]-2\alpha E[XY]
+\end{align*}
+Si definimos ahora $f(\alpha)=E[W]$, sabemos que $f(\alpha)\geq 0$, para todo
+$\alpha\in\mathbb{R}$. Tomando ahora $\alpha=\frac{E[XY]}{E[Y^2]}$, sustituimos
+en $f(\alpha)$:
+\begin{align*}
+0\leq f\Big(\frac{E[XY]}{E[Y^2]}\Big) &= E[X^2]+\Big(\frac{E[XY]}{E[Y^2]}
+\Big)^2E[Y^2]-2\frac{E[XY]}{E[Y^2]}E[XY] =\\
+&= E[X^2]+\frac{E[XY]^2}{E[Y^2]}- 2\frac{E[XY]^2}{E[Y^2]} =\\
+&= E[X^2]-\frac{E[XY]^2}{E[Y^2]} 
+\end{align*}
+\begin{equation*}
+0\leq E[X^2]-\frac{E[XY]^2}{E[Y^2]}\Leftrightarrow (E[XY])^2\leq E[X^2]E[Y^2]
+\end{equation*}
+Además, se da la igualdad cuando $f(\alpha)=0$, esto es, cuando $X=\alpha Y$.
+
+\end{proof}
+
+\end{document}
