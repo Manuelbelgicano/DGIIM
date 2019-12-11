@@ -82,13 +82,15 @@ void funcion_camarero() {
 			etiq_valida = MPI_ANY_TAG;
 		else
 			etiq_valida = etiq_levantarse;
-		if (num_sentados<4) {
-			MPI_Recv(&valor,1,MPI_INT,MPI_ANY_SOURCE,etiq_sentarse,MPI_COMM_WORLD,&estado);
+		
+		MPI_Recv(&valor,1,MPI_INT,MPI_ANY_SOURCE,etiq_valida,MPI_COMM_WORLD,&estado);
+		if (estado.MPI_TAG==etiq_sentarse) {
 			num_sentados++;
-			cout<<"\t\t\tCamarero sienta al filósofo "<<valor<<" en la mesa\n";
+			cout<<"\nCamarero sienta al filósofo "<<valor<<" en la mesa\n\n";
+		} else {
+			MPI_Recv(&valor,1,MPI_INT,MPI_ANY_SOURCE,etiq_levantarse,MPI_COMM_WORLD,&estado);
+			num_sentados--;
 		}
-		MPI_Recv(&valor,1,MPI_INT,MPI_ANY_SOURCE,etiq_levantarse,MPI_COMM_WORLD,&estado);
-		num_sentados--;
 	}
 }
 // ---------------------------------------------------------------------
