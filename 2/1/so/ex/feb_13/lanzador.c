@@ -1,51 +1,65 @@
-/**
- * Author: Manuel Gachs Ballegeer
- * File: lanzador.c
- */
-
-#include<dirent.h>
-#include<errno.h>
-#include<fcntl.h>
-#include<signal.h>
+/*
+'lanzador <arg1> <arg2>' admite dos argumentos que serán los nombres de de dos archivos
+del directorio de trabajo. El lanzador se encarga de crear el FIFO y dos procesos hijos,
+cada uno de los cuales ejecutará el programa 'explorador'. Tras lo cual leerá del FIFO
+lo que escriban los exploradores y escribirá en pantalla el nombre del archivo y el nuevo
+propietario.
+*/
 #include<stdio.h>
-#include<stdlib.h>
+#include<signal.h>
+#include<sys/types.h>
+#include<unistd.h>
+#include<sys/stat>
+#include<fcntl.h>
 #include<string.h>
 #include<sys/mman.h>
-#include<sys/stat>
-#include<sys/types>
-#include<sys/wait>
-#include<unistd.h>
+#include<stdbool.h>
+#include<wait.h>
 
-#define ARCHIVO_FIFO "comsFIFO"
+#define ARCHIVO_FIFO "canal"
 
-int main(int argc,char* argv[]) {
+// Programa principal
+int main(int argc,char *argv[]) {
+	// Eliminamos el buffer del printf
+	setvbuf(sdtout,(char*)NULL,_IONBF,0);
+
+	// Comprobamos número de argumentos
 	if (argc!=3) {
-		perror("Parámetros incorrectos");
+		perror("Error en el número de argumentos");
 		exit(EXIT_FAILURE);
 	}
 
-	char archivo1[256];
-	char archivo2[256];
-	strcpy(archivo1,argv[1]);
-	strcpy(archivo2,argv[2]);
-	
-	pid_t hijo1;
-	pid_t hijo2;
-	hijo1 = fork();
-	hijo2 = hijo1>0?fork:-1;
+	// Creación del fifo
+	umask(0);
+	mkfifo(ARCHIVO_FIFO,0666);
 
-	int fd;
-	char buffer[256];
-	mknod(ARCHIVO_FIFO,S_IFIFO|0666,0);
-	fd = open(ARCHIVO_FIFO,S_IRUSR,0400);
+	// Apertura del fifo para lectura
+	int fd_fifo;
+	if ((fd_fifo=open(ARCHIVO_FIFO,O_RDONLY))<0) {
+		perror("Error en la apertura del archivo");
+		exit(EXIT_FAILURE);
+	}
 
-	if (hijo1==0)
-		execl("./explorador","archivo1",NULL);
-	else if (hijo2==0)
-		execl("./explorador","archivo2",NULL);
+	// Creación de los hijos
+	int pid[2];
+	pid[0] = fork();
+	if (pid[0]!=0)
+		pid[1] = fork();
+	if (pid[0]==-1 || pid[1]==-1) {
+		perror("Error en la creación de los hijos");
+		exit(EXIT_FAILURE);
+	}
 
-	while (1) {
-		read(fd,buffer,256);
-		printf(buffer);
+	// Asignación de los hijos
+	if (pid[0]==0) { // Primer hijo
+
+
+	//Procesamiento de los datos del buffer
+	char buffer[100];
+	int leidos;
+
+	while(true) {
+		leidos = read(fd_fifo,buffer,100);
+		printf("%s\n",buffer);
 	}
 }
