@@ -200,6 +200,7 @@
 	Manuel Gachs Ballegeer	
 	\end{tabular}
 }
+\newcommand{\lx}{LaTeX }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %		ENCABEZADO/PIE DE PAGINA		%
@@ -301,6 +302,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introducción}
+
+\lx (\LaTeX) es un sistema de composición de textos que incluye herramientas
+para la creación de escritos científicos y técnicos. Además, permite al
+usuario configurar la estructura del documento que escribe hasta el más
+mínimo detalle. \LaTeX es una herramienta de software libre, por lo que se 
+encuentra disponible de forma gratuita.
+\\
+
+Los textos en \lx tienen la extensión \texttt{.tex}, y podemos crearlos 
+usando cualquier editor de texto plano. Sin embargo, es necesario 
+compilarlos para poder ver el producto final de nuestro trabajo. Existen 
+aplicaciones que nos ayudan a escribir textos en LaTeX, puesto que poseen
+paneles de previsualización, plantillas de textos, etc. Para distribuciones de
+Linux, una aplicación que puede resultar útil es \textbf{Gummi}.
+\\
+
+Para compilar un archivo \lx a pdf, simplemente tenemos que escribir la 
+siguiente orden en nuestra terminal:
+\begin{lstlisting}
+latex -output-format=pdf archivo.tex
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %				ESTRUCTURA 				%
