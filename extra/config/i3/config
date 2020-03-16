@@ -1,0 +1,279 @@
+# Mod key
+set $mod Mod4
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# Exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Start a terminal
+# This is my personal preferred shortcut, I feel like it's intuitive and fast
+bindsym $mod+Return exec i3-sensible-terminal # My default terminal is urxvt
+set $mod Mod4
+
+# Start rofi program launcher
+## This is the substitute of dmenu
+bindsym $mod+d exec rofi -show run -lines 10 -matching fuzzy -color-enabled
+
+#################################
+#	Font & keyboard		#
+#################################
+# Font used in window titles
+font pango:Source Code Pro 8
+
+# Define keyboard layout
+set $keyboard "es"
+
+# Keyboard layout
+exec setxkbmap -layout $keyboard
+
+# Restarting the keyboard layout in case it resets to 'default'
+exec_always setxkbmap $keyboard
+
+# Turn numeric keypad on
+exec numlockx &
+
+#################################
+#	Locking			#
+#################################
+# Set lock command
+bindsym $mod+shift+x exec $HOME/.config/i3/lock.sh
+# Set xautolock to 30 minutes
+# exec_always xautolock -time 30 -locker "i3lock --color=#000000"  &
+# Set xss-lock
+# exec_always xss-lock --notifier=/usr/share/doc/xss-lock/dim-screen.sh -- i3lock --color=#000000 &
+
+#################################
+#	Workspace managing	#
+#################################
+# Workspaces variables
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+set $ws0 "0"
+
+# Switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+## Warning: This keybind will only work on 'es' keyboards
+bindsym $mod+masculine workspace $ws0 
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+## Warning: This keybind will only work on 'es' keyboards
+bindsym $mod+Shift+masculine move container to workspace $ws0
+
+#################################
+#	Container managing	#
+#################################
+# Set variables for move keys 
+set $kright "l"
+set $kup "k"
+set $kdown "j"
+set $kleft "h"
+
+# Changing focus
+bindsym $mod+$kleft focus left
+bindsym $mod+$kdown focus down
+bindsym $mod+$kup focus up
+bindsym $mod+$kright focus right
+
+	# Alternatively, you can use the cursor keys
+	bindsym $mod+Left focus left
+	bindsym $mod+Down focus down
+	bindsym $mod+Up focus up
+	bindsym $mod+Right focus right
+
+# Focus urgent container
+bindsym $mod+x [urgent=latest] focus
+
+# Move focused container
+bindsym $mod+Shift+$kleft move left
+bindsym $mod+Shift+$kdown move down
+bindsym $mod+Shift+$kup move up
+bindsym $mod+Shift+$kright move right
+
+	# Alternatively, you can use the cursor keys:
+	bindsym $mod+Shift+Left move left
+	bindsym $mod+Shift+Down move down
+	bindsym $mod+Shift+Up move up
+	bindsym $mod+Shift+Right move right
+
+## Spliting
+# Split in vertical orientation
+bindsym $mod+v split v
+
+# Split in horizontal orientation
+bindsym $mod+Shift+v split h
+
+## Fullscreen
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+## Layout
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+## Tiling/Floating
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# Toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Kill focused container
+bindsym $mod+Shift+q kill
+
+#################################
+#	Resizing containers	#
+#################################
+# Resize window (you can also use the mouse for that)
+mode "resize" {
+	# These bindings trigger as soon as you enter the resize mode
+
+	# Pressing left will shrink the window’s width.
+	# Pressing right will grow the window’s width.
+	# Pressing up will shrink the window’s height.
+	# Pressing down will grow the window’s height.
+	bindsym $kleft resize shrink width 5 px or 5 ppt
+	bindsym $kdown resize grow height 5 px or 5 ppt
+	bindsym $kup resize shrink height 5 px or 5 ppt
+	bindsym $kright resize grow width 5 px or 5 ppt
+
+		# same bindings, but for the arrow keys
+		bindsym Left resize shrink width 5 px or 5 ppt
+		bindsym Down resize grow height 5 px or 5 ppt
+		bindsym Up resize shrink height 5 px or 5 ppt
+		bindsym Right resize grow width 5 px or 5 ppt
+
+	# back to normal: Enter or Escape or $mod+r
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
+}
+
+# Start resize mode
+bindsym $mod+r mode "resize"
+
+#################################
+#	Aesthetics		#
+#################################
+# Color palette
+set $fg #ffffff
+set $bg #000000
+
+# Set wallpaper variables
+set $wallpaper_path = $HOME/.wallpapers/wall1.jpg
+
+# Sets wallpaper using feh
+exec_always feh --bg-scale $wallpaper_path
+
+# Custom Colors
+	# class                 border  backgr. text indicator child_border
+	client.focused          $bg     $bg     $fg  $bg       $bg
+	client.focused_inactive $bg     $fg     $fg  $bg       $bg
+	client.unfocused        $bg     $fg     $fg  $bg       $bg
+	client.urgent           $bg     $bg     $bg  $bg       $bg
+	client.placeholder      $bg     $fg     $fg  $bg       $bg
+
+	client.background       $bg
+
+# i3-gaps configuration
+gaps inner 1
+
+# Borders
+default_border pixel 0
+
+#################################
+#	Scratchpad		#
+#################################
+# Move focused window to scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+#################################
+#   Custom container placing	#
+#################################
+# Set floating windows
+for_window[class="keepassxc"] floating enable
+for_window[class="feh"] floating enable
+for_window[class="Pavucontrol"] floating enable
+for_window[class="steam"] floating enable
+
+#################################
+#	Custom shortcuts	#
+#################################
+
+# Screenshots
+bindsym $mod+Print exec maim | xclip -selection clipboard -t image/png #[Maim option using xdotool]
+bindsym $mod+shift+Print exec maim -s | xclip -selection clipboard -t image/png
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+# exec --no-startup-id nm-applet
+
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5        # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5      # decrease screen brightness
+
+#################################
+#   			Bar				#
+#################################
+bar {
+	font pango:Source Code Pro 9
+	separator_symbol "~"
+	colors {
+		background #000002
+		statusline #e0c2c5
+		separator #c1848b
+		focused_workspace  #704479 #704479 #e0c2c5
+		active_workspace   #704479 #704479 #e0c2c5
+		inactive_workspace #101227 #101227 #9b4d8b
+		urgent_workspace   #c1848b #c1848b #000002
+   	}
+	status_command i3status -c $HOME/.config/i3status/config 
+}
+
+# Asign Workspaces
+
+assign [class="TelegramDesktop"] $ws10
