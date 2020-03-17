@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml>
+<!-- Nivel 0. Entrevista de trabajo de camarero -->
+<!-- Manuel Gachs Ballegeer -->
+<!-- marzo 2020 -->
+
+<!-- PREGUNTA 1 -->
+<category>
+    <pattern> HABLAME SOBRE TI </pattern>
+    <template> Me llamo <get name="nombre"/>, y tengo cinco annos de experiencia en el sector trabajando en diversos restaurantes </template>
+</category>
+
+<category>
+    <pattern> ^ [cuentame hablame] ^ ti ^ </pattern>
+    <template> 
+        <srai> 
+            HABLAME SOBRE TI 
+        </srai> 
+    </template>
+</category>
+
+<category>
+    <pattern> * sobre ti </pattern>
+    <template> 
+        <srai> 
+            HABLAME SOBRE TI 
+        </srai> 
+    </template>
+</category>
+
+<category>
+    <pattern> cuenta+ * eres ^ </pattern>
+    <template> HABLAME SOBRE TI </template>
+</category>
+
+<!-- PREGUNTA 2 -->
+<category>
+    <pattern> CUAL MAYOR DEFECTO </pattern>
+    <template>
+        <!-- Contamos numero de defectos pedidos -->
+        <think>
+        <condition name="defectos">
+            <li value="un">
+                <set name="defectos">1</set>
+            </li>
+            <li value="uno">
+                <set name="defectos">1</set>
+            </li>
+            <li value="dos">
+                <set name="defectos">2</set>
+            </li>
+        </condition>
+        <!-- Asignamos defecto si es únicamente uno -->
+        <set var="defecto_aleatorio">
+            <random>
+                    <li> a veces soy algo competitivo </li>
+                    <li> me gusta más trabajar de manera individual que en equipo </li>
+            </random>
+        </set>
+        </think>
+        <!-- Respuesta -->
+        <condition name="defectos">
+            <li value="1">
+            Mi mayor defecto es que <get var="defecto_aleatorio"/>
+            </li>
+            <li value="2">
+                Mis dos defectos son que a veces soy algo competitivo y me gusta más trabajar de manera individual que en equipo.
+            </li>
+            <li>
+                Solamente tengo dos defectos: a veces soy algo competitivo y me gusta más trabajar de manera individual que en equipo.
+            </li>
+        </condition>
+    </template>
+</category>
+
+<category>
+    <pattern> [cuentame dime cual] (cual) es tu mayor defecto </pattern>
+    <template>
+        <think>
+            <set name="defectos">uno</set>
+        </think>
+        <srai>
+            CUAL MAYOR DEFECTO
+        </srai>
+    </template>
+</category>
+
+<category>
+    <pattern> * [es son] * (de) (tus) defecto+ ^ </pattern>
+    <template> 
+        <think>
+            <set name="defectos"><star index="2"/></set>
+        </think>
+        <srai>
+            CUAL MAYOR DEFECTO
+        </srai>
+    </template>
+</category>
+
+<!-- PREGUNTA 3 -->
+<category>
+    <pattern> CUALES SON TUS VIRTUDES </pattern>
+    <template>
+        <!-- Contamos numero de virtudes pedidas y elegimos inicio -->
+        <think>
+        <condition name="virtudes">
+            <li value="una">
+                <set name="virtudes">1</set>
+            </li>
+            <li value="dos">
+                <set name="virtudes">2</set>
+            </li>
+            <li value="tres">
+                <set name="virtudes">3</set>
+            </li>
+            <li value="cuatro">
+                <set name="virtudes">4</set>
+            </li>
+            <li value="cinco">
+                <set name="virtudes">5</set>
+            </li>
+        </condition>
+        <condition name="virtudes">
+            <li value="1">
+                <set var="inicio">1</set>
+                <set var="fin">1</set>
+            </li>
+            <li value="2">
+                <set var="inicio">1</set>
+                <set var="fin">2</set>
+            </li>
+            <li value="3">
+                <set var="inicio">1</set>
+                <set var="fin">3</set>
+            </li>
+            <li value="4">
+                <set var="inicio">1</set>
+                <set var="fin">4</set>
+            </li>
+            <li value="5">
+                <set var="inicio">1</set>
+                <set var="fin">5</set>
+            </li>
+            <li>
+                <set name="virtudes">-1</set>
+                <set var="inicio">1</set>
+                <set var="fin">3</set>
+            </li>
+        </condition>
+        <!-- Creamos la lista de virtudes -->
+        <set var="lista"><srai> SUBLIST FROM <get var="inicio"/> TO <get var="fin"/> OF creatividad profesionalidad lealtad responsabilidad humildad </srai></set>
+        </think>
+        <!-- Respuesta -->
+        <condition name="virtudes">
+            <li value="1">
+                Esta es una de mis virtudes: <get var="lista"/>
+            </li>
+            <li value="2">
+                Estas son dos de mis virtudes: <get var="lista"/>
+            </li>
+            <li value="3">
+                Estas son tres de mis virtudes: <get var="lista"/>
+            </li>
+            <li value="4">
+                Estas son cuatro de mis virtudes: <get var="lista"/>
+            </li>
+            <li value="5">
+                Estas son cinco de mis virtudes: <get var="lista"/>
+            </li>
+            <li value="-1">
+                Ahora mismo solamente se me ocurren tres, que son <get var="lista"/>
+            </li>
+        </condition>
+    </template>
+</category>
+
+<category>
+    <pattern> [cuentame dime] (que) (cual) (cuales) (es) (son) * (de) (tus) virtud+ ^</pattern>
+    <template>
+        <think>
+            <set name="virtudes"><star index="1"/></set>
+        </think>
+        <srai>
+            CUALES SON TUS VIRTUDES
+        </srai>
+    </template>
+</category>
+
+<!-- PREGUNTA 4 -->
+<category>
+    <pattern> TE CONSIDERAS CREATIVA </pattern>
+    <template> me considero una persona muy creativa, soy capaz de encontrar soluciones rápidamente a problemas </template>
+</category>
+
+<category>
+    <pattern> * creativ+ ^ </pattern>
+    <template> <srai> TE CONSIDERAS CREATIVA </srai> </template>
+</category>
+
+<!-- PREGUNTA 5 -->
+<category>
+    <pattern> POR QUE ELEGIMOS </pattern>
+    <template> porque estoy muy motivado para este puesto de trabajo y creo que soy la persona más indicada para realizarlo </template>
+</category>
+
+<category>
+    <pattern> [crees] * elegir+ ^ </pattern>
+    <template> Sí lo creo <srai> POR QUE ELEGIMOS </srai> </template>
+</category>
+
+<category>
+    <pattern> [por que] * elegir+ ^ </pattern>
+    <template> <srai> POR QUE ELEGIMOS </srai> </template>
+</category>
+
+<category>
+    <pattern> * elegi+ ^ </pattern>
+    <template> Sí <srai> POR QUE ELEGIMOS </srai> </template>
+</category>
+</aiml>
