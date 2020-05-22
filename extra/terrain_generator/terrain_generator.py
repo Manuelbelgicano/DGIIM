@@ -1,4 +1,5 @@
 from random import random,randint,choice
+import pygame,sys
 
 class cell:
     """
@@ -14,6 +15,10 @@ class cell:
         the terrain of the cell (default water)
     neighbours: list
         list of neighbouring cells of the grid
+    is_delta : bool
+        if the cell is the delta of a river
+    is_begin : bool
+        if the cell is the beggining of a river
     
     Methods
     -------
@@ -21,6 +26,8 @@ class cell:
         Returns the number of neighbouring cells that have `_state`
     non_diagonal() : list
         Returns the non-diagonal neighbours of the cell
+    get_path(_size):
+        Returns a path from rhe cell of _size `_size`
     """
     def __init__(self,i=-1,j=-1):
         """
@@ -33,8 +40,11 @@ class cell:
         """
         self.x = i
         self.y = j
-        self.state = ""
+        self.state = "^"
         self.neighbours = []
+        self.parent = [-2,-2]
+        self.is_delta = False
+        self.is_begin = False
   
     def state_neighbours(self,_state):
         """ Returns the number of neighbouring cells that have `_state`
@@ -52,12 +62,42 @@ class cell:
     def non_diagonal(self):
         """Returns the non-diagonal neighbours of the cell
         """
-        non_diag = [self.neighbours[i] for i in range(len(self.neighbours)) if 
-                    (self.x==self.neighbours[i].x and (self.y==self.neighbours[i].y+1 
-                    or self.y==self.neighbours[i].y-1)) or 
-                    (self.y==self.neighbours[i].y and (self.x==self.neighbours[i].x+1 
-                    or self.x==self.neighbours[i].x-1))]
+        non_diag = self.neighbours.copy()
+
+        for i in range(len(self.neighbours)):
+            if self.neighbours[i].x!=self.x and self.neighbours[i].y!=self.y:
+                non_diag.remove(self.neighbours[i])
+
         return non_diag
+    
+    def get_path(self,_size):
+        """Returns a path from rhe cell of _size `_size`
+        Parameters
+        ----------
+        _size : int
+            Size of the path
+        """
+        path = [self]
+        end = False
+
+        while len(path)<_size and not end:
+            candidates = path[-1].non_diagonal()
+            elim = []
+            for i in range(len(candidates)):
+                for c in path:
+                    if c.x==candidates[i].x and c.y==candidates[i].y:
+                        elim.append(i)
+                if candidates[i].state=="~" or candidates[i].state=="-":
+                    elim.append(i)
+            path_choices = [candidates[i] for i in range(len(candidates)) if
+                            i not in elim]
+            if not path_choices:
+                end = True
+            else:
+                c = choice(path_choices)
+                path.append(c)
+
+        return path
 
 class map2D:
     """
@@ -80,6 +120,8 @@ class map2D:
         the height of the map
     width : int
         the width of the map
+    rivers : list
+        the list of river paths
     
     Methods
     -------
@@ -87,6 +129,8 @@ class map2D:
         Creates the map
     print_map() : str
         Returns a graphical representation for the map
+    def river_corner(path) : list
+        Returns a list of river corners and their appropiate angle
     """
 
     water = "~"
@@ -98,6 +142,7 @@ class map2D:
         self.map = []
         self.height = h
         self.width = w
+        self.rivers = []
 
         for i in range(h):
             row = []
@@ -140,7 +185,6 @@ class map2D:
             for c in row:
                 if random()<prob_l:
                     c.state = map2D.land
-        print(self.print_map(),"\n")
         
         # Smoothing
         n_iter = iter
@@ -160,36 +204,28 @@ class map2D:
                         elif not corner:
                             c.state = map2D.water
             n_iter -= 1
-            print("Smoothing number",iter-n_iter,":")
-            print(self.print_map(),"\n")
         
         # Mountain and river generation
         for row in self.map:
             seas = [row[i] for i in range(len(row)) if row[i].state==map2D.water]
             for c in seas: # River generation
-                shores = [c.neighbours[i] for i in range(len(c.neighbours)) if 
-                          c.neighbours[i].state==map2D.land]
+                shores_aux = c.non_diagonal()
+                shores = [shores_aux[i] for i in range(len(shores_aux)) if 
+                          shores_aux[i].state==map2D.land and 
+                          shores_aux[i].state_neighbours(map2D.river)==0]
                 if shores and random()<prob_r:
                     new_river = choice(shores)
-                    if new_river.state_neighbours(map2D.river)==0:
-                        new_river.state = map2D.river
-                        river_lenght = randint(0,r_len-1)
-                        last_cell = new_river
-                        end = False
-                        while river_lenght>0 and not end:
-                            non_diag = last_cell.non_diagonal()
-                            candidates = [non_diag[i] for i in 
-                                        range(len(non_diag)) if 
-                                        non_diag[i].state!=map2D.water
-                                        and non_diag[i].state!=map2D.river]
-                            if not candidates:
-                                end = True
-                            else:
-                                last_cell = choice(candidates)
-                                last_cell.state = map2D.river
-                                river_lenght -= 1
-                        print("New river:")
-                        print(self.print_map(),"\n")
+                    new_river.state = map2D.river
+                    c.is_delta = True
+                    river_lenght = randint(0,r_len-1)
+                    river_path = [c]
+                    path = new_river.get_path(river_lenght)
+                    for p in path:
+                        p.state = map2D.river
+                    river_path += path
+                    river_path[-1].is_begin = True
+                    if len(river_path)>1:
+                        self.rivers.append(river_path)
             lands = [row[i] for i in range(len(row)) if row[i].state==map2D.land and 
                      row[i].state_neighbours(map2D.mountain)==0]
             for c in lands: # Mountain generator
@@ -208,10 +244,6 @@ class map2D:
                             last_cell = choice(candidates)
                             last_cell.state = map2D.mountain
                             mountain_lenght -= 1
-                        print("New mountain:")
-                        print(self.print_map(),"\n")
-        print("\nFINAL VERSION:")
-        print(self.print_map(),"\n")
 
     def print_map(self):
         """Returns a graphical representation for the map
@@ -231,6 +263,61 @@ class map2D:
             map_image += "\n"
         return map_image
 
-# Program
-mapa = map2D(20,40)
-mapa.set_terrain()
+    def river_corner(self,path):
+        """Returns a list of river corners and their appropiate angle
+        Parameters
+        ----------
+        path : list
+            list of cells conforming the river
+        """
+        r_corners = []
+        for i in range(1,len(path)-1):
+            father = path[i-1]
+            son = path[i+1]
+
+            if father.x!=son.x and father.y!=son.y:
+                r_corners.append([i,angle_3(father,son,path[i])])
+        return r_corners
+
+def angle_3(a,b,c):
+    """Determines the angle of a corner `c` to match its neighbours
+
+    Parameters
+    ----------
+    a : cell
+        parent cell
+    b : cell
+        child cell
+    c : cell
+        corner cell
+    """
+    angle = 0
+    if (a.x==b.x+1 and b.y==a.y+1 and c.y==a.y+1) or (b.x==a.x+1 and
+        a.y==b.y+1 and c.y==b.y+1):
+        angle = 90
+    elif (b.x==a.x+1 and b.y==a.y+1 and c.x==a.x+1) or (a.x==b.x+1 and
+          a.y==b.y+1 and c.x==b.x+1):
+        angle = 180
+    elif (b.x==a.x+1 and a.y==b.y+1 and b.x==c.x+1) or(a.x==b.x+1 and 
+          b.y==a.y+1 and a.x==c.x+1):
+        angle = 270
+    return angle
+
+def angle_2(a,rel):
+    """Determines the turn angle of `a` relative to `rel` to match it
+
+    Parameters
+    ----------
+    a : cell
+        cell we want to know the angle
+    rel: cell
+        relative cell to the one we want
+    """
+    angle = 0
+    if a.y==rel.y+1:
+        angle = 90
+    elif rel.y==a.y+1:
+        angle = 270
+    elif a.x==rel.x+1:
+        angle = 180
+    return angle
