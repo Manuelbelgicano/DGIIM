@@ -104,12 +104,12 @@
 \section{Conceptos básicos}
 \subsection{Clasificación de los recursos}
 \frame{
-	\frametitle{El espacio vectorial $P_R$}
+	\frametitle{El conjunto $H$}
 		En Catan existen cinco recursos distintos, que denominaremos de la
 		siguiente manera:
 		\begin{block}{}
 		\centering
-		madera := $m$, arcilla := $a$, trigo := $t$, ovejas := $g$, 
+		madera := $m$, arcilla := $a$, trigo := $t$, ovejas := $o$, 
 		piedra := $p$
 		\end{block}
 		\begin{figure}[htp]
@@ -119,27 +119,32 @@
 }
 \frame{
 	Podemos definir los siguientes conjuntos:
-	$$R := \{m,a,t,g,p\}$$
-	$$P_R := \Bigg\{\sum_{\substack{i=1\\r\in R}}^5k_ir,\;k_i\in\mathbb{N}
-	\Bigg\}$$
-	donde el conjunto $P_R$ representa las posibles manos que puede tener 
-	un jugador.
+	$$R := \{m,a,t,o,p\}$$
+	$$H := \Big\{k_1m+k_2a+k_3t+k_4o+k_5p:\;k_i\in\mathbb{N}, i\in\{1,2,3,4,5\}
+	\Big\}$$
+	donde el conjunto $R$ es el conjunto de los recursos del juego y $H$ representa
+	las posibles manos que puede tener un jugador.
+	\bigskip
 	\begin{block}{}
-		El conjunto $P_R$ tiene estructura de espacio vectorial, y 
-		$P_R=\mathcal{L}(R)$
+		Podemos ver que $H=\mathcal{L}(R)$.
 	\end{block}
 }
 \frame{
-	\frametitle{Construcciones}
+	\frametitle{Elementos que otorgan puntuación}
 	\begin{columns}
 		\begin{column}{.5\textwidth}
-			Las distintas construcciones de Catan pueden verse como elementos 
-			de $P_R$, y son las siguientes:
+			Existen elementos de $H$ que otorgan puntuación al jugador, como pueden ser:
 			\begin{itemize}
-				\item \emph{Carretera}: $v = (1,1,0,0,0)$
-				\item \emph{Poblado}: $p=(1,1,1,1,0)$
-				\item \emph{Ciudad}: $c=(0,0,2,0,3)$
-				\item \emph{Desarrollo}: $d=(0,0,1,1,1)$
+				\item \emph{Poblado}: $(m+a+t+o)$
+				\item \emph{Ciudad}: $(2t+3p)$
+				\item \emph{Desarrollo}: $(t+o+p)$
+			\end{itemize}
+			También tendremos por ejemplo \textbf{la Gran Ruta Comercial}, o el \textbf{
+			Gran Ejército de Caballería}, que no dejan de ser múltiplos de carreteras o
+			desarrollos:
+			\begin{itemize}
+				\item \emph{GRC}: $5\cdot(m+a)$
+				\item \emph{GEC}: $3\cdot(t+o+p)$
 			\end{itemize}
 		\end{column}
 		\begin{column}{.5\textwidth}
@@ -150,68 +155,36 @@
 	\end{columns}
 }
 \frame{
-	\frametitle{Puntuación de las construcciones}
-	Cada construcción nos otorga una cantidad de puntos.
-	\begin{exampleblock}{\textbf{Carretera}}
-	La carretera en si misma no nos otorga puntos, pero como son necesarias
-	al menos dos para construir un poblado, entonces diremos que dan $^1/_3$ 
-	de un punto.
-	\end{exampleblock}
-	\begin{exampleblock}{\textbf{Poblado}}
-	El poblado otorga un (1) punto.
-	\end{exampleblock}
-	\begin{exampleblock}{\textbf{Ciudad}}
-	La ciudad otorga dos puntos, pero al tener que construirla sobre un 
-	poblado, realmente otorga un (1) punto.
-	\end{exampleblock}
-}
-\frame{
-	\begin{exampleblock}{\textbf{Desarrollo}}
-	Entre las cartas de desarrollo (25) existen cinco cartas de puntos. 
-	Además, con tres caballeros (14 en total) obtienes dos puntos. Por tanto,
-	una carta de desarrollo otorga $\frac{5}{25}+\frac{14\cdot 13\cdot 12}
-	{25\cdot 24\cdot 23}=\frac{297}{575}$ de un punto.
-	\end{exampleblock}
-	\begin{figure}[htp]
-	\centering
-	\includegraphics[scale=0.40]{gran_ejercito_caballeria.jpg}
-	\end{figure}
-}
-\frame{
 	\frametitle{Clasificación de los recursos por puntuación esperada}
-	Definamos una aplicación $\varphi:R\to\mathbb{R}$. Esta apliación la 
+	Definamos una aplicación $\varphi:R\to\mathbb{R}$. Esta aplicación la 
 	usaremos para dar un valor numérico a cada recurso, con lo que podremos
 	clasificarlos en un orden de importancia. Definimos también el conjunto
-	de construcciones $C=\{c_1=v,c_2=p,c_3=c,c_4=d\}$.
-	$$\varphi(r) = \frac{\sum_{i=1}^4[(\text{puntos de }c_i)\cdot
-	(\text{valor de la componente }r\text{ en }c_i)]}
+	de elementos de $H$ con puntuación.
+	$$I=\{\text{poblado, ciudad},\dots\}$$
+	$$\varphi(r) := \frac{\sum_{i\in I}[(\text{puntos de }i)\cdot
+	(\text{valor de la componente }r\text{ en }i)]}
 	{\text{hexágonos con el recurso }r}$$
-	Obtenemos por tanto los siguientes valores:
-	\begin{itemize}
-		\item \emph{Madera}: $\varphi(m)\approx 0,333$
-		\item \emph{Arcilla}: $\varphi(m)\approx 0,444$
-		\item \emph{Trigo}: $\varphi(m)\approx 0,629$
-		\item \emph{Ovejas}: $\varphi(m)\approx 0,379$
-		\item \emph{Piedra}: $\varphi(m)\approx 1,172$
-	\end{itemize}
+	Veamos por ejemplo cómo calculamos la puntuación esperada de la madera. La madera
+	se utiliza en los poblados y las carreteras.
+	$$\varphi(m) = \frac{1\cdot 1+2\cdot 5}{4} = \frac{11}{4} = 2,75$$
 }
 \frame{
-	En conclusión, obtenemos la siguiente clasificación por puntuación 
-	esperada:
-	\\
-	\centering
-	\begin{tabular}{c}
-	{\color{titulo}{1.}} Piedra \\
-	{\color{titulo}{2.}} Trigo \\
-	{\color{titulo}{3.}} Arcilla \\
-	{\color{titulo}{4.}} Ovejas \\
-	{\color{titulo}{5.}} Madera \\
-	\end{tabular}
-	\bigskip
-	\begin{alertblock}{Nota importante}
-	Aunque la puntuación esperada de las ovejas es mayor que la de la madera,
-	sin madera es imposible desarrollar la economía al principio de la 
-	partida.
+	Obtenemos por tanto los siguientes valores:
+	\begin{itemize}
+		\item \emph{Madera}: $\varphi(m) = 2,75$
+		\item \emph{Arcilla}: $\varphi(a)\approx 3,667$
+		\item \emph{Trigo}: $\varphi(t) = 1,68$
+		\item \emph{Piedra}: $\varphi(p)\approx 2,573$
+		\item \emph{Ovejas}: $\varphi(o) = 0,68$
+	\end{itemize}
+	Mediante la aplicación $\varphi$ podemos establecer un orden dentro del conjunto $R$.
+	$$r_1<r_2\iff\varphi(r_1)<\varphi(r_2)$$
+	\begin{block}{}
+	El orden de los elementos de $R$ es: $o<t<p<m<a$
+	\end{block}
+	\begin{alertblock}{}
+	El que los recursos tengan valores y estén ordenados no significa que sean mejores en
+	toda situación.
 	\end{alertblock}
 }
 \subsection{Reglas de los números}
@@ -237,9 +210,16 @@
 	El sentido de la diversidad numérica es muy simple. Cuantos más números
 	distintos tengamos, mayores las posibilidades de obtener recursos.
 }
+\frame{
+	\frametitle{Ejemplo}
+}
+\frame[plain]{
+}
 \subsection{Los puertos}
 \frame{
 	\frametitle{La importancia de los puertos}
+	\begin{columns}
+	\begin{column}{.6\textwidth}
 	Los puertos son \textbf{extremadamente importantes} para la economía de
 	la partida:
 	\begin{itemize}
@@ -250,6 +230,11 @@
 	\end{itemize}
 	Es recomendable que al menos una de las dos posiciones iniciales estén a
 	rango de un puerto, y a ser posible uno de 3:1.
+	\end{column}
+	\begin{column}{.4\textwidth}
+	\includegraphics[scale=0.75]{puerto.jpg}
+	\end{column}
+	\end{columns}
 }
 \subsection{Los jugadores y el posicionamiento}
 \frame{
@@ -287,11 +272,6 @@
 			\end{figure}
 		\end{column}
 	\end{columns}
-}
-\frame{
-	\frametitle{Ejemplo 1}
-}
-\frame[plain]{
 }
 \frame{
 	\frametitle{Ejemplo 2}
