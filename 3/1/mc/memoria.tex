@@ -1,0 +1,536 @@
+% PLANTILLA PARA TRABAJOS EN LATEX
+% Autor: Manuel Gachs Ballegeer
+% Github: https://github.com/Manuelbelgicano
+% Licencia: GNU General Public License v3.0
+% Versión: 0.2
+
+\documentclass[12pt,titlepage,a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   COLORINES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+% COLORES DE LA ESTRUCTURA DEL DOCUMENTO
+\definecolor{ed_1}{HTML}{8A0808} % Portada
+\definecolor{ed_2}{HTML}{FFFFFF} % Texto de la portada
+\definecolor{ed_3}{HTML}{8A0808} % Títulos de las secciones
+\definecolor{ed_4}{HTML}{610505} % Títulos de las subsecciones
+\definecolor{ed_5}{HTML}{300303} % Títulos de las subsubsecciones
+\definecolor{ed_6}{HTML}{610B0B} % Texto del encabezado
+% COLORES PARA MATEMÁTICAS
+\definecolor{m_1}{HTML}{8A0808} % Teoremas, lemas
+\definecolor{m_2}{HTML}{610505} % Definiciones
+\definecolor{m_3}{HTML}{300303} % Corolarios
+\definecolor{m_4}{HTML}{000000} % Ejemplos, demostraciones
+% COLORES PARA CÓDIGO
+\definecolor{c_1}{HTML}{8A0808} % Línea a la izquierda
+\definecolor{c_2}{HTML}{610B0B} % Palabras reservadas
+\definecolor{c_3}{HTML}{B40431} % Cadenas de caracteres
+\definecolor{c_4}{HTML}{333333} % Comentarios
+% COLORES PARA LISTAS
+\definecolor{l_1}{HTML}{8A0808} % Primer símbolo
+\definecolor{l_2}{HTML}{610505} % Primera indentación
+\definecolor{l_3}{HTML}{300303} % Segunda indentación
+\definecolor{l_4}{HTML}{000000} % Tercera indentación
+% COLORES PARA MARCOS
+\definecolor{ma_1}{HTML}{8A0808} % Línea marco ejemplos
+\definecolor{ma_2}{HTML}{610505} % Línea marco notas
+\definecolor{ma_3}{HTML}{FFEDEE} % Fondo ejemplos
+\definecolor{ma_4}{HTML}{FFE0DF} % Fondo notas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  MARCOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[xcolor]{mdframed} % Marcos
+\mdfsetup{ % Configuración general de los marcos
+  skipabove=1em, % Espacio sobre los marcos
+  skipbelow=1em, % Espacio bajo los marcos
+  innertopmargin=0.3em, % Margen interior superior
+  innerbottommargin=1em, % Margen interior inferior
+  splittopskip=2\topsep, % Espacio entre marcos
+  usetwoside=false, % Diferenciar páginas
+}
+
+\mdfdefinestyle{marco_ejemplos}{ % Nombre del estilo
+	linewidth=2pt, % Grosor de la línea
+	linecolor=ma_1, % Color de la línea
+	backgroundcolor=ma_3, % Color de fondo
+	topline=false, % Línea arriba
+	leftline=true, % Línea a la izquierda
+	bottomline=false, % Línea abajo
+	rightline=false,% Línea a la derecha
+	leftmargin=0em, % Margen a la izquierda
+	innerleftmargin=1em, % Margen interior a la izquierda
+	innerrightmargin=1em, % Margen interior a la derecha
+	rightmargin=0em, % Margen a la derecha
+}
+\mdfdefinestyle{marco_anotaciones}{ % Nombre del estilo
+	linewidth=1pt, % Grosor de la línea
+	linecolor=ma_2, % Color de la línea
+	backgroundcolor=ma_4, % Color de fondo
+	topline=true, % Línea arriba
+	leftline=true, % Línea a la izquierda
+	bottomline=true, % Línea abajo
+	rightline=true,% Línea a la derecha
+	leftmargin=0em, % Margen a la izquierda
+	innerleftmargin=1em, % Margen interior a la izquierda
+	innerrightmargin=1em, % Margen interior a la derecha
+	rightmargin=0em, % Margen a la derecha
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			  MATEMÁTICAS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath} % Matemáticas
+\usepackage{amsfonts} % Letras caligráficas para matemáticas
+\usepackage{mathtools} % Matemáticas extra
+\usepackage{amsthm} % Teoremas
+\renewenvironment{proof}{{\bfseries\color{m_4}Demostración:}}{\qed} % Cambiar el título de las demostraciones
+% ESTILOS DE TEOREMAS
+\newtheoremstyle{teorema} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_1}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\newtheoremstyle{lema} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_1}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\newtheoremstyle{definicion} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_2}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\newtheoremstyle{corolario} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_3}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\newtheoremstyle{nota} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{\ttfamily} % Estilo del cuerpo
+{} % Indentación
+{\color{m_4}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\newtheoremstyle{ejemplo} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_4}\itshape\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+% COMANDOS
+% Eliminar '*' para añadir numeración a los lemas, teoremas...
+\theoremstyle{definicion}
+\newtheorem*{defi}{Definición} % Comando para las definiciones
+\theoremstyle{lema}
+\newtheorem*{lem}{Lema} % Comando para los lemas
+\theoremstyle{teorema}
+\newtheorem*{teo}{Teorema} % Comando para los teoremas
+\theoremstyle{corolario}
+\newtheorem*{cor}{Corolario} % Comando para los corolarios
+\theoremstyle{ejemplo}
+\newtheorem*{eje}{Ejemplo} % Comando para los ejemplos
+\theoremstyle{nota}
+\newtheorem*{ano}{Acciones} % Comando para las anotaciones
+\surroundwithmdframed[style=marco_ejemplos]{eje}
+\surroundwithmdframed[style=marco_anotaciones]{ano}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   TIPOGRAFÍA				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{CrimsonPro}
+\usepackage[T1]{fontenc}
+% The font package uses mweights.sty which has som issues with the
+% \normalfont command. The following two lines fixes this issue.
+\let\oldnormalfont\normalfont
+\def\normalfont{\oldnormalfont\mdseries}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  CÓDIGO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listingsutf8}
+\lstset{
+	inputencoding=utf8/latin1, % Codificación
+	xleftmargin=1em, % Margen extra a la izquierda
+	breaklines=true, % Romper líneas largas
+	language=C, % Lenguaje del código
+	frame=none, % Enmarcado
+	numbers=none, % Números de línea
+	numbersep=8pt, % Separación de los números de línea
+	tabsize=4, % Tamaño de los tabs
+	frame=none, % Posición del enmarcado
+	framerule=2pt, % Grosor del enmarcado
+	showstringspaces=false, % Mostrar los espacios en las cadenas de caracteres
+	basicstyle=\footnotesize\ttfamily, % Estilo del código
+	keywordstyle=\color{c_2}, % Estilo de las palabras reservadas
+	numberstyle=\normalfont, % Estilo de los números de línea
+	rulecolor=\color{c_1}, % Estilo del enmarcado
+	commentstyle=\color{c_4}, % Estilo de los comentarios
+	stringstyle=\color{c_3} % Estilo de las cadenas de caracteres
+}
+\surroundwithmdframed[style=marco_ejemplos]{lstlisting}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper]{geometry}
+\geometry{
+	left=2.5cm, % Margen izquierdo
+	right=2.5cm, % Margen derecho
+	bottom=2.5cm % Margen inferior
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  			  LISTAS/TABLAS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{enumitem} % Opciones de personalización de listas
+\renewcommand{\arraystretch}{1.3} %Cambiar el tamaño entre líneas de una tabla
+% SÍMBOLOS LISTAS
+\renewcommand{\labelitemi}{\color{l_1}$\bullet$} % Primer símbolo
+\renewcommand{\labelitemii}{\color{l_2}$\circ$} % Símbolo primera indentación
+\renewcommand{\labelitemiii}{\color{l_3}$\diamond$} % Símbolo segunda indentación
+\renewcommand{\labelitemiv}{\color{l_4}$-$} % Símbolo tercera indentación
+% SÍMBOLOS ENUMERACIONES
+\renewcommand{\labelenumi}{\color{l_1}\bfseries\arabic{enumi}.} % Primer símbolo
+\renewcommand{\labelenumii}{\color{l_2}\bfseries\Roman{enumii}.} % Símbolo primera indentación
+\renewcommand{\labelenumiii}{\color{l_3}\bfseries(\alph{enumiii})} % Símbolo segunda indentación
+\renewcommand{\labelenumiv}{\color{l_4}\bfseries\Alph{enumiv}.} % Símbolo tercera indentación
+% DESCRIPCIONES
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\color{l_1}\textbf{#1}} % Color y estilo del título de la descripción
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		COMANDOS PERSONALIZADOS 		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\contenta}{ % Insitución
+	Universidad de Granada
+}
+\newcommand{\contentb}{ % Año o cualquier otra información para el título
+	Curso 2020-2021
+}
+\newcommand{\contentc}{ % Autores del documento
+	\begin{tabular}{l}
+	Manuel Gachs Ballegeer	
+	\end{tabular}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+% Para que aparezca el título de la sección y no el número 
+\renewcommand{\sectionmark}[1]{%
+\markboth{#1}{}}
+% Encabezado
+\fancyhead[LE,RO]{\color{ed_6}{\leftmark}} % A la izquierda en pares, derecha en impares
+\fancyhead[RE,LO]{\color{ed_6}{Modelos de Computación}} % A la derecha en pares, izquierda en impares
+% Pie de página
+\fancyfoot[LE,RO]{\Large\textbf{\thepage}} % A la izquierda en pares, derecha en impares
+\renewcommand{\headrulewidth}{0.5pt} % Grosor de la línea
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   	TÍTULOS					%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}
+\titleformat{\section} % Estilo de las secciones
+{\color{ed_3}\Huge\bfseries}
+{\color{ed_3}\thesection}{1em}{}
+\titleformat{\subsection} % Estilo de las subsecciones
+{\color{ed_4}\LARGE\bfseries}
+{\color{ed_4}\thesubsection}{1em}{}
+\titleformat{\subsubsection} % Estilo de las subsecciones
+{\color{ed_4}\bfseries}
+{\color{ed_4}\thesubsubsection}{1em}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		   	  MISCELÁNEO				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{pagecolor} % Colorear las portadas
+\renewcommand{\contentsname}{Índice} % Cambiar el título del índice
+\setlength\parindent{0pt} % Tamaño de la sangría
+\usepackage{graphicx} % Imágenes
+\usepackage{blindtext} % Texto de relleno (Se puede eliminar)
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 PORTADA 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+	\newpagecolor{ed_1} % Color de la portada
+	\parbox[t]{\textwidth}{
+		\raggedright
+		\color{ed_2}{\LARGE{\textbf{\contenta}}} \\
+		\textit{\contentb}
+	}
+	\vfill
+	\parbox[c]{\textwidth}{
+		\color{ed_2}{
+			\fontsize{70pt}{70pt}{\textbf{Lex/Flex}} \\ % Título
+			\bigskip \\
+			\fontsize{40pt}{40pt}{\emph{Modelos de Computación}} % Subtítulo
+		}
+	}
+	\vfill
+	\parbox[t]{\textwidth}{
+		\raggedright
+		\color{ed_2}{\Large{\contentc}} \\
+	}
+\end{titlepage}
+\restorepagecolor
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 ÍNDICE 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 DOCUMENTO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Descripción del problema}
+
+Muchas veces, al realizar copias de fragmentos de artículos de Wikipedia a
+documentos de texto, la copia no tiene el formato deseado. Normalmente un
+párrafo completo aparece en una única línea, o justo lo contrario, cada
+palabra se copia en una nueva línea. Además, los superíndices que señalan a
+la bibliografía suelen copiarse como caracteres usuales. Como ejemplo, esto
+es lo que ocurre con este pequeño fragmento del artículo de \emph{La Historia
+Interminable}, la novela del esritor Michael Ende:
+\smallskip
+$$\text{[...] diversas adaptaciones cinematográficas.}^2\to
+\text{[...] diversas adaptaciones cinematográficas.2}$$
+\smallskip
+El objetivo del programa es, por tanto, procesar un texto sacado de la web y
+transformarlo en un texto usual. Más concretamente, debe realizar las siguientes
+acciones:
+\begin{enumerate}
+\item Limitar el número de caracteres por línea a un valor predeterminado.
+\item En líneas con un número de caracteres menor al predeterminado, unir
+varias líneas siempre y cuando no pertenezcan a un nuevo párrafo.
+\item Eliminar líneas en blanco innecesarias.
+\item Eliminar los superíncides de las referencias del texto.
+\end{enumerate}
+También en ocasiones es interesante conocer el número de palabras que contienen
+tilde de un determinado texto, por tanto el programa también debe contar el 
+número de palabras distintas que contienen tilde.
+\newpage
+\section{Solución al problema}
+
+La descripción de la solución se divide en varias secciones. Primeramente se
+explican las variables y funciones utilizadas en el programa, luego las reglas
+y finalmente el proceso de ejecución.
+
+\subsection{Declaraciones}
+
+La sección de declaraciones del archivo plantilla del programa contiene estas
+sentencias:
+\smallskip
+\begin{lstlisting}
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+FILE * salida;
+unsigned MAX_CHAR = 80;
+unsigned num_char;
+unsigned lin_cor;
+unsigned ref_elim;
+unsigned p_tilde;
+char tildes[5000][100];
+void escribe_palabra(FILE * fichero,char * datos);
+void anade_palabra_tilde(char * palabra);
+\end{lstlisting}
+
+Las variables de la sección corresponden con lo siguiente:
+\begin{description}[align=right,labelwidth=4em,noitemsep]
+\item [\texttt{salida}] Identificador del archivo de salida.
+\item [\texttt{MAX\_CHAR}] Número máximo de caracteres por línea.
+\item [\texttt{num\_char}] Número de caracteres de la línea actual en el
+archivo de salida.
+\item [\texttt{lin\_cor}] Número de veces que el programa genera una nueva
+línea en el programa de salida.
+\item [\texttt{ref\_elim}] Número de referencias eliminadas del texto.
+\item [\texttt{p\_tilde}] Número de palabras únicas con tilde.
+\item [\texttt{tildes}] Lista de palabras únicas con tilde.
+\end{description}
+La función \texttt{escribe\_palabra} escribe la palabra dada como argumento
+en el archivo de salida dado también como argumento. Su implementación es:
+\begin{lstlisting}
+void escribe_palabra(FILE * fichero,char * datos) {
+    fprintf(fichero,"%s",datos);
+}
+\end{lstlisting}
+La función \texttt{anade\_palabra\_tilde} es más compleja, puesto que ante
+una palabra de entrada debe comprobar que esa palabra no se haya encontrado
+con tilde anteriormente en el texto, y en caso de ser nueva, añadirla como
+palabra con tilde. La implementación de la función es la siguiente:
+\begin{lstlisting}
+void anade_palabra_tilde(char * palabra) {
+    char * copia = strdup(palabra);
+    for (int i=0;i<p_tilde;i++) {
+        copia[0] = tolower(copia[0]);
+        if (strcmp(tildes[i],copia)==0)
+            return;
+        copia[0] = toupper(copia[0]);
+        if (strcmp(tildes[i],copia)==0)
+            return;
+    }
+    sprintf(tildes[p_tilde],"%s",palabra);
+    p_tilde++;
+}
+\end{lstlisting}
+
+\subsection{Reglas}
+\smallskip
+\subsubsection*{\texttt{([a-zñA-Z])*[áéíóú]([a-z]|ñ)*}}
+\begin{lstlisting}
+{anade_palabra_tilde(yytext);REJECT;}
+\end{lstlisting}
+Esta expresión regular detecta las palabras que contienen tilde. El programa,
+si una palabra encaja con esta expresión regular, la añade al contador de
+palabras que contienen tilde, y busca otras expresiones regulares que encajen
+también con esta palabra.
+
+\subsubsection*{\texttt{(,|\textbackslash.)[0-9]+}}
+\begin{lstlisting}
+{ref_elim++;unput(yytext[0]);}
+\end{lstlisting}
+Esta expresión regular detecta las referencias copiadas del texto, dejando
+sin embargo los signos de puntuación para el procesamiento de otras reglas.
+
+\subsubsection*{\texttt{"[cita requerida]"}}
+\begin{lstlisting}
+{ref_elim++}
+\end{lstlisting}
+Esta regla es equivalente a la anterior.
+\newpage
+\subsubsection*{\texttt{[\textasciicircum\; \textbackslash t\textbackslash 
+n\textbackslash.,:]+}}
+\begin{lstlisting}
+{num_char += yyleng;
+char word_buffer[100];
+if (num_char<MAX_CHAR) { 
+	sprintf(word_buffer,"%s",yytext);
+} else { 
+	num_char = yyleng;
+	lin_cor++;
+	sprintf(word_buffer,"\n%s",yytext);
+}
+escribe_palabra(salida,word_buffer);}
+\end{lstlisting}
+Esta es la regla más importante del programa. La expresión regular detecta 
+todas las palabras del texto, y las escribe en la línea actual del archivo de 
+salida, salvo que eso produjese que el número de caracteres de la línea supere 
+el límite establecido, en cuyo caso inserta un salto de línea antes de
+escribirla.
+
+\subsubsection*{\texttt{(\textbackslash n\textbackslash n)+}}
+\begin{lstlisting}
+{num_char = 0;escribe_palabra(salida,"\n");}
+\end{lstlisting}
+Detecta los saltos de línea innecesarios y los transforma en un único salto.
+
+\subsubsection*{\texttt{(" "|\textbackslash n|\textbackslash t)+(" ")*}}
+\begin{lstlisting}
+{num_char++;
+register int c;
+escribe_palabra(salida," ");
+while ((c = input())==' ');
+if (c!=' ')
+    unput(c);}
+\end{lstlisting}
+Detecta cuando hay espaciado entre palabras, y prosigue leyendo caracteres
+hasta llegar a uno distinto de un espacio en blanco. Escribe un único espacio
+en blanco en el archivo de salida.
+
+\subsubsection*{\texttt{\textbackslash.|,|:}}
+\begin{lstlisting}
+{num_char++;escribe_palabra(salida,yytext);}
+\end{lstlisting}
+Detecta signos de puntuación en el texto y los transcribe, puesto que el resto
+de reglas no lo hacen.
+
+\newpage
+\subsection{Ejecución del programa}
+
+La función principal del programa consta de las siguientes sentencias:
+\begin{lstlisting}
+int main (int argc, char *argv[]) {
+    if (argc!=3) {
+        printf("No se ha proporcionado ningun fichero...\n");
+        printf("Formato:\n\t./wikipedia archivo_entrada.txt archivo_salida.txt\n");
+        exit(-1);
+    }   
+    else {
+        yyin = fopen(argv[1],"rt");
+        if (yyin==NULL) {
+            printf("El fichero %s no se puede abrir\n", argv[1]);
+            exit(-1);
+        } 
+        salida = fopen(argv[2],"w");
+    }
+
+    num_char = 0;
+    lin_cor = 0;
+    ref_elim = 0;
+    p_tilde = 0;
+    
+    yylex();
+
+    printf("\nLineas salida: %d\n",lin_cor);
+    printf("Referencias eliminadas: %d\n",ref_elim);
+    printf("Palabras con tilde: %d\n\n",p_tilde);
+
+    exit(0);
+}
+\end{lstlisting}
+El programa inicialmente comprueba que el número de argumentos de entrada sea
+válido y asigna la entrada correspondiente a la herramienta \emph{Lex}. En 
+caso de que no sean válidos o la asignación de la entrada no sea posible, 
+aborta la ejecución del mismo. Tras ello, da los valores iniciales a las
+variables explicadas anteriormente, y ejecuta la sentencia de procesamiento
+del texto. Finalmente, imprime en pantalla las líneas del archivo de salida y
+los números tanto de referencias eliminadas como de palabras únicas con tilde.
+
+\newpage
+\section{Archivos y uso}
+
+El programa contiene un archivo tipo Makefile para la comodidad de uso del
+mismo. Para compilar y ejecutar el programa, simplemente se debe escribir
+la sentencia make dentro del directorio de trabajo en el que se encuentra el
+archivo. Se pueden cambiar tanto el archivo de entrada como el archivo de
+salida modificando las variables \texttt{IN} y \texttt{OUT} del Makefile o
+invocando \texttt{make} y añadiendo nuevas asignaciones a esas variables.
+\\
+
+Además, junto con el programa hay 4 posibles textos de entrada que se
+corresponden con secciones de artículos de Wikipedia en castellano. Estos
+archivos se encuentran en el interior de la carpeta \textbf{doc}.
+
+
+\end{document}
