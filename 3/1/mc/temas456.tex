@@ -1,0 +1,782 @@
+\documentclass[11pt,titlepage,a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				PAQUETES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper]{geometry} % Márgenes
+\usepackage{fancyhdr} % Encabezados/pies de páginas
+\usepackage{amsmath} % Matemáticas
+\usepackage{amsfonts} % Letras caligráficas para matemáticas
+\usepackage{mathtools} % Matemáticas extra
+\usepackage{xcolor} % colores
+\usepackage[xcolor]{mdframed} % Marcos
+\usepackage{amsthm} % Teoremas
+\usepackage{enumitem} % Opciones de personalización de listas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   COLORINES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ma_3}{HTML}{F1F1F1} % Fondo ejemplos
+\definecolor{ma_1}{HTML}{000000} % Ejemplos, demostraciones
+\definecolor{m_4}{HTML}{000000} % Ejemplos, demostraciones
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  MARCOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mdfsetup{ % Configuración general de los marcos
+  skipabove=1em, % Espacio sobre los marcos
+  skipbelow=1em, % Espacio bajo los marcos
+  innertopmargin=0.3em, % Margen interior superior
+  innerbottommargin=1em, % Margen interior inferior
+  splittopskip=2\topsep, % Espacio entre marcos
+  usetwoside=false, % Diferenciar páginas
+}
+
+\mdfdefinestyle{marco_ejemplos}{ % Nombre del estilo
+	linewidth=2pt, % Grosor de la línea
+	linecolor=ma_1, % Color de la línea
+	backgroundcolor=ma_3, % Color de fondo
+	topline=false, % Línea arriba
+	leftline=true, % Línea a la izquierda
+	bottomline=false, % Línea abajo
+	rightline=false,% Línea a la derecha
+	leftmargin=0em, % Margen a la izquierda
+	innerleftmargin=1em, % Margen interior a la izquierda
+	innerrightmargin=1em, % Margen interior a la derecha
+	rightmargin=0em, % Margen a la derecha
+}
+
+\mdfdefinestyle{marco_anotaciones}{ % Nombre del estilo
+	linewidth=1pt, % Grosor de la línea
+	linecolor=ma_1, % Color de la línea
+	backgroundcolor=ma_3, % Color de fondo
+	topline=true, % Línea arriba
+	leftline=true, % Línea a la izquierda
+	bottomline=true, % Línea abajo
+	rightline=true,% Línea a la derecha
+	leftmargin=0em, % Margen a la izquierda
+	innerleftmargin=1em, % Margen interior a la izquierda
+	innerrightmargin=1em, % Margen interior a la derecha
+	rightmargin=0em, % Margen a la derecha
+}
+
+\newtheoremstyle{ejemplo} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_4}\itshape\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\theoremstyle{ejemplo}
+\newtheorem*{eje}{Ejemplo} % Comando para los ejemplos
+\newtheoremstyle{algoritmo} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_4}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{\newline} % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\theoremstyle{algoritmo}
+\newtheorem*{alg}{Algoritmo} % Comando para los ejemplos
+\surroundwithmdframed[style=marco_ejemplos]{eje}
+\surroundwithmdframed[style=marco_anotaciones]{alg}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{
+	left=2.5cm,
+	right=2.5cm,
+	bottom=2.5cm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Universidad de Granada}
+\fancyhead[L]{Modelos de Computación}
+\fancyfoot[C]{\thepage}
+
+\setlength\parindent{0pt} % Tamaño de la sangría
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TÍTULO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\Huge{\textbf{Modelos de Computación}}}
+\author{\textit{Temas 4, 5 y 6}}
+\date{Manuel Gachs Ballegeer}
+\maketitle
+
+\section{Gramáticas independientes del contexto}
+
+Una gramática $G=(V,S,T,P)$ se dice que es \textbf{indepdendiente del contexto}
+si y solo si todas las producciones tienen la forma
+$$A\to\alpha$$
+donde $A\in V$ y $\alpha\in(V\cup T)^*$.
+\begin{itemize}[noitemsep]
+	\item \textbf{Derivación por la izquierda}: Se deriva primero la primera 
+	variable que aparece en la palabra.
+	\item \textbf{Derivación por la derecha}: Se deriva primero la última 
+	variable que aparece en la palabra.
+\end{itemize}
+
+Una gramática se dice \textbf{ambigua} si existe una palabra con dos árboles de 
+derivación distintos. Un lenguaje es \textbf{inherentemente ambiguo} si toda 
+gramática que lo genera es ambigua.
+
+\subsection{Símbolos y producciones inútiles}
+
+Un símbolo $X\in(V\cup T)$ se dice \textbf{útil} si y solo si existe una cadena
+de derivaciones de $G$ tal que
+$$S\xRightarrow{*}\alpha X\beta\xRightarrow{*}w\in T^*$$
+
+Una producción se dice \textbf{útil} si y solo si todos sus símbolos son
+útiles. Esto es equivalente a que pueda usarse en la derivación de alguna 
+palabra del lenguaje asociado a la gramática.
+\\
+
+Eliminando todos los símbolos y producciones inútiles (no útiles) el 
+lenguaje generado por la gramática no cambia.
+
+\begin{alg}
+El algoritmo consta de dos partes:
+\\
+
+\textit{Primera parte}: Eliminar las variables desde las que no se puede llegar a una palabra de $T^*$ y las producciones en las que aparezca.
+
+Se diseña un algoritmo calculando $V_t$, conjunto de variables que se pueden
+sustituir por símbolos terminales.
+\begin{enumerate}[noitemsep]
+	\item $V_t=\emptyset$
+	\item Para cada producción de la forma $A\to w$, $A$ se introduce en $V_t$.
+	\item Mientras $V_t$ cambie:
+	
+	\quad\quad Para cada producción $B\to\alpha$:
+	
+	\quad\quad\quad\quad Si todas las variables de $\alpha$ pertenecen a $V_t$,
+	$B$ se introduce en $V_t$.
+	\item Eliminar todas las variables de $V$ que no estén en $V_t$.
+	\item Eliminar todas las producciones donde aparezca una variable de las
+	eliminadas en el paso anterior.
+\end{enumerate}
+
+\textit{Segunda parte}: Eliminar aquellos símbolos que no sean alcanzables 
+desde el símbolo inicial, $S$, y las producciones en las que estos aparezcan.
+
+Se crean $V_S$ y $J$ conjuntos de variables y $T_S$ conjunto de símbolos
+terminales.
+\begin{enumerate}[noitemsep]
+	\item $J=\{S\}$, $V_S=\{S\}$ y $T_S=\emptyset$
+	\item Mientras $J\neq\emptyset$:
+	
+	\quad\quad Extraer un elemento de $J:A$, $(J=J-\{A\})$
+	
+	\quad\quad Para cada producción de la forma $A\to\alpha$:
+	
+	\quad\quad\quad\quad Para cada variable $B$ en $\alpha$:
+	
+	\quad\quad\quad\quad\quad\quad Si $B$ no está en $V_S$ añadir $B$ a $J$
+	y $V_S$.
+	
+	\quad\quad\quad\quad Poner todos los símbolos terminales de $\alpha$ en
+	$T_S$.
+	\item Eliminar todas las variables que no estén en $V_S$ y todos los 
+	símbolos terminales que no estén en $T_S$.
+	\item Eliminar todas las producciones donde aparezca un símbolo o variable
+	de los eliminados en el paso anterior.
+\end{enumerate}
+\end{alg}
+
+\begin{eje}
+\begin{gather*}
+S\to gAe,\quad S\to aYB,\quad S\to cY,\quad A\to bBy, \\
+% 
+A\to ooC,\quad B\to dd,\quad B\to D,\quad C\to jVB, \\
+%
+C\to gi,\quad D\to n,\quad U\to kW,\quad V\to baXXX, \\
+%
+V\to oV,\quad W\to c,\quad X\to fV,\quad Y\to Yhm
+\end{gather*}
+Primera parte: $V_t=\{B,C,D,W,A,U,S\}$
+\begin{gather*}
+S\to gAe,\quad A\to ooC,\quad B\to dd,\quad B\to D, \\
+%
+C\to gi,\quad D\to n,\quad U\to kW, \quad W\to c
+\end{gather*}
+Segunda parte: $V_S=\{S,A,C\}$ y $T_S=\{g,e,o,i\}$
+$$ S\to gAe,\quad A\to ooC,\quad C\to gi $$
+\end{eje}
+
+Si el lenguaje es \textbf{vacío}, se detecta en la primera parte del algoritmo,
+en la que la variable $S$ resulta inútil. En ese caso se pueden eliminar todas
+las producciones, pero no el símbolo $S$.
+
+\subsection{Producciones nulas}
+
+Las producciones nulas son las de la forma $A\to\varepsilon$.
+\\
+
+Es posible construir un algoritmo que dada una gramática $G$, construya una
+gramática $G_n$ sin producciones nulas y tal que $L(G_n)=L(G)\setminus
+\{\varepsilon\}$.
+
+\begin{alg}
+Tomando $H$ como el conjunto de las variables anulables.
+\begin{enumerate}[noitemsep]
+	\item $H=\emptyset$
+	\item Para cada producción $A\to\varepsilon$ se hace $H=H\cup\{A\}$.
+	\item Mientras $H$ cambie:
+	
+	\quad\quad Para cada producción $B\to A_1A_2\dots A_n$, donde $A_i\in H$
+	para todo $i\in\{1,\dots,n\}$
+	
+	\quad\quad se hace $H=H\cup\{B\}$.
+	\item Se eliminan todas las producciones nulas de la gramática.
+	\item Para cada producción de la gramática de la forma $A\to\alpha_1\dots
+	\alpha_n$ donde $\alpha_i\in(V\cup T)$:
+	
+	\quad\quad Se añaden todas las producciones de la forma $A\to\beta_1\dots
+	\beta_n$ donde $\beta_i=\alpha_i$ si
+	
+	\quad\quad $\alpha_i\notin H$ y $(\beta_i=\alpha_i)\vee(\beta_i=\varepsilon)
+	$ si $\alpha_i\in H$ y no todos los $\beta_i$ son nulos a la vez.
+\end{enumerate}
+\end{alg}
+
+\begin{eje}
+\begin{gather*}
+S\to ABb,\quad S\to ABC,\quad C\to abC,\quad B\to bB, \\
+% 
+B\to\varepsilon,\quad A\to aA,\quad A\to\varepsilon,\quad C\to AB
+\end{gather*}
+Cálculo de $H$: $H=\{A,B,C,S\}$\\
+Eliminamos $B\to\varepsilon,\;A\to\varepsilon$.\\
+Añadimos a partir de $S\to ABb$:
+$$S\to Ab,\quad S\to Bb,\quad S\to b$$
+Añadimos a partir de $S\to ABC$:
+$$S\to AB,\quad S\to AC,\quad S\to BC,\quad S\to A,\quad S\to B,\quad S\to C$$
+Añadimos a partir de $C\to abC$ la producción $C\to ab$.\\
+Añadimos a partir de $B\to bB$ la producción $B\to b$.\\
+Añadimos a partir de $A\to aA$ la producción $A\to a$.\\
+Añadimos a partir de $C\to AB$:
+$$C\to A,\quad C\to B$$
+\end{eje}
+
+\subsection{Producciones unitarias}
+
+Son las que tienen la forma $A\to B$, con $A,B\in V$.
+\\
+
+Dada una gramática sin producciones nulas $G$, es posible construir una 
+gramática sin producciones nulas ni unitarias $G'$ que genera el mismo lenguaje.
+
+\begin{alg}
+Se supone que no hay transiciones nulas. $H$ es el conjunto de parejas $(A,B)$ 
+tales que $B$ derivable a partir de $A$.
+\begin{enumerate}[noitemsep]
+	\item $H=\emptyset$
+	\item Para toda producción de la forma $A\to B$, se introduce $(A,B)$ en 
+	$H$.
+	\item Mientras $H$ cambie:
+	
+	\quad\quad Para cada dos parejas $(A,B),(B,C)\in H$:
+	
+	\quad\quad\quad\quad Si la pareja $(A,C)\notin H$, se introduce.
+	\item Se eliminan todas las producciones unitarias.
+	\item Para cada pareja $(B,A)\in H$:
+	
+	\quad\quad Para cada producción $A\to\alpha$:
+	
+	\quad\quad\quad\quad Se añade la producción $B\to\alpha$
+\end{enumerate}
+\end{alg}
+
+Dada $G$ una gramática sin producciones nulas y unitarias y $u$ palabra de
+longitud $n$, para saber si $u\in L(G)$ solamente tenemos que generar un árbol
+de profundidad $2n-1$.
+
+\subsection{Forma normal de Chomsky}
+
+Una gramática está en forma normal de Chomsky si todas las producciones tienen
+la forma
+$$A\to BC,\quad A\to a$$
+donde $A,B,C\in V$ y $a\in T$.
+\\
+
+Hay un algoritmo que transforma cualquier gramática sin producciones nulas ni
+unitarias en otra gramática en forma normal de Chomsky que genera el mismo
+lenguaje.
+
+\begin{alg}
+Estos son los pasos:
+\begin{enumerate}[noitemsep]
+	\item Para cada producción $A\to\alpha_1\dots\alpha_n$, $\alpha_i\in(V\cup 
+	T)$ con $n\geq 2$:
+	
+	\quad\quad Para cada $\alpha_i$, si es terminal $(\alpha_i=a\in T)$:
+	
+	\quad\quad\quad\quad Se añade la producción $C_a\to a$.
+	
+	\quad\quad\quad\quad Se cambia $\alpha_i$ por $C_a$ en $A\to\alpha_1\dots
+	\alpha_n$.
+	\item Para cada producción $A\to B_1\dots B_m$, con $m\geq 3$:
+	
+	\quad\quad Se añaden $m-2$ variables $D_1,D_2,\dots,D_{m-2}$ (distintas para
+	cada producción).
+	
+	\quad\quad La producción $A\to B_1\dots B_m$ se reemplaza por
+	
+	\quad\quad$A\to BD_1$, $D_1\to B_2D_2$, \dots, $D_{m-2}\to B_{m-1}B_m$
+\end{enumerate}
+\end{alg}
+
+\subsection{Forma normal de Greibach}
+
+Una gramática está en forma normal de Greibach cuando todas las producciones son
+de la forma
+$$A\to a\alpha\quad a\in T,\;\alpha\in V^*$$
+Existe un algoritmo para transformar una gramática en otra equivalente en forma
+normal de Greibach. Para poder aplicarlo, la gramática tiene que estar en forma
+normal de Chomsky o todas sus producciones deben de ser de la forma:
+\begin{itemize}[noitemsep]
+	\item $A\to a\alpha\quad a\in T,\;\alpha\in V^*$
+	\item $A\to\alpha\quad \alpha\in V^*,\;|\alpha|\geq 2$
+\end{itemize}
+El algoritmo en cuestión utiliza dos operaciones: \textbf{ELIMINA1} y 
+\textbf{ELIMINA2}.
+
+\begin{alg}[ELIMINA1]
+Esta operación se aplica a producciones de la forma $A\to B\alpha$.
+\begin{enumerate}[noitemsep]
+	\item Eliminar $A\to B\alpha$
+	\item Para cada producción $B\to\beta$
+	
+	\quad\quad Añadir $A\to\beta\alpha$
+\end{enumerate}
+\end{alg}
+
+\begin{eje}
+$$A\to B\alpha,\quad B\to\beta_1,\quad B\to\beta_2$$
+Eliminamos $A\to B\alpha$.\\
+Añadimos $A\to\beta_1\alpha$ y $A\to\beta_2\alpha$.
+\end{eje}
+
+\begin{alg}[ELIMINA2]
+Esta operación se aplica a variables con producciones de la forma $A\to A\alpha$.
+\begin{enumerate}[noitemsep]
+	\item Añadir una nueva variable $B_A$
+	\item Para cada producción $A\to A\alpha$:
+	
+	\quad\quad Añadir $B_A\to\alpha$ y $B_A\to\alpha B_A$
+	
+	\quad\quad Eliminar $A\to A\alpha$
+	\item Para cada producción $A\to\beta$, $\beta$ no empieza por $A$:
+	
+	\quad\quad Añadir $A\to\beta B_A$
+\end{enumerate}
+\end{alg}
+
+\begin{eje}
+$$A\to A\alpha_1,\quad A\to A\alpha_2,\quad A\to\beta$$
+Creamos $B_A\to \alpha_1$ y $B_A\to \alpha_1 B_A$ y eliminamos $A\to A\alpha_1$.
+\\
+Creamos $B_A\to \alpha_2$ y $B_A\to \alpha_2 B_A$ y eliminamos $A\to A\alpha_2$.
+\\
+Añadimos $A\to\beta B_A$.
+\end{eje}
+
+El algoritmo para transformar la gramática en forma normal de Greibach es el
+siguiente:
+
+\begin{alg}
+El algoritmo tiene los siguientes pasos:
+\begin{enumerate}[noitemsep]
+	\item Para cada $k=1,\dots,m$:
+	
+	\quad\quad Para cada $j=1,\dots,m-1$:
+	
+	\quad\quad\quad\quad Para cada producción $A_k\to A_j\alpha$:
+	
+	\quad\quad\quad\quad\quad\quad ELIMINA1($A_k\to A_j\alpha$)
+	
+	\quad\quad Si existe alguna producción de la forma $A_k\to A_k\alpha$:
+	
+	\quad\quad\quad\quad ELIMINA2($A_k$)
+	\item Para cada $i=m-1,\dots,1$:
+	
+	\quad\quad Para cada producción $A_i\to A_j\alpha$ con $j>i$:
+	
+	\quad\quad\quad\quad ELIMINA1($A_i\to A_j\alpha$)
+	\item Para cada $j=1,\dots,m$:
+	
+	\quad\quad Para cada producción $B_j\to A_i\alpha$:
+	
+	\quad\quad\quad\quad ELIMINA1($B_j\to A_i\alpha$)
+\end{enumerate}
+\end{alg}
+
+Dada $G$ una gramática en forma normal de Greibach y $u$ palabra de longitud $n$,
+para saber si $u\in L(G)$ solamente tenemos que generar un árbol de profundidad 
+$n$.
+
+\newpage
+\section{Autómatas con pila}
+
+Un \textbf{autómata con pila no determinista (APND)} es una septupla $(Q,A,B,
+\delta,q_0,Z_0,F)$ en la que
+\begin{description}[align=right,labelwidth=1.5cm,noitemsep]
+	\item [$Q$:] Es un conjunto finito de estados.
+	\item [$A$:] Es un alfabeto de entrada.
+	\item [$B$:] Es un alfabeto para la pila.
+	\item [$\delta$:] Es la función de transición:
+	$$\delta:Q\times(A\cup\{\varepsilon\})\times B\longrightarrow
+	\mathcal{P}(Q\times B^*)$$
+	\item [$q_0$:] Es el estado inicial.
+	\item [$Z_0$:] Es el símbolo inicial de la pila.
+	\item [$F$:] Es el conjunto de estados finales.
+\end{description}
+
+Se llama \textbf{descripción instantánea} o \textbf{configuración} de un AP a una
+tripleta
+$$(q,u,\alpha)\in Q\times A^*\times B^*$$
+donde $q$ es el estado en el que se encuentra el autómata, $u$ la parte de la
+cadena que queda por leer y $\alpha$ la palabra de la pila.
+\\
+
+Se dice que de la configuración $(q,au,Z\alpha)$ se puede llegar mediante un 
+\textbf{paso de cálculo} a la configuración $(p,u,\beta\alpha)$ y se escribe 
+$(q,au,Z\alpha)\vdash(p,u\beta\alpha)$ si y sólo si $(p,\beta)\in\delta(q,a,Z)$
+donde $a$ puede ser cualquier símbolo de entrada o la cadena vacía.
+\\
+
+Si $C_1$ y $C_2$ son dos configuraciones, se dice que se puede llegar de $C_1$ a 
+$C_2$ mediante una \textbf{sucesión de pasos de cálculo} y se escribe 
+$C_1\overset{*}{\vdash}C_2$ si y sólo si exite una sucesión de configuraciones 
+$T_1,\dots,T_n$ tales que $C_1=T_1\vdash T_2\vdash\dots\vdash T_n=C_2$.
+\\
+
+Si $M$ es un APND y $u\in A$ se llama \textbf{configuración inicial} 
+correspondiente a esta entrada a $(q_0,u,Z_0)$, donde $q_0$ es el estado inicial 
+y $Z_0$ el símbolo inicial de la pila.
+
+\subsection{Criterios de aceptación}
+
+Existen dos criterios para determinar el lenguaje aceptado por un APND:
+\begin{itemize}[noitemsep]
+	\item Lenguaje aceptado por \emph{estados finales}:
+	$$L(M)=\{w\in A^*:(q_0,u,Z_0)\overset{*}{\vdash}(p,\varepsilon,\gamma),\;
+	p\in F,\;\gamma\in B^*\}$$
+	\item Lenguaje aceptado por \emph{pila vacía}:
+	$$N(M)=\{w\in A^*:(q_0,u,Z_0)\overset{*}{\vdash}(p,\varepsilon,\varepsilon),
+	\;p\in Q\}$$
+\end{itemize}
+\textbf{Teorema:}\\
+Si $L$ es el lenguaje aceptado por un autómata con pila $M=(Q,A,B,\delta,q_0,
+Z_0,F)$ por el criterio de pila vacía, entonces existe un autómata con pila $M_f$
+que acepta el mismo lenguaje $L$ por el criterio de estados finales.\\
+Si $L$ es el lenguaje aceptado por un autómata con pila $M=(Q,A,B,\delta,q_0,
+Z_0,F)$ por el criterio de estados finales, entonces existe un autómata con pila 
+$M_n$ que acepta el mismo lenguaje $L$ por el criterio de pila vacía.
+
+\begin{alg}[Pila vacía$\to$Estados finales]
+Si $M=(Q,A,B,\delta,q_0,Z_0,F)$, entonces el AP $M_f$ se construye a
+partir de $M$ siguiendo los siguientes pasos:
+\begin{enumerate}[noitemsep]
+	\item Se añaden dos estados nuevos, $q^n_0$ y $q_f$. El estado inicial de 
+	$M_f$ será $q^n_0$ y $q_f$ será estado final de $M_f$.
+	\item Se añade un nuevo símbolo a $B:Z^n_0$. Este será el nuevo símbolo
+	inicial de la pila.
+	\item Se mantienen todas las transiciones de $M$, añadiéndose las siguientes:
+	
+	\quad\quad $\delta(q_0^n,\varepsilon,Z_0^n)=\{(q_0,Z_0Z_o^n)\}$
+	
+	\quad\quad $\delta(q,\varepsilon,Z_0^n)=\{(q_f,Z_o^n)\}\quad\forall q\in Q$
+\end{enumerate}
+\end{alg}
+
+\begin{alg}[Estados finales$\to$Pila vacía]
+Si $M=(Q,A,B,\delta,q_0,Z_0,F)$, entonces el AP $M_n$ se construye a
+partir de $M$ siguiendo los siguientes pasos:
+\begin{enumerate}[noitemsep]
+	\item Se añaden dos estados nuevos, $q^n_0$ y $q_s$. El estado inicial de 
+	$M_n$ es $q^n_0$.
+	\item Se añade un nuevo símbolo a $B:Z^n_0$. Este será el nuevo símbolo
+	inicial de la pila.
+	\item Se mantienen todas las transiciones de $M$ y se añaden:
+	
+	\quad\quad $\delta(q_0^n,\varepsilon,Z_0^n)=\{(q_0,Z_0Z_o^n)\}$
+	
+	\quad\quad $\delta(q,\varepsilon,H)=\{(q_s,H)\}\quad\forall q\in F,\;H\in
+	(B\cup\{Z_0^n\})$
+	
+	\quad\quad $\delta(q_s,\varepsilon,H)=\{(q_s,\varepsilon)\}\quad\forall
+	H\in(B\cup\{Z_0^n\})$
+\end{enumerate}
+\end{alg}
+
+\subsection{Autómatas con pila deterministas}
+
+Un autómata con pila $M=(Q,A,B,\delta,q_0,Z_0,F)$ se dice que es determinista si 
+y solo si se cumplen las siguientes condiciones:
+\begin{itemize}[noitemsep]
+	\item $\delta(q,a,X)$ tiene a lo más un elemento, para todo $q\in Q$, $a\in
+	(A\cup\{\varepsilon\})$, $X\in B$.
+	\item Si $\delta(q,a,X)$ es no vacío para algún $a\in A$, entonces 
+	$\delta(q,a,X)=\emptyset$.
+\end{itemize}
+Una condición equivalente es que para cada configuración $C_1$ existe, a lo más, 
+una configuración $C_2$ tal que $C1\vdash C2$ (se puede llegar de $C_1$ a $C_2$ 
+en un paso de cálculo).
+\\
+
+Un lenguaje independiente del contexto se dice que es \textbf{determinista} si y 
+solo si es aceptado por un autómata con pila determinista por el criterio de 
+\textbf{estados finales}.
+\\
+
+Un lenguaje $L$ tiene la \textbf{propiedad prefijo} si y solo si para cada 
+palabra $x\in L$, ningún prefijo de $x$ (distinto de $x$) está en $L$.
+\\
+
+Un lenguaje puede ser aceptado por un autómata \textbf{determinista} por el 
+criterio de \textbf{pila vacía} si y solo si es aceptado por un autómata 
+determinista por el criterio de \textbf{estados finales} y tiene la 
+\textbf{propiedad prefijo}.
+\\
+
+Si un lenguaje $L$ es determinista (aceptado por un autómata determinista por el criterio de estados finales) y no cumple la propiedad prefijo, una sencilla transformación lo convertiría en un lenguaje con la propiedad prefijo y, por tanto, aceptado por un autómata determinista por el criterio de pila vacía: Se añade un nuevo símbolo que no esté en el alfabeto y se pone este símbolo al final de todas las palabras. Si $\$\notin A$, entonces consideramos $L\{\$\}=\{u\$:u\in L\}$.
+\\
+
+En resumen:
+\begin{gather*}
+\text{AP determinista por pila vacía}\to\text{AP determinista por estados finales}
+\\
+%
+\begin{array}{c}
+\text{AP determinista por estados finales} \\
+\text{Propiedad prefijo}
+\end{array}
+\to\text{AP determinista por estados finales}
+\end{gather*}
+
+\subsection{Equivalencias entre autómatas y gramáticas}
+
+Dada una gramática libre de contexto $G=(V,T,P,S)$, entonces existe un autómata con pila $M=(Q,A,B,\delta,q_0,Z_0,F)$ que acepta el mismo lenguaje que genera 
+$G$, y recíprocamente, dado un autómata con pila $M$ existe una gramática libre de contexto $G$ que genera el lenguaje que acepta $M$.
+
+\subsubsection{Gramática $G\to$Autómata $M$}
+
+Dada la gramática $G=(V,T,P,S)$, los elementos del autómata serán:
+\begin{itemize}[noitemsep]
+	\item $Q=\{q\}$
+	\item $A=T$
+	\item $B=V\cup T$
+	\item $q_0=q$
+	\item $Z_0=S$
+	\item $F=\emptyset$
+	\item $\delta$ viene determinado por las siguientes relaciones:
+	\begin{gather*}
+	\delta(q,\varepsilon,B)=\{(q,\alpha):B\to\alpha\in P\} \\
+	%
+	\delta(q,a,a)=\{(q,\varepsilon)\}
+	\end{gather*}
+\end{itemize}
+Acepta el mismo lenguaje por el criterio de pila vacía.
+
+\begin{eje}
+$$S\to aSb,\quad S\to cSb,\quad S\to a$$
+Autómata con pila:
+\begin{gather*}
+\delta(q,\varepsilon,S)=\{(q,aSb),(q,cSb),(q,a)\}, \\
+%
+\delta(q,a,a)=\{(q,\varepsilon)\},\quad\delta(q,b,b)=\{(q,\varepsilon)\},\quad
+\delta(q,c,c)=\{(q,\varepsilon)\}
+\end{gather*}
+\end{eje}
+
+\subsubsection{Autómata $M\to$Gramática $G$}
+
+Sea un autómata con pila $M=(Q,A,B,\delta,q_0,Z_0,\emptyset)$ que acepta un
+lenguaje $L$ por el criterio de pila vacía. La gramática $G=(V,A,P,S)$ que 
+genera el mismo lenguaje $L$ se construye a partir de variables $S$ y todas las 
+variables de la forma $[p,X,q]$, donde $p,q\in Q$, $X\in B$.
+\begin{description}[align=left,noitemsep]
+	\item [Variables($V$):] $[q,C,p]$ con $p,q\in Q$ y $C\in B$, además de $S$
+	que será la variable inicial.
+	\item [Producciones($P$):] Se añaden las siguientes producciones
+	\begin{enumerate}[noitemsep]
+		\item $S\to[q_0,Z_0,q]$ para cada $q\in Q$
+		\item $[q,C,q_m]\to a[p,D_1,q_1][q_1,D_2,q_2]\dots[q_{,m-1},D_m,q_m]$
+		para cada $q_1,\dots,q_m\in Q$, si $(p,D_1D_2\dots D_m)\in\delta(q,a,C)$
+		donde $a$ puede ser $\varepsilon$. (si $m=0$, entonces $[q,A,p]\to a$).
+	\end{enumerate}
+\end{description}
+
+\begin{eje}
+Tenemos el autómata $M=(\{q_0,q_1\},\{0,1\},\{X,Z\},\delta,q_0,Z_0,\emptyset)$
+donde
+\begin{gather*}
+\delta(q_0,0,Z_0)=\{(q_0,XZ_0)\}\quad\delta(q_1,1,X)=\{(q_1,\varepsilon)\}\\
+%
+\delta(q_0,0,X)=\{(q_0,XX)\}\quad\delta(q_1,\varepsilon,X)=\{(q_1,\varepsilon)\}
+\\
+%
+\delta(q_0,1,X)=\{(q_1,\varepsilon)\}\quad\delta(q_1,\varepsilon,Z_0)=
+\{(q_1,\varepsilon)\}
+\end{gather*}
+Añadimos las producciones iniciales:
+$$S\to[q_0,Z_0,q_0],\quad S\to[q_0,Z_0,q_1]$$
+Añadimos las producciones de $\delta(q_0,0,Z_0)=\{(q_0,XZ_0)\}$:
+\begin{gather*}
+[q_0,Z_0,q_0]\to 0[q_0,X,q_0][q_0,Z_0,q_0] \\
+%
+[q_0,Z_0,q_1]\to 0[q_0,X,q_0][q_0,Z_0,q_1] \\
+%
+[q_0,Z_0,q_0]\to 0[q_0,X,q_1][q_1,Z_0,q_0] \\
+%
+[q_0,Z_0,q_1]\to 0[q_0,X,q_1][q_1,Z_0,q_1]
+\end{gather*}
+Añadimos las producciones de $\delta(q_0,0,X)=\{(q_0,XX)\}$:
+\begin{gather*}
+[q_0,X,q_0]\to 0[q_0,X,q_0][q_0,X,q_0] \\
+%
+[q_0,X,q_1]\to 0[q_0,X,q_0][q_0,X,q_1] \\
+%
+[q_0,X,q_0]\to 0[q_0,X,q_1][q_1,X,q_0] \\
+%
+[q_0,X,q_1]\to 0[q_0,X,q_1][q_1,X,q_1]
+\end{gather*}
+Añadimos la producción de $\delta(q_1,1,X)=\{(q_1,\varepsilon)\}$: $[q_1,X,q_1]
+\to 1$.\\
+Añadimos la producción de $\delta(q_1,\varepsilon,X)=\{(q_1,\varepsilon)\}$: 
+$[q_1,X,q_1]\to\varepsilon$.\\
+Añadimos la producción de $\delta(q_0,1,X)=\{(q_1,\varepsilon)\}$: $[q_0,X,q_1]
+\to 1$.\\
+Añadimos la producción de $\delta(q_1,\varepsilon,Z_0)=\{(q_1,\varepsilon)\}$: 
+$[q_1,Z_0,q_1]\to\varepsilon$.
+\end{eje}
+
+\newpage
+\section{Propiedades de los lenguajes independientes del contexto}
+
+\textbf{Lema de bombeo:}
+\\
+Sea $L$ un lenguaje independiente del contexto. Entonces $\exists n\in\mathbb{N}
+$, que depende sólo de $L$, tal que si $z\in L$ y $|z|\geq n$, $z$ se puede
+escribir de la forma $uvwxy$ verificando:
+\begin{itemize}[noitemsep]
+	\item $|vx|\geq 1$.
+	\item $|vwx|\leq n$.
+	\item $\forall i\geq 0$, $uv^iwx^iy\in L$.
+\end{itemize}
+
+Si en una gramática en forma normal de Chomsky existe una palabra que es 
+derivada con un árbol de derivación en el que todos los caminos desde la raíz a 
+una hoja son de longitud menor o igual a $m$, entonces la palabra tiene de 
+longitud menor o igual a $2^{m-1}$. Además, en un camino de la raíz a la hoja de 
+longitud $k$ aparecen $k$ variables.
+\\
+
+Sean $G_1=(V_1,T,P_1,S_1)$, $G_2=(V_2,T,P_2,S_2)$, $L_1=L(G_1)$ y $L_2=L(G_2)$. 
+Los lenguajes independientes del contexto son cerrados para las siguientes
+operaciones:
+\begin{description}[align=left,noitemsep]
+	\item [Unión: ] $G$ para $L_1\cup L_2$ es de la forma:
+	$$S\to S_1,\quad S\to S_2\quad\text{y las producciones de las dos 
+	gramáticas}$$
+	\item [Concatenación: ] $G$ para $L_1L_2$ es de la forma:
+	$$S\to S_1S_2\quad\text{y las producciones de las dos gramáticas}$$
+	\item [Clausura: ] $G$ para $L_1^*$ es de la forma:
+	$$S\to S_1S,\quad S\to\varepsilon\quad\text{y las producciones de }G_1$$
+\end{description}
+
+La clase de los lenguajes independientes del contexto no es cerrada para la intersección. Si $L$ es un lenguaje independiente del contexto y $R$ es un 
+lenguaje regular, entonces $L\cap R$ es independiente del contexto.
+
+\emph{Supongamos un autómata con pila $M=(Q,A,B,\delta,q_0,Z_0,F)$ que acepta $L$ por el criterio de estados finales y un autómata finito determinista $M'=(Q',A,\delta',q_0',F')$. Construimos el autómata con pila $M''=(Q'',A,B,\delta'',q_0'',Z_0,F'')$ de la siguiente forma:}
+\begin{itemize}[noitemsep]
+	\item $Q''=Q\times Q'$
+	\item $q_0''=(q_0,q_0')$
+	\item $F''=F\times F'$
+	\item $\delta''((p,q),a,X)=\{((r,s),\alpha):(r,\alpha)\in\delta(p,a,X),\;
+	s=\delta'(q,a)\}$
+	
+	$\delta''((p,q),\varepsilon,X)=\{((r,q),\alpha):(r,\alpha)\in\delta(p,
+	\varepsilon,X)\}$
+\end{itemize}
+\emph{El autómata acepta $L\cap R$ y por tanto es independiente del contexto.}
+\\
+
+Si $L$ es un lenguaje independiente del contexto determinista sobre el alfabeto 
+$A$, entonces su complementario $\bar{L}=A^*\setminus L$ es independiente del
+contexto determinista.
+
+\subsection{Lenguajes generados infinitos}
+
+Un algoritmo para determinar si el lenguaje generado por una gramática 
+independiente del contexto es infinito se puede basar en lo siguiente: se
+eliminan símbolos y producciones inútiles y producciones nulas y unitarias;
+entonces se construye un grafo dirigido en el que los nodos son las variables y 
+hay un arco de $A$ a $B$ si y sólo si tenemos una producción $A\to\alpha B\beta$.
+El lenguaje es infinito si y solo si este grafo tiene ciclos.
+
+\subsection{Algoritmos de pertenencia}
+
+Dada una gramática de tipo 2, $G=(V,T,P,S)$, y una palabra $u\in T^*$,
+determinar si la palabra puede ser generada por la gramática.
+
+\subsubsection{Algoritmo de Cocke-Younger-Kasami}
+
+El algoritmo tiene complejidad $O(n^3)$ con $|u|=n$ y es para gramáticas en
+forma normal de Chomsky.
+
+\begin{alg}
+Sea $u_{i,j}$ subcadena de $u$ que comienza en la posición $i$ y tiene logitud 
+$j$ $(j=1,\dots,n)$ $(i=1,\dots,n-j+1)$. Se trata de calcular $V_{ij}=\text{variables que generan }u_{i,j}$.
+\begin{enumerate}[noitemsep]
+	\item Para $i=1,\dots,n$:
+	
+	\quad\quad Calcular $V_{i1}=\{A:A\to a\text{ es una producción y el símbolo
+	i-ésimo de }u\text{ es }a\}$
+	\item Para $j=2,\dots,n$
+	
+	\quad\quad Para $i=1,\dots,n-j+1$
+	
+	\quad\quad\quad\quad $V_{ij}=\emptyset$
+	
+	\quad\quad\quad\quad Para $k=1,\dots,j-1$:
+	
+	\quad\quad\quad\quad\quad\quad
+	$V_{ij}=\{A:A\to BC\text{ es una producción},B\in V_{ik},C\in V_{i+k,j-k}\}$
+\end{enumerate}
+\end{alg} 
+
+\subsection{Problemas indecidibles}
+
+Suponemos que $G$, $G_1$ y $G_2$ son gramáticas independientes del contexto 
+dadas y $R$ es un lenguaje regular. Las siguientes cuestiones no pueden
+resolverse mediante algoritmos:
+\begin{itemize}[noitemsep]
+	\item Saber si $L(G_1)\cap L(G_2)=\emptyset$.
+	\item Determinar si $L(G)=T^*$, con $T$ conjunto de símbolos terminales.
+	\item Comprobar si $L(G_1)=L(G_2)$.
+	\item Determinar si $L(G_1)\subset L(G_2)$.
+	\item Saber si $L(G_1)=R$.
+	\item Comprobar si $L(G)$ es regular.
+	\item Determinar si $G$ es ambigua.
+	\item Conocer si $L(G)$ es inherentemente ambiguo.
+	\item Saber si $L(G)$ es determinista.
+\end{itemize}
+
+
+
+\end{document}
