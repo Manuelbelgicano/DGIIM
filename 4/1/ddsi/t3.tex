@@ -1,0 +1,353 @@
+\documentclass[12pt,a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				PAQUETES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper]{geometry} % Márgenes
+\usepackage{fancyhdr} % Encabezados/pies de páginas
+\usepackage{amsmath} % Matemáticas
+\usepackage{amsfonts} % Letras caligráficas para matemáticas
+\usepackage{mathtools} % Matemáticas extra
+\usepackage{xcolor} % colores
+\usepackage[xcolor]{mdframed} % Marcos
+\usepackage{amsthm} % Teoremas
+\usepackage{enumitem} % Opciones de personalización de listas
+\usepackage{amssymb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			   COLORINES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ma_3}{HTML}{F1F1F1} % Fondo ejemplos
+\definecolor{ma_1}{HTML}{000000} % Ejemplos, demostraciones
+\definecolor{m_4}{HTML}{000000} % Ejemplos, demostraciones
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				  MARCOS				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mdfsetup{ % Configuración general de los marcos
+  skipabove=1em, % Espacio sobre los marcos
+  skipbelow=1em, % Espacio bajo los marcos
+  innertopmargin=0.3em, % Margen interior superior
+  innerbottommargin=1em, % Margen interior inferior
+  splittopskip=2\topsep, % Espacio entre marcos
+  usetwoside=false, % Diferenciar páginas
+}
+
+\mdfdefinestyle{marco_ejemplos}{ % Nombre del estilo
+	linewidth=2pt, % Grosor de la línea
+	linecolor=ma_1, % Color de la línea
+	backgroundcolor=ma_3, % Color de fondo
+	topline=false, % Línea arriba
+	leftline=true, % Línea a la izquierda
+	bottomline=false, % Línea abajo
+	rightline=false,% Línea a la derecha
+	leftmargin=0em, % Margen a la izquierda
+	innerleftmargin=1em, % Margen interior a la izquierda
+	innerrightmargin=1em, % Margen interior a la derecha
+	rightmargin=0em, % Margen a la derecha
+}
+
+\mdfdefinestyle{marco_anotaciones}{ % Nombre del estilo
+	linewidth=1pt, % Grosor de la línea
+	linecolor=ma_1, % Color de la línea
+	backgroundcolor=ma_3, % Color de fondo
+	topline=true, % Línea arriba
+	leftline=true, % Línea a la izquierda
+	bottomline=true, % Línea abajo
+	rightline=true,% Línea a la derecha
+	leftmargin=0em, % Margen a la izquierda
+	innerleftmargin=1em, % Margen interior a la izquierda
+	innerrightmargin=1em, % Margen interior a la derecha
+	rightmargin=0em, % Margen a la derecha
+}
+
+\newtheoremstyle{ejemplo} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_4}\itshape\bfseries} % Estilo de la cabecera
+{} % Símbolo tras la cabecera
+{ } % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\theoremstyle{ejemplo}
+\newtheorem*{eje}{} % Comando para los ejemplos
+\newtheoremstyle{algoritmo} % Nombre del estilo
+{} % Espacio por encima
+{} % Espacio por debajo
+{} % Estilo del cuerpo
+{} % Indentación
+{\color{m_4}\bfseries} % Estilo de la cabecera
+{:} % Símbolo tras la cabecera
+{\newline} % Espacio tras la cabecera
+{} % Especificación de la cabecera
+\theoremstyle{algoritmo}
+\newtheorem*{alg}{Algoritmo} % Comando para los ejemplos
+\surroundwithmdframed[style=marco_ejemplos]{eje}
+\surroundwithmdframed[style=marco_anotaciones]{alg}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				MÁRGENES				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{
+	left=2.5cm,
+	right=2.5cm,
+	bottom=2.5cm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%		ENCABEZADO/PIE DE PAGINA		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{Universidad de Granada}
+\fancyhead[L]{Normalización}
+\fancyfoot[C]{\thepage}
+
+\setlength\parindent{0pt} % Tamaño de la sangría
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				 TÍTULO 				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\Huge{\textbf{Normalización}}}
+\author{\Large{\textit{Desarrollo y Diseño de Sistemas de Información}}}
+\date{Manuel Gachs Ballegeer}
+\maketitle
+
+\subsection*{Dependencias}
+Dada una relación $R$, con subconjuntos de atributos $\alpha$ y $\beta$.
+\\
+
+\textbf{Dependencia funcional:}
+
+Se dice que $\alpha$ determina funcionalmente a $\beta$ y se denota $\alpha\to
+\beta$ si y sólo si $\forall r$ instancia de $R$ y $\forall s,t\in r$, si
+$s(\alpha)=r(\alpha)\implies s(\beta)=r(\beta)$.
+\\
+
+\textbf{Dependencia funcional completa:}
+
+Se dice que $\alpha$ determina funcionalmente a $\beta$ de forma completa si y
+solo si $\alpha\to\beta$ y $\nexists\gamma\subset\alpha$ tal que $\gamma\to
+\beta$.
+\\
+
+\textbf{Dependencia trivial:}
+
+$\alpha\to\beta$ tal que $\beta\subset\alpha$.
+
+\subsection*{Descomposición sin pérdidas}
+Sea $(R,r)$ una relación que se descompone en $(R_1,r_1)$ y $(R_2,r_2)$. Se dice
+que una descomposición es sin pérdidas si y sólo si podemos recuperar $R$ 
+mediante reunión natural. Esto es:
+\begin{itemize}
+	\item [] $R_1\cup R_2=R$
+	\item [] $r_1\text{\texttt{ join }}r_2=r$
+\end{itemize}
+
+\subsection*{Teorema de Heath}
+Sea $R$ una relación con atributos $A$,$B$ y $C$, donde se verifica $B\to C$.
+Entonces, la descomposición en relaciones:
+\begin{itemize}
+	\item [] $R_1(A,B)$
+	\item [] $R_2(B,C)$
+\end{itemize}
+es una descomposición sin pérdidas.
+
+\subsection*{Axiomas de Amstrong}
+
+\textbf{Reflexividad:} 
+
+$\forall\alpha,\beta$ con $\beta\subset\alpha$ se verifica $\alpha\to\beta$.
+\\
+
+\textbf{Ampliación:}
+
+$\forall\alpha,\beta,\gamma$ con $\alpha\to\beta$ se verifica $\alpha\gamma
+\to\beta\gamma$.
+\\
+
+\textbf{Transitividad:}
+
+$\forall\alpha,\beta,\gamma$ con $\alpha\to\beta$ y $\beta\to\gamma$, se verifica
+$\alpha\to\gamma$.
+\\
+
+\textbf{Reglas:}
+\begin{itemize}
+	\item \textit{Unión:} $\forall\alpha,\beta,\gamma$ con $\alpha\to\beta$ y 
+	$\alpha\to\gamma$, se verifica $\alpha\to\beta\gamma$.
+	\item \textit{Descomposición:} $\forall\alpha,\beta,\gamma$ con $\alpha\to
+	\beta\gamma$, se verifica $\alpha\to\beta$ y $\alpha\to\gamma$.
+	\item \textit{Pseudotransitividad:} $\forall\alpha,\beta,\gamma,\delta$ con
+	$\alpha\to\beta$ y $\beta\gamma\to\delta$ se verifica $\alpha\gamma\to\delta$.
+\end{itemize}
+
+\subsection*{Atributos raros}
+Sea una dependencia de la forma $\alpha A\to\beta$, se dice que $A$ es
+raro respecto a $\alpha$ si y sólo si $A\in\alpha^+$, es decir, $A$ depende
+funcionalmente de los atributos que la acompañan.
+\subsection*{Cierres}
+
+\textbf{Cierre de un conjunto de dependencias funcionales $F$:}
+
+Se nota por $F^+$ y representa el conjunto de todas las dependencias 
+funcionales que pueden deducirse de las dependencias funcionales de $F$ 
+aplicando los Axiomas y las Reglas de Armstrong en una secuencia finita de pasos.
+\\
+
+\textbf{Cierre de un conjunto de atributos $\alpha$ en base a un conjunto de 
+dependencias funcionales $F$:}
+
+Se nota por $\alpha^+$ y representa el conjunto de todos los atributos que son 
+determinados por los atributos de $\alpha$ en conjunto mediante dependencias 
+de $F^+$.
+\\
+
+Ambos cierres son equivalentes, puesto que $A\in\alpha_F^+\iff\alpha\to A\in F^+$.
+
+\begin{alg}
+Cierre de un conjunto de atributos $\alpha$ en base a un conjunto de 
+dependencias funcionales $F$:
+\begin{enumerate}
+	\item Inicializamos $\alpha_F^+=\alpha$.
+	\item Mientras que $\alpha_F^+$ cambie:
+	
+	\quad\quad Si $\beta\to\gamma$ y $\beta\subset\alpha_F^+$, entonces $
+	\alpha_F^+=\alpha_F^+\cup\{\gamma\}$.
+\end{enumerate}
+\end{alg}
+
+\subsection*{Dependencia transitiva problemática}
+Sea $R$ un esquema de relación, $F$ un conjunto de dependencias funcionales
+asociado y $C\subset R$ una clave candidata de $R$. Se dice que $C\to\beta$ con
+$\beta$ atributo no primo es una dependencia transitiva problemática si $
+\exists\alpha\subset R$ tal que $\alpha$ no es superclave y 
+$$(C\to\alpha)\in F\quad\quad(\alpha\to\beta)\in F$$
+
+\subsection*{Segunda forma normal (2FN)}
+Decimos que una relación $R$ está en 2FN si y sólo si:
+\begin{itemize}[noitemsep]
+	\item Está en primera forma normal (1FN).
+	\item Todos sus atributos no primos dependen funcionalmente de forma 
+	completa de las claves candidatas.
+\end{itemize}
+\textit{(Suele darse en tablas generadas por un buen diseño conceptual)}
+
+\subsection*{Tercera forma normal (3FN)}
+Una relación $R$ está en tercera forma normal si y sólo si:
+\begin{itemize}[noitemsep]
+	\item Está en segunda forma normal (2FN).
+	\item No presenta dependencias transitivas problemáticas.
+\end{itemize}
+
+\subsection*{Forma normal de Boyce-Codd (FNBC)}
+Decimos que una relación $R$ está en FNBC si y sólo si para toda dependencia no
+trivial $\alpha\to\beta$ se cumple que $\alpha$ es una superclave.
+\\
+
+FNBC$\implies$3FN y 3FN con una única clave candidata$\implies$FNBC.
+
+\begin{alg}
+Dada una relación $R$ y su conjunto de dependencias $F$, el conjunto de 
+relaciones que forman una descomposición sin pérdidas de $R$ en FNBC se calcula 
+de la siguiente manera:
+\begin{enumerate}[noitemsep]
+	\item $T=\{R\}$
+	\item Si existe $(\alpha\to\beta)\in F$ no trivial con $\alpha,\beta\subset 
+	R$ tal que $\alpha$ no es superclave:
+
+	\quad\quad $T=T-\{R\}$
+	
+	\quad\quad Se divide $R$ en $R_1$ con esquema $R\setminus\beta$ y $R_2$ con
+	esquema $\alpha\cup\beta$.
+	
+	\quad\quad $T=T\cup\text{FNBC}(R_1)$
+	
+	\quad\quad $T=T\cup\text{FNBC}(R_2)$
+	
+\end{enumerate}
+El resultado buscado es el conjunto $T$. Es importante saber que se deben 
+conocer las claves candidatas de $R$.
+\end{alg}
+\newpage
+\subsection*{Cálculo de claves candidatas}
+Dado un esquema $R$ con su conjunto de relaciones $F$, el conjunto de claves
+candidatas se calcula de la siguiente manera:
+\\
+
+\textbf{1. Eliminación de atributos independientes.}
+
+A partir de $R$, se construye $R_{si}$, que contiene todos los atributos de $R$
+que no son independientes, ya que participan en cualquier clave candidata y no
+se pueden deducir otros a partir de ellos.
+\\
+
+\textbf{2. Eliminación de atributos equivalentes.}
+
+A partir de $R_{si}$, se construye $R_{sie}$, en el que se eliminan los 
+atributos equivalentes. Por cada equivalencia, se elimina uno de los dos y se
+sustituye el eliminado por su equivalencia en las dependencias correspondientes.
+Algunos atributos pueden transformarse en independientes.
+\\
+
+\textbf{3. Selección de una clave de $R_{sie}$ de determinantes no 
+determinados.}
+
+Se selecciona como primer candidato a la clave candidata $K_p$ cualquier
+determinante de $R_{sie}$ que no sea determinado.
+
+Si es el único determinante, $K_p$ es clave candidata y se pasa al punto 
+\textbf{5}.
+\\
+
+\textbf{4. Selección de claves de $R_{sie}$ con posibles determinantes  
+determinados.}
+
+Se construye $R_{sie}'$, eliminando de $R_{sie}$ los atributos de $K_p^+$ no
+implicados en el cálculo de $K_p^+$. Si no puede construirse $R_{sie}'$, 
+entonces se procede con $R_{sie}'=R_{sie}$.
+
+Para cada determinante $\alpha$ que es determinado, se construye $K_p'$ clave provisional de $R_{sie}'$, con $K_p'=K_p\cup\{\alpha\}$. Si ${K'}_{p}^{+}=
+R_{sie}'$, entonces $K_p'$ es clave de $R_{sie}'$. En caso contrario, se añade
+otro determinante determinado que no pertenezca a ${K'}_{p}^{+}$ y se vuelve 
+a comprobar la igualdad.
+
+Se añaden a $K_p$ todas las claves de $R_{sie}'$ para obtener las claves de 
+$R_{sie}$.
+\\
+
+\textbf{5. Adición de los atributos independientes a las claves de $R_{sie}$.}
+\\
+
+\textbf{6. Réplicar el procedimiento 3-5 para las claves eliminadas en el paso 
+2.}
+
+\subsection*{Dependencias redundantes}
+Sea una dependencia $\alpha\to\beta$ elemento del conjunto de dependencias $F$.
+$\alpha\to\beta$ es una dependencia redundante si se puede obtener a partir de
+las demás dependencias. Esto es:
+$$\alpha\to\beta\text{ redundante}\iff(\alpha\to\beta)\in(F\setminus\{\alpha
+\to\beta\})^+\iff\beta\in\alpha^+_{F\setminus\{\alpha\to\beta\}}$$
+
+\subsection*{Recubrimiento minimal o canónico}
+Se dice que $F'$ es el recubrimiento minimal o canónico del conjunto de
+dependencias $F$ al más simple de los conjuntos que cumplen $F^+={F'}^+$.
+
+\begin{alg}
+Los pasos para calcular el recubrimiento canónico de un conjunto de dependencias
+$F$ es el siguiente:
+\begin{enumerate}[noitemsep]
+	\item Construimos $F^{(1)}$ descomponiendo todas las dependencias con parte
+	derecha compuesta.
+	\item Construimos $F^{(2)}$ a partir de $F^{(1)}$ eliminando todos los
+	atributos raros.
+	\item Obtenemos el cierre canónico $F'$ a partir de $F^{(2)}$ eliminando
+	todas las dependencias redundantes.
+\end{enumerate}
+\end{alg}
+
+\end{document}
