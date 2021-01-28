@@ -186,10 +186,13 @@ $\alpha\to\gamma$.
 	$\alpha\to\beta$ y $\beta\gamma\to\delta$ se verifica $\alpha\gamma\to\delta$.
 \end{itemize}
 
-\subsection*{Atributos raros}
-Sea una dependencia de la forma $\alpha A\to\beta$, se dice que $A$ es
-raro respecto a $\alpha$ si y sólo si $A\in\alpha^+$, es decir, $A$ depende
-funcionalmente de los atributos que la acompañan.
+\subsection*{Dependencia transitiva problemática}
+Sea $R$ un esquema de relación, $F$ un conjunto de dependencias funcionales
+asociado y $C\subset R$ una clave candidata de $R$. Se dice que $C\to\beta$ con
+$\beta$ atributo no primo es una dependencia transitiva problemática si $
+\exists\alpha\subset R$ tal que $\alpha$ no es superclave y 
+$$(C\to\alpha)\in F\quad\quad(\alpha\to\beta)\in F$$
+
 \subsection*{Cierres}
 
 \textbf{Cierre de un conjunto de dependencias funcionales $F$:}
@@ -204,15 +207,12 @@ dependencias funcionales $F$:}
 
 Se nota por $\alpha^+$ y representa el conjunto de todos los atributos que son 
 determinados por los atributos de $\alpha$ en conjunto mediante dependencias 
-de $F^+$.
-\\
-
-Ambos cierres son equivalentes, puesto que $A\in\alpha_F^+\iff\alpha\to A\in F^+$.
+de $F^+$. $A\in\alpha_F^+\iff\alpha\to A\in F^+$.
 
 \begin{alg}
 Cierre de un conjunto de atributos $\alpha$ en base a un conjunto de 
 dependencias funcionales $F$:
-\begin{enumerate}
+\begin{enumerate}[noitemsep]
 	\item Inicializamos $\alpha_F^+=\alpha$.
 	\item Mientras que $\alpha_F^+$ cambie:
 	
@@ -221,12 +221,17 @@ dependencias funcionales $F$:
 \end{enumerate}
 \end{alg}
 
-\subsection*{Dependencia transitiva problemática}
-Sea $R$ un esquema de relación, $F$ un conjunto de dependencias funcionales
-asociado y $C\subset R$ una clave candidata de $R$. Se dice que $C\to\beta$ con
-$\beta$ atributo no primo es una dependencia transitiva problemática si $
-\exists\alpha\subset R$ tal que $\alpha$ no es superclave y 
-$$(C\to\alpha)\in F\quad\quad(\alpha\to\beta)\in F$$
+\subsection*{Atributos raros}
+Sea una dependencia de la forma $\alpha A\to\beta$, se dice que $A$ es
+raro respecto a $\alpha$ si y sólo si $A\in\alpha^+$, es decir, $A$ depende
+funcionalmente de los atributos que la acompañan.
+
+\subsection*{Dependencias redundantes}
+Sea una dependencia $\alpha\to\beta$ elemento del conjunto de dependencias $F$.
+$\alpha\to\beta$ es una dependencia redundante si se puede obtener a partir de
+las demás dependencias. Esto es:
+$$\alpha\to\beta\text{ redundante}\iff(\alpha\to\beta)\in(F\setminus\{\alpha
+\to\beta\})^+\iff\beta\in\alpha^+_{F\setminus\{\alpha\to\beta\}}$$
 
 \subsection*{Segunda forma normal (2FN)}
 Decimos que una relación $R$ está en 2FN si y sólo si:
@@ -246,15 +251,13 @@ Una relación $R$ está en tercera forma normal si y sólo si:
 
 \subsection*{Forma normal de Boyce-Codd (FNBC)}
 Decimos que una relación $R$ está en FNBC si y sólo si para toda dependencia no
-trivial $\alpha\to\beta$ se cumple que $\alpha$ es una superclave.
-\\
-
-FNBC$\implies$3FN y 3FN con una única clave candidata$\implies$FNBC.
+trivial $\alpha\to\beta$ se cumple que $\alpha$ es una superclave. Una relación
+en FNBC está en 3FN, y una relación en 3FN con una única clave candidata está en
+FNBC.
 
 \begin{alg}
-Dada una relación $R$ y su conjunto de dependencias $F$, el conjunto de 
-relaciones que forman una descomposición sin pérdidas de $R$ en FNBC se calcula 
-de la siguiente manera:
+Dada una relación $R$ y su conjunto de dependencias $F$, el conjunto $T$ 
+resultante de relaciones en FNBC se calcula:
 \begin{enumerate}[noitemsep]
 	\item $T=\{R\}$
 	\item Si existe $(\alpha\to\beta)\in F$ no trivial con $\alpha,\beta\subset 
@@ -270,10 +273,25 @@ de la siguiente manera:
 	\quad\quad $T=T\cup\text{FNBC}(R_2)$
 	
 \end{enumerate}
-El resultado buscado es el conjunto $T$. Es importante saber que se deben 
-conocer las claves candidatas de $R$.
+Es importante saber que se deben conocer las claves candidatas de $R$ (y $R_1$, 
+$R_2$, ...).
 \end{alg}
-\newpage
+
+El proceso de normalización de una relación cualquiera $R$ a su equivalente en
+FNBC tiene el inconveniente de que puede eliminar dependencias funcionales, 
+puesto que se basa en separar la relación $R$ en un conjunto de relaciones $R_i$.
+\\
+
+A la hora de elegir la dependencia $\alpha\to\beta$ con la que realizar la 
+separación que minimice el número de dependencias funcionales perdidas, se sigue 
+el siguiente criterio con respecto a $\beta$:
+\begin{enumerate}[noitemsep]
+	\item $\beta$ es un atributo que sólo aparece a la derecha de las 
+	dependencias.
+	\item $\beta$ es un atributo que no participa en una clave candidata.
+	\item $\beta$ es el atributo que participa en el menor número de dependencias.
+\end{enumerate}
+
 \subsection*{Cálculo de claves candidatas}
 Dado un esquema $R$ con su conjunto de relaciones $F$, el conjunto de claves
 candidatas se calcula de la siguiente manera:
@@ -323,15 +341,10 @@ $R_{sie}$.
 \textbf{5. Adición de los atributos independientes a las claves de $R_{sie}$.}
 \\
 
-\textbf{6. Réplicar el procedimiento 3-5 para las claves eliminadas en el paso 
-2.}
+\textbf{6. Réplicar las claves con las equivalencias eliminadas en el paso 2.}
 
-\subsection*{Dependencias redundantes}
-Sea una dependencia $\alpha\to\beta$ elemento del conjunto de dependencias $F$.
-$\alpha\to\beta$ es una dependencia redundante si se puede obtener a partir de
-las demás dependencias. Esto es:
-$$\alpha\to\beta\text{ redundante}\iff(\alpha\to\beta)\in(F\setminus\{\alpha
-\to\beta\})^+\iff\beta\in\alpha^+_{F\setminus\{\alpha\to\beta\}}$$
+Esto es, si existe la equivalencia $\alpha\equiv\beta$ y $\alpha A$ es una clave
+candidata, se añade como clave candidata $\beta A$.
 
 \subsection*{Recubrimiento minimal o canónico}
 Se dice que $F'$ es el recubrimiento minimal o canónico del conjunto de
