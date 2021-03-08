@@ -1,0 +1,27 @@
+<html>
+<head>
+    {{>header}}
+</head>
+<body>
+    <h1>{{title}}</h1>
+    {{#entries}}
+        <div class="card">
+            <div class="header">
+                <h3>{{subject}}</h3>
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    {{contents}}
+                </div>
+                <div class="card-text">
+                    Written by <a>{{author}}</a>, on {{published}}
+                </div>
+            </div>
+        </div>
+        <hr>
+    {{/entries}}
+    {{^entries}}
+    No entries yet.
+    {{/entries}}
+</body>
+</html>

@@ -1,0 +1,55 @@
+const nedb = require('nedb');
+
+class GuestBook {
+    constructor(dbFilePath) {
+        if (dbFilePath) {
+            this.db = new nedb({filename: dbFilePath,autoload: true});
+            console.log("DB connected to "+dbFilePath);
+        } else {
+            this.db = new nedb();
+        }
+    }
+    init() {
+        this.db.insert({
+            subject: "I liked the exhibition",
+            contents: "nice",
+            published: "2020-02-16",
+            author: "Peter"
+        });
+        console.log("db entry Peter inserted");
+
+        this.db.insert({
+            subject: "Didn't like it",
+            contents: "it was horrible",
+            published: "2020-02-17",
+            author: "Wendy"
+        });
+        console.log("db entry Wendy inserted");
+    }
+    getAllEntries() {
+        return new Promise((resolve,reject) => {
+            this.db.find({},function(err,entries) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(entries);
+                    console.log("Function all() returns: ",entries);
+                }
+            });
+        });
+    }
+    getPeterEntries() {
+        return new Promise((resolve,reject) => {
+            this.db.find({author: "Peter"},function(err,entries) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(entries);
+                    console.log("Function Peter() returns: ",entries);
+                }
+            });
+        });
+    }
+}
+
+module.exports = GuestBook;

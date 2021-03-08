@@ -1,0 +1,19 @@
+{
+  "name": "lab3",
+  "version": "1.0.0",
+  "description": "App for lab3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "nedb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nedb": "^1.8.0"
+  }
+}
