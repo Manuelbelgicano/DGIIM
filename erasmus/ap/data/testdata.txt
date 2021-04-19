@@ -1,0 +1,10 @@
+Alabama (9),Democratic:849624,Republican:1441170,Libertarian:25176,Others:7312
+Alaska (3),Democratic:153778,Republican:189951,Libertarian:8897,Others:6904
+Arizona (11),Democratic:1672143,Republican:1661686,Libertarian:51465,Green:1557,Others:475
+Arkansas (6),Democratic:423932,Republican:760647,Libertarian:13133,Green:2980,Others:18377
+California (55),Democratic:11110250,Republican:6006429,Libertarian:187895,Green:81029,Others:115278
+Colorado(9),Democratic:1804352,Republican:1364607,Libertarian:52460,Green:8986,Others:26575
+Connecticut (7),Democratic:1080831,Republican:714717,Libertarian:20230,Green:7538,Others:541
+D.C. (3),Democratic:317323,Republican:18586,Libertarian:2036,Green:1726,Others:4685
+Delaware (3),Democratic:296268,Republican:200603,Libertarian:5000,Green:2139,Others:336
+Florida (29),Democratic:5297045,Republican:5668731,Libertarian:70324,Green:14721,Others:16635

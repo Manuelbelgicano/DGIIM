@@ -1,0 +1,48 @@
+<html>
+<head>
+    {{>header}}
+</head>
+<body>
+    <h1>{{title}}</h1>
+    {{#entries}}
+        <div class="card">
+            <div class="header">
+                <h3>{{subject}}</h3>
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    {{contents}}
+                </div>
+                <div class="card-text">
+                    Written by <a href="/posts/{{author}}">{{author}}</a>, on {{published}}
+                </div>
+                <div>
+                    <a href="/delete/{{_id}}" alt="delete this entry"><i class="fas fa-trash-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {{/entries}}
+    {{^entries}}
+    No entries yet.
+    {{/entries}}
+    <div class="text-right" style="margin-bottom:1em;">
+        {{^user}}
+        <a id="login" href="/login" class="btn btn-primary">
+            Sign in
+        </a>
+        <a id="login" href="/register" class="btn btn-primary">
+            Register
+        </a>
+        {{/user}}
+        {{#user}}
+        <a id="write" href="/new" class="btn btn-primary">
+            Write an entry
+        </a>
+        <a id="logout" href="/logout" class="btn btn-primary">
+            Sign out
+        </a>
+        {{/user}}
+    </div>
+</body>
+</html>
