@@ -1,0 +1,27 @@
+<html>
+<head>
+    {{>header}}
+</head>
+<body>
+    {{#cardio}}
+    {{>cardio_entry}}
+    {{/cardio}}
+    {{#strength}}
+    {{>strength_entry}}
+    {{/strength}}
+    {{#sport}}
+    {{>sport_entry}}
+    {{/sport}}
+    <p>
+    Do you want to delete this exercise?
+    </p>
+    <form method="post">
+        <div>
+        <input type="submit" value="Yes" class="btn btn-primary">
+        </div>
+    </form>
+    <a href="/">
+        <button>No</button>
+    </a>
+</body>
+</html>

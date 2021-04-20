@@ -1,0 +1,83 @@
+<html>
+    <head>
+        {{>header}}
+        <style>
+        .button1 {
+            background-color: #60ee75;
+            border: none;
+            color: black
+        }
+        .button2 {
+            background-color: #eea760;
+            border: none;
+            color: black
+        }
+        .button3 {
+            background-color: #cf57bf;
+            border: none;
+            color: black
+        }
+        </style>
+    </head>
+
+    <body>
+        <h1>Workout Plan:</h1>
+        <p>This app has a list of exercises for your workout!</p>
+        <div class="row">
+            <div class="column" style="background-color:#60ee75;">
+                <h2>Cardio</h2>
+                {{#cardio}}
+                    {{>cardio_entry}}
+                    <a href="/cardio/{{_id}}">
+                        <button class="button1"><span style="font-size:20px;text-align:center;">&#10005;</span></button>
+                    </a>
+                    <hr>
+                {{/cardio}}
+                {{^cardio}}
+                No exercises yet...
+                {{/cardio}}
+                <div style="text-align:center;">
+                    <a href="/new/cardio">
+                        <button class="button1"><span style="font-size:50px;">&#10010;</span></button>
+                    </a>
+                </div>
+            </div>
+            <div class="column" style="background-color:#eea760;">
+                <h2>Strength</h2>
+                {{#gym}}
+                    {{>strength_entry}}
+                    <a href="/strength/{{_id}}">
+                        <button class="button2"><span style="font-size:20px;text-align:center;">&#10005;</span></button>
+                    </a>
+                    <hr>
+                {{/gym}}
+                {{^gym}}
+                No exercises yet...
+                {{/gym}}
+                <div style="text-align:center;">
+                    <a href="/new/strength">
+                        <button class="button2"><span style="font-size:50px;">&#10010;</span></button>
+                    </a>
+                </div>
+            </div>
+            <div class="column" style="background-color:#cf57bf;">
+                <h2>Sports</h2>
+                {{#sport}}
+                    {{>sport_entry}}
+                    <a href="/sport/{{_id}}">
+                        <button class="button3"><span style="font-size:20px;text-align:center;">&#10005;</span></button>
+                    </a>
+                    <hr>
+                {{/sport}}
+                {{^sport}}
+                No exercises yet...
+                {{/sport}}
+                <div style="text-align:center;">
+                    <a href="/new/sport">
+                        <button class="button3"><span style="font-size:50px;">&#10010;</span></button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
